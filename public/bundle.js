@@ -3,8 +3,6 @@ var app = (function () {
 
 	function noop() {}
 
-	const identity = x => x;
-
 	function add_location(element, file, line, column, char) {
 		element.__svelte_meta = {
 			loc: { file, line, column, char }
@@ -31,37 +29,14 @@ var app = (function () {
 		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
 	}
 
-	const tasks = new Set();
-	let running = false;
-
-	function run_tasks() {
-		tasks.forEach(task => {
-			if (!task[0](window.performance.now())) {
-				tasks.delete(task);
-				task[1]();
-			}
-		});
-
-		running = tasks.size > 0;
-		if (running) requestAnimationFrame(run_tasks);
+	function validate_store(store, name) {
+		if (!store || typeof store.subscribe !== 'function') {
+			throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+		}
 	}
 
-	function loop(fn) {
-		let task;
-
-		if (!running) {
-			running = true;
-			requestAnimationFrame(run_tasks);
-		}
-
-		return {
-			promise: new Promise(fulfil => {
-				tasks.add(task = [fn, fulfil]);
-			}),
-			abort() {
-				tasks.delete(task);
-			}
-		};
+	function subscribe(component, store, callback) {
+		component.$$.on_destroy.push(store.subscribe(callback));
 	}
 
 	function append(target, node) {
@@ -107,6 +82,11 @@ var app = (function () {
 		return Array.from(element.childNodes);
 	}
 
+	function set_data(text, data) {
+		data = '' + data;
+		if (text.data !== data) text.data = data;
+	}
+
 	function set_style(node, key, value) {
 		node.style.setProperty(key, value);
 	}
@@ -115,70 +95,6 @@ var app = (function () {
 		const e = document.createEvent('CustomEvent');
 		e.initCustomEvent(type, false, false, detail);
 		return e;
-	}
-
-	let stylesheet;
-	let active = 0;
-	let current_rules = {};
-
-	// https://github.com/darkskyapp/string-hash/blob/master/index.js
-	function hash(str) {
-		let hash = 5381;
-		let i = str.length;
-
-		while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
-		return hash >>> 0;
-	}
-
-	function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
-		const step = 16.666 / duration;
-		let keyframes = '{\n';
-
-		for (let p = 0; p <= 1; p += step) {
-			const t = a + (b - a) * ease(p);
-			keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
-		}
-
-		const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
-		const name = `__svelte_${hash(rule)}_${uid}`;
-
-		if (!current_rules[name]) {
-			if (!stylesheet) {
-				const style = element('style');
-				document.head.appendChild(style);
-				stylesheet = style.sheet;
-			}
-
-			current_rules[name] = true;
-			stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
-		}
-
-		const animation = node.style.animation || '';
-		node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
-
-		active += 1;
-		return name;
-	}
-
-	function delete_rule(node, name) {
-		node.style.animation = (node.style.animation || '')
-			.split(', ')
-			.filter(name
-				? anim => anim.indexOf(name) < 0 // remove specific animation
-				: anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
-			)
-			.join(', ');
-
-		if (name && !--active) clear_rules();
-	}
-
-	function clear_rules() {
-		requestAnimationFrame(() => {
-			if (active) return;
-			let i = stylesheet.cssRules.length;
-			while (i--) stylesheet.deleteRule(i);
-			current_rules = {};
-		});
 	}
 
 	let current_component;
@@ -194,6 +110,23 @@ var app = (function () {
 
 	function onMount(fn) {
 		get_current_component().$$.on_mount.push(fn);
+	}
+
+	function createEventDispatcher() {
+		const component = current_component;
+
+		return (type, detail) => {
+			const callbacks = component.$$.callbacks[type];
+
+			if (callbacks) {
+				// TODO are there situations where events could be dispatched
+				// in a server (non-DOM) environment?
+				const event = custom_event(type, detail);
+				callbacks.slice().forEach(fn => {
+					fn.call(component, event);
+				});
+			}
+		};
 	}
 
 	const dirty_components = [];
@@ -264,23 +197,6 @@ var app = (function () {
 		}
 	}
 
-	let promise;
-
-	function wait() {
-		if (!promise) {
-			promise = Promise.resolve();
-			promise.then(() => {
-				promise = null;
-			});
-		}
-
-		return promise;
-	}
-
-	function dispatch(node, direction, kind) {
-		node.dispatchEvent(custom_event(`${direction ? 'intro' : 'outro'}${kind}`));
-	}
-
 	let outros;
 
 	function group_outros() {
@@ -298,131 +214,6 @@ var app = (function () {
 
 	function on_outro(callback) {
 		outros.callbacks.push(callback);
-	}
-
-	function create_bidirectional_transition(node, fn, params, intro) {
-		let config = fn(node, params);
-
-		let t = intro ? 0 : 1;
-
-		let running_program = null;
-		let pending_program = null;
-		let animation_name = null;
-
-		function clear_animation() {
-			if (animation_name) delete_rule(node, animation_name);
-		}
-
-		function init(program, duration) {
-			const d = program.b - t;
-			duration *= Math.abs(d);
-
-			return {
-				a: t,
-				b: program.b,
-				d,
-				duration,
-				start: program.start,
-				end: program.start + duration,
-				group: program.group
-			};
-		}
-
-		function go(b) {
-			const {
-				delay = 0,
-				duration = 300,
-				easing = identity,
-				tick: tick$$1 = noop,
-				css
-			} = config;
-
-			const program = {
-				start: window.performance.now() + delay,
-				b
-			};
-
-			if (!b) {
-				program.group = outros;
-				outros.remaining += 1;
-			}
-
-			if (running_program) {
-				pending_program = program;
-			} else {
-				// if this is an intro, and there's a delay, we need to do
-				// an initial tick and/or apply CSS animation immediately
-				if (css) {
-					clear_animation();
-					animation_name = create_rule(node, t, b, duration, delay, easing, css);
-				}
-
-				if (b) tick$$1(0, 1);
-
-				running_program = init(program, duration);
-				add_render_callback(() => dispatch(node, b, 'start'));
-
-				loop(now => {
-					if (pending_program && now > pending_program.start) {
-						running_program = init(pending_program, duration);
-						pending_program = null;
-
-						dispatch(node, running_program.b, 'start');
-
-						if (css) {
-							clear_animation();
-							animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
-						}
-					}
-
-					if (running_program) {
-						if (now >= running_program.end) {
-							tick$$1(t = running_program.b, 1 - t);
-							dispatch(node, running_program.b, 'end');
-
-							if (!pending_program) {
-								// we're done
-								if (running_program.b) {
-									// intro — we can tidy up immediately
-									clear_animation();
-								} else {
-									// outro — needs to be coordinated
-									if (!--running_program.group.remaining) run_all(running_program.group.callbacks);
-								}
-							}
-
-							running_program = null;
-						}
-
-						else if (now >= running_program.start) {
-							const p = now - running_program.start;
-							t = running_program.a + running_program.d * easing(p / running_program.duration);
-							tick$$1(t, 1 - t);
-						}
-					}
-
-					return !!(running_program || pending_program);
-				});
-			}
-		}
-
-		return {
-			run(b) {
-				if (typeof config === 'function') {
-					wait().then(() => {
-						config = config();
-						go(b);
-					});
-				} else {
-					go(b);
-				}
-			},
-
-			end() {
-				clear_animation();
-				running_program = pending_program = null;
-			}
-		};
 	}
 
 	function mount_component(component, target, anchor) {
@@ -566,45 +357,11 @@ var app = (function () {
 		}
 	}
 
-	/*
-	Adapted from https://github.com/mattdesl
-	Distributed under MIT License https://github.com/mattdesl/eases/blob/master/LICENSE.md
-	*/
-
-	function cubicOut(t) {
-		var f = t - 1.0;
-		return f * f * f + 1.0;
-	}
-
-	function fly(node, {
-		delay = 0,
-		duration = 400,
-		easing = cubicOut,
-		x = 0,
-		y = 0,
-		opacity = 0
-	}) {
-		const style = getComputedStyle(node);
-		const target_opacity = +style.opacity;
-		const transform = style.transform === 'none' ? '' : style.transform;
-
-		const od = target_opacity * (1 - opacity);
-
-		return {
-			delay,
-			duration,
-			easing,
-			css: (t, u) => `
-			transform: ${transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);
-			opacity: ${target_opacity - (od * u)}`
-		};
-	}
-
 	/* src/Image.svelte generated by Svelte v3.0.0 */
 
 	const file = "src/Image.svelte";
 
-	// (75:0) {#if !visible}
+	// (78:0) {#if !visible}
 	function create_if_block(ctx) {
 		var div;
 
@@ -613,7 +370,7 @@ var app = (function () {
 				div = element("div");
 				div.className = "loader svelte-qpufd5";
 				set_style(div, "background", "#ccc");
-				add_location(div, file, 75, 0, 1269);
+				add_location(div, file, 78, 2, 1277);
 			},
 
 			m: function mount(target, anchor) {
@@ -643,7 +400,7 @@ var app = (function () {
 				img.style.cssText = ctx.style;
 				img.alt = "";
 				img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-qpufd5";
-				add_location(img, file, 73, 0, 1173);
+				add_location(img, file, 76, 0, 1179);
 			},
 
 			l: function claim(nodes) {
@@ -703,6 +460,7 @@ var app = (function () {
 	function instance($$self, $$props, $$invalidate) {
 		let { image, style } = $$props;
 	  let visible = false;
+
 	  onMount(async () => {
 	    const res = await fetch(image);
 	    console.log(res);
@@ -714,7 +472,7 @@ var app = (function () {
 	    }else{
 	      $$invalidate('visible', visible = false);
 	    }
-		});
+	  });
 
 		$$self.$set = $$props => {
 			if ('image' in $$props) $$invalidate('image', image = $$props.image);
@@ -756,6 +514,41 @@ var app = (function () {
 		}
 	}
 
+	function writable(value, start = noop) {
+		let stop;
+		const subscribers = [];
+
+		function set(new_value) {
+			if (safe_not_equal(value, new_value)) {
+				value = new_value;
+				if (!stop) return; // not ready
+				subscribers.forEach(s => s[1]());
+				subscribers.forEach(s => s[0](value));
+			}
+		}
+
+		function update(fn) {
+			set(fn(value));
+		}
+
+		function subscribe(run, invalidate = noop) {
+			const subscriber = [run, invalidate];
+			subscribers.push(subscriber);
+			if (subscribers.length === 1) stop = start(set) || noop;
+			run(value);
+
+			return () => {
+				const index = subscribers.indexOf(subscriber);
+				if (index !== -1) subscribers.splice(index, 1);
+				if (subscribers.length === 0) stop();
+			};
+		}
+
+		return { set, update, subscribe };
+	}
+
+	const activeCollection = writable(0);
+
 	/* src/ImageCollection.svelte generated by Svelte v3.0.0 */
 
 	const file$1 = "src/ImageCollection.svelte";
@@ -767,25 +560,42 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	function get_each_context_1(ctx, list, i) {
-		const child_ctx = Object.create(ctx);
-		child_ctx.image = list[i];
-		child_ctx.index = i;
-		return child_ctx;
+	// (45:2) {#if $activeCollection == id}
+	function create_if_block_1(ctx) {
+		var p;
+
+		return {
+			c: function create() {
+				p = element("p");
+				p.textContent = "It was me!!!";
+				p.className = "svelte-m1lbyy";
+				add_location(p, file$1, 44, 31, 1516);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(p);
+				}
+			}
+		};
 	}
 
-	// (38:4) {:else}
+	// (49:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-63yatf";
+				span.className = "dummyimage svelte-m1lbyy";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$1, 38, 6, 1438);
+				add_location(span, file$1, 49, 6, 1653);
 			},
 
 			m: function mount(target, anchor) {
@@ -809,8 +619,8 @@ var app = (function () {
 		};
 	}
 
-	// (36:4) {#if index==0}
-	function create_if_block_1(ctx) {
+	// (47:4) {#if index==0}
+	function create_if_block$1(ctx) {
 		var current;
 
 		var image = new Image_1({
@@ -852,12 +662,12 @@ var app = (function () {
 		};
 	}
 
-	// (35:2) {#each imagecollection as image, index}
-	function create_each_block_1(ctx) {
+	// (46:2) {#each imagecollection as image, index}
+	function create_each_block(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
 		var if_block_creators = [
-			create_if_block_1,
+			create_if_block$1,
 			create_else_block
 		];
 
@@ -928,9 +738,10 @@ var app = (function () {
 		};
 	}
 
-	// (43:0) {#if Gallery}
-	function create_if_block$1(ctx) {
-		var div0, div0_transition, t, div1, current;
+	function create_fragment$1(ctx) {
+		var div, t, current, dispose;
+
+		var if_block = (ctx.$activeCollection == ctx.id) && create_if_block_1(ctx);
 
 		var each_value = ctx.imagecollection;
 
@@ -955,176 +766,15 @@ var app = (function () {
 
 		return {
 			c: function create() {
-				div0 = element("div");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-
-				t = space();
-				div1 = element("div");
-				div0.className = "gallery svelte-63yatf";
-				add_location(div0, file$1, 43, 2, 1628);
-				div1.className = "bg svelte-63yatf";
-				add_location(div1, file$1, 48, 2, 1796);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div0, anchor);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(div0, null);
-				}
-
-				insert(target, t, anchor);
-				insert(target, div1, anchor);
-				current = true;
-			},
-
-			p: function update(changed, ctx) {
-				if (changed.imagecollection) {
-					each_value = ctx.imagecollection;
-
-					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context(ctx, each_value, i);
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, child_ctx);
-							each_blocks[i].i(1);
-						} else {
-							each_blocks[i] = create_each_block(child_ctx);
-							each_blocks[i].c();
-							each_blocks[i].i(1);
-							each_blocks[i].m(div0, null);
-						}
-					}
-
-					group_outros();
-					for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
-					check_outros();
-				}
-			},
-
-			i: function intro(local) {
-				if (current) return;
-				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
-
-				add_render_callback(() => {
-					if (!div0_transition) div0_transition = create_bidirectional_transition(div0, fly, { y: 200, duration: 2000 }, true);
-					div0_transition.run(1);
-				});
-
-				current = true;
-			},
-
-			o: function outro(local) {
-				each_blocks = each_blocks.filter(Boolean);
-				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
-
-				if (!div0_transition) div0_transition = create_bidirectional_transition(div0, fly, { y: 200, duration: 2000 }, false);
-				div0_transition.run(0);
-
-				current = false;
-			},
-
-			d: function destroy(detaching) {
-				if (detaching) {
-					detach(div0);
-				}
-
-				destroy_each(each_blocks, detaching);
-
-				if (detaching) {
-					if (div0_transition) div0_transition.end();
-					detach(t);
-					detach(div1);
-				}
-			}
-		};
-	}
-
-	// (45:4) {#each imagecollection as image, index}
-	function create_each_block(ctx) {
-		var current;
-
-		var image = new Image_1({
-			props: { image: ctx.image.src },
-			$$inline: true
-		});
-
-		return {
-			c: function create() {
-				image.$$.fragment.c();
-			},
-
-			m: function mount(target, anchor) {
-				mount_component(image, target, anchor);
-				current = true;
-			},
-
-			p: function update(changed, ctx) {
-				var image_changes = {};
-				if (changed.imagecollection) image_changes.image = ctx.image.src;
-				image.$set(image_changes);
-			},
-
-			i: function intro(local) {
-				if (current) return;
-				image.$$.fragment.i(local);
-
-				current = true;
-			},
-
-			o: function outro(local) {
-				image.$$.fragment.o(local);
-				current = false;
-			},
-
-			d: function destroy(detaching) {
-				image.$destroy(detaching);
-			}
-		};
-	}
-
-	function create_fragment$1(ctx) {
-		var div, t, if_block_anchor, current, dispose;
-
-		var each_value_1 = ctx.imagecollection;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value_1.length; i += 1) {
-			each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
-		}
-
-		function outro_block(i, detaching, local) {
-			if (each_blocks[i]) {
-				if (detaching) {
-					on_outro(() => {
-						each_blocks[i].d(detaching);
-						each_blocks[i] = null;
-					});
-				}
-
-				each_blocks[i].o(local);
-			}
-		}
-
-		var if_block = (ctx.Gallery) && create_if_block$1(ctx);
-
-		return {
-			c: function create() {
 				div = element("div");
+				if (if_block) if_block.c();
+				t = space();
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-
-				t = space();
-				if (if_block) if_block.c();
-				if_block_anchor = empty();
-				div.className = "collection svelte-63yatf";
-				add_location(div, file$1, 33, 0, 1204);
+				div.className = "collection  svelte-m1lbyy";
+				add_location(div, file$1, 43, 0, 1362);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1139,30 +789,40 @@ var app = (function () {
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
+				if (if_block) if_block.m(div, null);
+				append(div, t);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].m(div, null);
 				}
 
 				add_binding_callback(() => ctx.div_binding(div, null));
-				insert(target, t, anchor);
-				if (if_block) if_block.m(target, anchor);
-				insert(target, if_block_anchor, anchor);
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.imagecollection) {
-					each_value_1 = ctx.imagecollection;
+				if (ctx.$activeCollection == ctx.id) {
+					if (!if_block) {
+						if_block = create_if_block_1(ctx);
+						if_block.c();
+						if_block.m(div, t);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
 
-					for (var i = 0; i < each_value_1.length; i += 1) {
-						const child_ctx = get_each_context_1(ctx, each_value_1, i);
+				if (changed.imagecollection) {
+					each_value = ctx.imagecollection;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 							each_blocks[i].i(1);
 						} else {
-							each_blocks[i] = create_each_block_1(child_ctx);
+							each_blocks[i] = create_each_block(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].i(1);
 							each_blocks[i].m(div, null);
@@ -1178,34 +838,12 @@ var app = (function () {
 					ctx.div_binding(null, div);
 					ctx.div_binding(div, null);
 				}
-
-				if (ctx.Gallery) {
-					if (if_block) {
-						if_block.p(changed, ctx);
-						if_block.i(1);
-					} else {
-						if_block = create_if_block$1(ctx);
-						if_block.c();
-						if_block.i(1);
-						if_block.m(if_block_anchor.parentNode, if_block_anchor);
-					}
-				} else if (if_block) {
-					group_outros();
-					on_outro(() => {
-						if_block.d(1);
-						if_block = null;
-					});
-
-					if_block.o(1);
-					check_outros();
-				}
 			},
 
 			i: function intro(local) {
 				if (current) return;
-				for (var i = 0; i < each_value_1.length; i += 1) each_blocks[i].i();
+				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
 
-				if (if_block) if_block.i();
 				current = true;
 			},
 
@@ -1213,7 +851,6 @@ var app = (function () {
 				each_blocks = each_blocks.filter(Boolean);
 				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
 
-				if (if_block) if_block.o();
 				current = false;
 			},
 
@@ -1222,53 +859,57 @@ var app = (function () {
 					detach(div);
 				}
 
+				if (if_block) if_block.d();
+
 				destroy_each(each_blocks, detaching);
 
 				ctx.div_binding(null, div);
-
-				if (detaching) {
-					detach(t);
-				}
-
-				if (if_block) if_block.d(detaching);
-
-				if (detaching) {
-					detach(if_block_anchor);
-				}
-
 				run_all(dispose);
 			}
 		};
 	}
 
 	function instance$1($$self, $$props, $$invalidate) {
+		let $activeCollection;
+
+		validate_store(activeCollection, 'activeCollection');
+		subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
+
 		
-	  let { imagecollection } = $$props;
+	  // export const posX = writable(0);
+	  // export const posY = writable(0);
+	  
+	  let { imagecollection, id } = $$props;
+
+	  const dispatch = createEventDispatcher();
 	  let myCollection;
-	  let Gallery;
+	  
 	  function rotate() {
 	    let images = myCollection.getElementsByTagName('span');
 	    let firstImage = myCollection.getElementsByTagName('img')[0];
 	    myCollection.style.transform = 'rotate(-1.5deg)'; $$invalidate('myCollection', myCollection);
 	    Object.entries(images).forEach(([key, value]) => {
-	      //console.log(`key= ${key} value = ${value}`);
 	      value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
 	    });
 	    firstImage.style.transform = 'scale(1.08) translateY(10px)';
 	  }
+	  
 	  function unRotate() {
 	    let images = myCollection.getElementsByTagName('span');
 	    let firstImage = myCollection.getElementsByTagName('img')[0];
 	    myCollection.style.transform = 'rotate(0deg)'; $$invalidate('myCollection', myCollection);
 	    Object.entries(images).forEach(([key, value]) => {
-	      //console.log(`key= ${key} value = ${value}`);
 	      value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
 	    });
 	    firstImage.style.transform = 'scale(1)';
+	    myCollection.style.zIndex = '0'; $$invalidate('myCollection', myCollection);
 	  }
+	  
 	  function showContents(){
-	    console.log(document.documentElement.clientWidth);
-	    $$invalidate('Gallery', Gallery = true);
+	    //console.log(document.documentElement.clientWidth);
+	    dispatch('expand', {
+	        active: id
+	    });
 	  }
 
 		function div_binding($$node, check) {
@@ -1278,15 +919,17 @@ var app = (function () {
 
 		$$self.$set = $$props => {
 			if ('imagecollection' in $$props) $$invalidate('imagecollection', imagecollection = $$props.imagecollection);
+			if ('id' in $$props) $$invalidate('id', id = $$props.id);
 		};
 
 		return {
 			imagecollection,
+			id,
 			myCollection,
-			Gallery,
 			rotate,
 			unRotate,
 			showContents,
+			$activeCollection,
 			div_binding
 		};
 	}
@@ -1294,12 +937,15 @@ var app = (function () {
 	class ImageCollection extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$1, create_fragment$1, safe_not_equal, ["imagecollection"]);
+			init(this, options, instance$1, create_fragment$1, safe_not_equal, ["imagecollection", "id"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
 			if (ctx.imagecollection === undefined && !('imagecollection' in props)) {
 				console.warn("<ImageCollection> was created without expected prop 'imagecollection'");
+			}
+			if (ctx.id === undefined && !('id' in props)) {
+				console.warn("<ImageCollection> was created without expected prop 'id'");
 			}
 		}
 
@@ -1310,6 +956,14 @@ var app = (function () {
 		set imagecollection(value) {
 			throw new Error("<ImageCollection>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
+
+		get id() {
+			throw new Error("<ImageCollection>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set id(value) {
+			throw new Error("<ImageCollection>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
 	}
 
 	/* src/App.svelte generated by Svelte v3.0.0 */
@@ -1317,54 +971,83 @@ var app = (function () {
 	const file$2 = "src/App.svelte";
 
 	function create_fragment$2(ctx) {
-		var div, t0, t1, t2, t3, t4, current;
+		var p, t0, t1, t2, div, t3, t4, t5, t6, t7, current;
 
 		var imagecollection0 = new ImageCollection({
-			props: { imagecollection: ctx.collection1 },
+			props: {
+			imagecollection: ctx.collection1,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection0.$on("expand", handleExpand);
 
 		var imagecollection1 = new ImageCollection({
-			props: { imagecollection: ctx.collection2 },
+			props: {
+			imagecollection: ctx.collection2,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection1.$on("expand", handleExpand);
 
 		var imagecollection2 = new ImageCollection({
-			props: { imagecollection: ctx.collection3 },
+			props: {
+			imagecollection: ctx.collection3,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection2.$on("expand", handleExpand);
 
 		var imagecollection3 = new ImageCollection({
-			props: { imagecollection: ctx.collection4 },
+			props: {
+			imagecollection: ctx.collection4,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection3.$on("expand", handleExpand);
 
 		var imagecollection4 = new ImageCollection({
-			props: { imagecollection: ctx.collection5 },
+			props: {
+			imagecollection: ctx.collection5,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection4.$on("expand", handleExpand);
 
 		var imagecollection5 = new ImageCollection({
-			props: { imagecollection: ctx.collection6 },
+			props: {
+			imagecollection: ctx.collection6,
+			id: uid++
+		},
 			$$inline: true
 		});
+		imagecollection5.$on("expand", handleExpand);
 
 		return {
 			c: function create() {
+				p = element("p");
+				t0 = text("Active collection is: ");
+				t1 = text(ctx.$activeCollection);
+				t2 = space();
 				div = element("div");
 				imagecollection0.$$.fragment.c();
-				t0 = space();
-				imagecollection1.$$.fragment.c();
-				t1 = space();
-				imagecollection2.$$.fragment.c();
-				t2 = space();
-				imagecollection3.$$.fragment.c();
 				t3 = space();
-				imagecollection4.$$.fragment.c();
+				imagecollection1.$$.fragment.c();
 				t4 = space();
+				imagecollection2.$$.fragment.c();
+				t5 = space();
+				imagecollection3.$$.fragment.c();
+				t6 = space();
+				imagecollection4.$$.fragment.c();
+				t7 = space();
 				imagecollection5.$$.fragment.c();
-				div.className = "nicediv svelte-1fqzirr";
-				add_location(div, file$2, 49, 0, 1742);
+				add_location(p, file$2, 56, 0, 1931);
+				div.className = "nicediv svelte-wkbt4z";
+				add_location(div, file$2, 57, 0, 1981);
 			},
 
 			l: function claim(nodes) {
@@ -1372,44 +1055,58 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				append(p, t0);
+				append(p, t1);
+				insert(target, t2, anchor);
 				insert(target, div, anchor);
 				mount_component(imagecollection0, div, null);
-				append(div, t0);
-				mount_component(imagecollection1, div, null);
-				append(div, t1);
-				mount_component(imagecollection2, div, null);
-				append(div, t2);
-				mount_component(imagecollection3, div, null);
 				append(div, t3);
-				mount_component(imagecollection4, div, null);
+				mount_component(imagecollection1, div, null);
 				append(div, t4);
+				mount_component(imagecollection2, div, null);
+				append(div, t5);
+				mount_component(imagecollection3, div, null);
+				append(div, t6);
+				mount_component(imagecollection4, div, null);
+				append(div, t7);
 				mount_component(imagecollection5, div, null);
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
+				if (!current || changed.$activeCollection) {
+					set_data(t1, ctx.$activeCollection);
+				}
+
 				var imagecollection0_changes = {};
 				if (changed.collection1) imagecollection0_changes.imagecollection = ctx.collection1;
+				if (changed.uid) imagecollection0_changes.id = uid++;
 				imagecollection0.$set(imagecollection0_changes);
 
 				var imagecollection1_changes = {};
 				if (changed.collection2) imagecollection1_changes.imagecollection = ctx.collection2;
+				if (changed.uid) imagecollection1_changes.id = uid++;
 				imagecollection1.$set(imagecollection1_changes);
 
 				var imagecollection2_changes = {};
 				if (changed.collection3) imagecollection2_changes.imagecollection = ctx.collection3;
+				if (changed.uid) imagecollection2_changes.id = uid++;
 				imagecollection2.$set(imagecollection2_changes);
 
 				var imagecollection3_changes = {};
 				if (changed.collection4) imagecollection3_changes.imagecollection = ctx.collection4;
+				if (changed.uid) imagecollection3_changes.id = uid++;
 				imagecollection3.$set(imagecollection3_changes);
 
 				var imagecollection4_changes = {};
 				if (changed.collection5) imagecollection4_changes.imagecollection = ctx.collection5;
+				if (changed.uid) imagecollection4_changes.id = uid++;
 				imagecollection4.$set(imagecollection4_changes);
 
 				var imagecollection5_changes = {};
 				if (changed.collection6) imagecollection5_changes.imagecollection = ctx.collection6;
+				if (changed.uid) imagecollection5_changes.id = uid++;
 				imagecollection5.$set(imagecollection5_changes);
 			},
 
@@ -1442,6 +1139,8 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
+					detach(p);
+					detach(t2);
 					detach(div);
 				}
 
@@ -1460,7 +1159,20 @@ var app = (function () {
 		};
 	}
 
+	let uid = 1;
+
+	function handleExpand(event) {
+		console.log(event.detail.active);
+		activeCollection.update(n => event.detail.active);
+
+	}
+
 	function instance$2($$self, $$props, $$invalidate) {
+		let $activeCollection;
+
+		validate_store(activeCollection, 'activeCollection');
+		subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
+
 		let { name } = $$props;
 		let collection1 = [
 			{ src: 'images/IMG_0003.JPG', name: 'moo' },
@@ -1518,7 +1230,8 @@ var app = (function () {
 			collection3,
 			collection4,
 			collection5,
-			collection6
+			collection6,
+			$activeCollection
 		};
 	}
 

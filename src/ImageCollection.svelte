@@ -1,37 +1,48 @@
 <script>
-  import { fly } from 'svelte/transition';
+  import { createEventDispatcher } from 'svelte';
   import Image from './Image.svelte'
+  import { activeCollection } from './stores.js';
+  // export const posX = writable(0);
+  // export const posY = writable(0);
+  
   export let imagecollection;
+  export let id;
+
+  const dispatch = createEventDispatcher();
   let myCollection;
-  let Gallery
+  
   function rotate() {
     let images = myCollection.getElementsByTagName('span');
     let firstImage = myCollection.getElementsByTagName('img')[0];
     myCollection.style.transform = 'rotate(-1.5deg)';
     Object.entries(images).forEach(([key, value]) => {
-      //console.log(`key= ${key} value = ${value}`);
       value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1.08) translateY(10px)';
   }
+  
   function unRotate() {
     let images = myCollection.getElementsByTagName('span');
     let firstImage = myCollection.getElementsByTagName('img')[0];
     myCollection.style.transform = 'rotate(0deg)';
     Object.entries(images).forEach(([key, value]) => {
-      //console.log(`key= ${key} value = ${value}`);
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1)';
+    myCollection.style.zIndex = '0';
   }
+  
   function showContents(){
-    console.log(document.documentElement.clientWidth);
-    Gallery = true;
+    //console.log(document.documentElement.clientWidth);
+    dispatch('expand', {
+        active: id
+    });
   }
 </script>
 
 
-<div class="collection" on:mouseenter={rotate} on:mouseleave={unRotate} bind:this={myCollection} on:click={showContents}>
+<div class="collection " on:mouseenter={rotate} on:mouseleave={unRotate} bind:this={myCollection} on:click={showContents}>
+  {#if $activeCollection == id}<p>It was me!!!</p>{/if}
   {#each imagecollection as image, index}
     {#if index==0}
       <Image image={image.src}/>
@@ -39,23 +50,19 @@
       <span class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></span>
     {/if}
   {/each}
+
 </div>
-{#if Gallery}
-  <div transition:fly="{{ y: 200, duration: 2000 }}" class="gallery">
+<!-- {#if Gallery}
+  <div transition:fly="{{ y: 200, duration: 400 }}" class="gallery">
     {#each imagecollection as image, index}
       <Image image={image.src}/>
     {/each}
   </div>
   <div class="bg"></div>
-  
-{/if}
+{/if} -->
 <style>
 .gallery{ 
   display: grid;
-  /* grid-column-start: 1;
-  grid-column-end: -1;
-  grid-row-start: 1;
-  grid-row-end: -1; */
   position: absolute;
   grid-template-columns: 4fr 1fr 1fr;
 	grid-template-rows: repeat(3, 1fr);
@@ -105,6 +112,14 @@
 .collection{
   position: relative;
   transition: 0.15s transform ease-out;
+}
+.collection p{
+  position: absolute;
+  top: 0;
+  background: red;
+  color: white; 
+  padding: 4px;
+  z-index: 99
 }
 .collection:hover{
   transition: 0.3s all ease-out;

@@ -52,10 +52,12 @@ img{
   
   
 <script>
+
   import { onMount } from 'svelte';
   export let image;
   export let style;
   let visible = false;
+
   onMount(async () => {
     const res = await fetch(image);
     console.log(res);
@@ -67,13 +69,14 @@ img{
     }else{
       visible = false
     }
-	});
+  });
+  
 </script>
 
 
 <img src="{image}" style="{style}" alt="" class="{visible ? '' : 'opacity--0'}">
 {#if !visible}
-<div class="loader" style="background: #ccc"></div>
+  <div class="loader" style="background: #ccc"></div>
 {/if}
 
 
