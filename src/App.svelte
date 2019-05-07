@@ -66,11 +66,27 @@
 
 <style>
 .nicediv{
+	display: flex;
+	flex: 1 auto;
+	flex-basis: 15%;
+	flex-flow: row wrap;
+	align-content: flex-start;
+	justify-content: center;
+	height: 100%;
+	width: auto;
+	margin: 1em;
+}
+.nicediv :global(.collection) {
+	width: calc(25em - 3em);
+	margin: 1em 1.5em 3em 1.5em;
+	height: 15em;
+}
+/* .nicediv{
 	display: grid;
 	height: 100%;
 	margin: 4em;
 	grid-template-columns: repeat(4, 1fr);
 	grid-auto-rows: 200px;
 	grid-gap: 4em;
-}
+} */
 </style>

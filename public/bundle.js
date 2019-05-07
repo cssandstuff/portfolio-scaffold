@@ -3,6 +3,8 @@ var app = (function () {
 
 	function noop() {}
 
+	const identity = x => x;
+
 	function add_location(element, file, line, column, char) {
 		element.__svelte_meta = {
 			loc: { file, line, column, char }
@@ -37,6 +39,39 @@ var app = (function () {
 
 	function subscribe(component, store, callback) {
 		component.$$.on_destroy.push(store.subscribe(callback));
+	}
+
+	const tasks = new Set();
+	let running = false;
+
+	function run_tasks() {
+		tasks.forEach(task => {
+			if (!task[0](window.performance.now())) {
+				tasks.delete(task);
+				task[1]();
+			}
+		});
+
+		running = tasks.size > 0;
+		if (running) requestAnimationFrame(run_tasks);
+	}
+
+	function loop(fn) {
+		let task;
+
+		if (!running) {
+			running = true;
+			requestAnimationFrame(run_tasks);
+		}
+
+		return {
+			promise: new Promise(fulfil => {
+				tasks.add(task = [fn, fulfil]);
+			}),
+			abort() {
+				tasks.delete(task);
+			}
+		};
 	}
 
 	function append(target, node) {
@@ -97,6 +132,70 @@ var app = (function () {
 		return e;
 	}
 
+	let stylesheet;
+	let active = 0;
+	let current_rules = {};
+
+	// https://github.com/darkskyapp/string-hash/blob/master/index.js
+	function hash(str) {
+		let hash = 5381;
+		let i = str.length;
+
+		while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+		return hash >>> 0;
+	}
+
+	function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+		const step = 16.666 / duration;
+		let keyframes = '{\n';
+
+		for (let p = 0; p <= 1; p += step) {
+			const t = a + (b - a) * ease(p);
+			keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+		}
+
+		const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+		const name = `__svelte_${hash(rule)}_${uid}`;
+
+		if (!current_rules[name]) {
+			if (!stylesheet) {
+				const style = element('style');
+				document.head.appendChild(style);
+				stylesheet = style.sheet;
+			}
+
+			current_rules[name] = true;
+			stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+		}
+
+		const animation = node.style.animation || '';
+		node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+
+		active += 1;
+		return name;
+	}
+
+	function delete_rule(node, name) {
+		node.style.animation = (node.style.animation || '')
+			.split(', ')
+			.filter(name
+				? anim => anim.indexOf(name) < 0 // remove specific animation
+				: anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+			)
+			.join(', ');
+
+		if (name && !--active) clear_rules();
+	}
+
+	function clear_rules() {
+		requestAnimationFrame(() => {
+			if (active) return;
+			let i = stylesheet.cssRules.length;
+			while (i--) stylesheet.deleteRule(i);
+			current_rules = {};
+		});
+	}
+
 	let current_component;
 
 	function set_current_component(component) {
@@ -110,6 +209,10 @@ var app = (function () {
 
 	function onMount(fn) {
 		get_current_component().$$.on_mount.push(fn);
+	}
+
+	function afterUpdate(fn) {
+		get_current_component().$$.after_render.push(fn);
 	}
 
 	function createEventDispatcher() {
@@ -197,6 +300,19 @@ var app = (function () {
 		}
 	}
 
+	let promise;
+
+	function wait() {
+		if (!promise) {
+			promise = Promise.resolve();
+			promise.then(() => {
+				promise = null;
+			});
+		}
+
+		return promise;
+	}
+
 	let outros;
 
 	function group_outros() {
@@ -214,6 +330,82 @@ var app = (function () {
 
 	function on_outro(callback) {
 		outros.callbacks.push(callback);
+	}
+
+	function create_in_transition(node, fn, params) {
+		let config = fn(node, params);
+		let running = false;
+		let animation_name;
+		let task;
+		let uid = 0;
+
+		function cleanup() {
+			if (animation_name) delete_rule(node, animation_name);
+		}
+
+		function go() {
+			const {
+				delay = 0,
+				duration = 300,
+				easing = identity,
+				tick: tick$$1 = noop,
+				css
+			} = config;
+
+			if (css) animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+			tick$$1(0, 1);
+
+			const start_time = window.performance.now() + delay;
+			const end_time = start_time + duration;
+
+			if (task) task.abort();
+			running = true;
+
+			task = loop(now => {
+				if (running) {
+					if (now >= end_time) {
+						tick$$1(1, 0);
+						cleanup();
+						return running = false;
+					}
+
+					if (now >= start_time) {
+						const t = easing((now - start_time) / duration);
+						tick$$1(t, 1 - t);
+					}
+				}
+
+				return running;
+			});
+		}
+
+		let started = false;
+
+		return {
+			start() {
+				if (started) return;
+
+				delete_rule(node);
+
+				if (typeof config === 'function') {
+					config = config();
+					wait().then(go);
+				} else {
+					go();
+				}
+			},
+
+			invalidate() {
+				started = false;
+			},
+
+			end() {
+				if (running) {
+					cleanup();
+					running = false;
+				}
+			}
+		};
 	}
 
 	function mount_component(component, target, anchor) {
@@ -357,6 +549,49 @@ var app = (function () {
 		}
 	}
 
+	/*
+	Adapted from https://github.com/mattdesl
+	Distributed under MIT License https://github.com/mattdesl/eases/blob/master/LICENSE.md
+	*/
+
+	function backOut(t) {
+		var s = 1.70158;
+		return --t * t * ((s + 1) * t + s) + 1;
+	}
+
+	function writable(value, start = noop) {
+		let stop;
+		const subscribers = [];
+
+		function set(new_value) {
+			if (safe_not_equal(value, new_value)) {
+				value = new_value;
+				if (!stop) return; // not ready
+				subscribers.forEach(s => s[1]());
+				subscribers.forEach(s => s[0](value));
+			}
+		}
+
+		function update(fn) {
+			set(fn(value));
+		}
+
+		function subscribe(run, invalidate = noop) {
+			const subscriber = [run, invalidate];
+			subscribers.push(subscriber);
+			if (subscribers.length === 1) stop = start(set) || noop;
+			run(value);
+
+			return () => {
+				const index = subscribers.indexOf(subscriber);
+				if (index !== -1) subscribers.splice(index, 1);
+				if (subscribers.length === 0) stop();
+			};
+		}
+
+		return { set, update, subscribe };
+	}
+
 	/* src/Image.svelte generated by Svelte v3.0.0 */
 
 	const file = "src/Image.svelte";
@@ -368,9 +603,9 @@ var app = (function () {
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "loader svelte-qpufd5";
+				div.className = "loader svelte-dhq0ht";
 				set_style(div, "background", "#ccc");
-				add_location(div, file, 78, 2, 1277);
+				add_location(div, file, 78, 2, 1283);
 			},
 
 			m: function mount(target, anchor) {
@@ -399,8 +634,8 @@ var app = (function () {
 				img.src = ctx.image;
 				img.style.cssText = ctx.style;
 				img.alt = "";
-				img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-qpufd5";
-				add_location(img, file, 76, 0, 1179);
+				img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-dhq0ht";
+				add_location(img, file, 76, 0, 1185);
 			},
 
 			l: function claim(nodes) {
@@ -423,7 +658,7 @@ var app = (function () {
 					img.style.cssText = ctx.style;
 				}
 
-				if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-qpufd5")) {
+				if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-dhq0ht")) {
 					img.className = img_class_value;
 				}
 
@@ -514,39 +749,6 @@ var app = (function () {
 		}
 	}
 
-	function writable(value, start = noop) {
-		let stop;
-		const subscribers = [];
-
-		function set(new_value) {
-			if (safe_not_equal(value, new_value)) {
-				value = new_value;
-				if (!stop) return; // not ready
-				subscribers.forEach(s => s[1]());
-				subscribers.forEach(s => s[0](value));
-			}
-		}
-
-		function update(fn) {
-			set(fn(value));
-		}
-
-		function subscribe(run, invalidate = noop) {
-			const subscriber = [run, invalidate];
-			subscribers.push(subscriber);
-			if (subscribers.length === 1) stop = start(set) || noop;
-			run(value);
-
-			return () => {
-				const index = subscribers.indexOf(subscriber);
-				if (index !== -1) subscribers.splice(index, 1);
-				if (subscribers.length === 0) stop();
-			};
-		}
-
-		return { set, update, subscribe };
-	}
-
 	const activeCollection = writable(0);
 
 	/* src/ImageCollection.svelte generated by Svelte v3.0.0 */
@@ -560,42 +762,54 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (45:2) {#if $activeCollection == id}
-	function create_if_block_1(ctx) {
-		var p;
+	function get_each_context_1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.image = list[i];
+		child_ctx.index = i;
+		return child_ctx;
+	}
+
+	// (115:2) {#if $activeCollection == id}
+	function create_if_block_3(ctx) {
+		var p, dispose;
 
 		return {
 			c: function create() {
 				p = element("p");
 				p.textContent = "It was me!!!";
-				p.className = "svelte-m1lbyy";
-				add_location(p, file$1, 44, 31, 1516);
+				p.className = "svelte-1982axv";
+				add_location(p, file$1, 114, 31, 3566);
+				dispose = listen(p, "click", ctx.removeDarkness);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, p, anchor);
 			},
 
+			p: noop,
+
 			d: function destroy(detaching) {
 				if (detaching) {
 					detach(p);
 				}
+
+				dispose();
 			}
 		};
 	}
 
-	// (49:4) {:else}
+	// (119:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-m1lbyy";
+				span.className = "dummyimage svelte-1982axv";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$1, 49, 6, 1653);
+				add_location(span, file$1, 119, 6, 3729);
 			},
 
 			m: function mount(target, anchor) {
@@ -619,8 +833,8 @@ var app = (function () {
 		};
 	}
 
-	// (47:4) {#if index==0}
-	function create_if_block$1(ctx) {
+	// (117:4) {#if index==0}
+	function create_if_block_2(ctx) {
 		var current;
 
 		var image = new Image_1({
@@ -662,12 +876,12 @@ var app = (function () {
 		};
 	}
 
-	// (46:2) {#each imagecollection as image, index}
-	function create_each_block(ctx) {
+	// (116:2) {#each imagecollection as image, index}
+	function create_each_block_1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
 		var if_block_creators = [
-			create_if_block$1,
+			create_if_block_2,
 			create_else_block
 		];
 
@@ -738,10 +952,37 @@ var app = (function () {
 		};
 	}
 
-	function create_fragment$1(ctx) {
-		var div, t, current, dispose;
+	// (125:0) {#if $activeCollection == id}
+	function create_if_block_1(ctx) {
+		var div, dispose;
 
-		var if_block = (ctx.$activeCollection == ctx.id) && create_if_block_1(ctx);
+		return {
+			c: function create() {
+				div = element("div");
+				div.className = "bg svelte-1982axv";
+				add_location(div, file$1, 124, 29, 3933);
+				dispose = listen(div, "click", ctx.removeDarkness);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(div);
+				}
+
+				dispose();
+			}
+		};
+	}
+
+	// (126:0) {#if $activeCollection == id}
+	function create_if_block$1(ctx) {
+		var div, div_intro, current;
 
 		var each_value = ctx.imagecollection;
 
@@ -767,51 +1008,26 @@ var app = (function () {
 		return {
 			c: function create() {
 				div = element("div");
-				if (if_block) if_block.c();
-				t = space();
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "collection  svelte-m1lbyy";
-				add_location(div, file$1, 43, 0, 1362);
-
-				dispose = [
-					listen(div, "mouseenter", ctx.rotate),
-					listen(div, "mouseleave", ctx.unRotate),
-					listen(div, "click", ctx.showContents)
-				];
-			},
-
-			l: function claim(nodes) {
-				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+				div.className = "cloned gallery svelte-1982axv";
+				add_location(div, file$1, 126, 2, 4019);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
-				if (if_block) if_block.m(div, null);
-				append(div, t);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].m(div, null);
 				}
 
-				add_binding_callback(() => ctx.div_binding(div, null));
+				add_binding_callback(() => ctx.div_binding_1(div, null));
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
-				if (ctx.$activeCollection == ctx.id) {
-					if (!if_block) {
-						if_block = create_if_block_1(ctx);
-						if_block.c();
-						if_block.m(div, t);
-					}
-				} else if (if_block) {
-					if_block.d(1);
-					if_block = null;
-				}
-
 				if (changed.imagecollection) {
 					each_value = ctx.imagecollection;
 
@@ -835,14 +1051,21 @@ var app = (function () {
 				}
 
 				if (changed.items) {
-					ctx.div_binding(null, div);
-					ctx.div_binding(div, null);
+					ctx.div_binding_1(null, div);
+					ctx.div_binding_1(div, null);
 				}
 			},
 
 			i: function intro(local) {
 				if (current) return;
 				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+
+				if (!div_intro) {
+					add_render_callback(() => {
+						div_intro = create_in_transition(div, ctx.customZoom, {duration: 500});
+						div_intro.start();
+					});
+				}
 
 				current = true;
 			},
@@ -859,11 +1082,256 @@ var app = (function () {
 					detach(div);
 				}
 
-				if (if_block) if_block.d();
+				destroy_each(each_blocks, detaching);
+
+				ctx.div_binding_1(null, div);
+			}
+		};
+	}
+
+	// (128:4) {#each imagecollection as image, index}
+	function create_each_block(ctx) {
+		var current;
+
+		var image = new Image_1({
+			props: { image: ctx.image.src },
+			$$inline: true
+		});
+
+		return {
+			c: function create() {
+				image.$$.fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				mount_component(image, target, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				var image_changes = {};
+				if (changed.imagecollection) image_changes.image = ctx.image.src;
+				image.$set(image_changes);
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				image.$$.fragment.i(local);
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				image.$$.fragment.o(local);
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				image.$destroy(detaching);
+			}
+		};
+	}
+
+	function create_fragment$1(ctx) {
+		var div, t0, div_class_value, t1, t2, if_block2_anchor, current, dispose;
+
+		var if_block0 = (ctx.$activeCollection == ctx.id) && create_if_block_3(ctx);
+
+		var each_value_1 = ctx.imagecollection;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+		}
+
+		function outro_block(i, detaching, local) {
+			if (each_blocks[i]) {
+				if (detaching) {
+					on_outro(() => {
+						each_blocks[i].d(detaching);
+						each_blocks[i] = null;
+					});
+				}
+
+				each_blocks[i].o(local);
+			}
+		}
+
+		var if_block1 = (ctx.$activeCollection == ctx.id) && create_if_block_1(ctx);
+
+		var if_block2 = (ctx.$activeCollection == ctx.id) && create_if_block$1(ctx);
+
+		return {
+			c: function create() {
+				div = element("div");
+				if (if_block0) if_block0.c();
+				t0 = space();
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				t1 = space();
+				if (if_block1) if_block1.c();
+				t2 = space();
+				if (if_block2) if_block2.c();
+				if_block2_anchor = empty();
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-1982axv";
+				add_location(div, file$1, 113, 0, 3402);
+
+				dispose = [
+					listen(div, "mouseenter", ctx.rotate),
+					listen(div, "mouseleave", ctx.unRotate),
+					listen(div, "click", ctx.showContents)
+				];
+			},
+
+			l: function claim(nodes) {
+				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				if (if_block0) if_block0.m(div, null);
+				append(div, t0);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div, null);
+				}
+
+				add_binding_callback(() => ctx.div_binding(div, null));
+				insert(target, t1, anchor);
+				if (if_block1) if_block1.m(target, anchor);
+				insert(target, t2, anchor);
+				if (if_block2) if_block2.m(target, anchor);
+				insert(target, if_block2_anchor, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.$activeCollection == ctx.id) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_3(ctx);
+						if_block0.c();
+						if_block0.m(div, t0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (changed.imagecollection) {
+					each_value_1 = ctx.imagecollection;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+							each_blocks[i].i(1);
+						} else {
+							each_blocks[i] = create_each_block_1(child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].i(1);
+							each_blocks[i].m(div, null);
+						}
+					}
+
+					group_outros();
+					for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+					check_outros();
+				}
+
+				if (changed.items) {
+					ctx.div_binding(null, div);
+					ctx.div_binding(div, null);
+				}
+
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-1982axv")) {
+					div.className = div_class_value;
+				}
+
+				if (ctx.$activeCollection == ctx.id) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_1(ctx);
+						if_block1.c();
+						if_block1.m(t2.parentNode, t2);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (ctx.$activeCollection == ctx.id) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+						if_block2.i(1);
+					} else {
+						if_block2 = create_if_block$1(ctx);
+						if_block2.c();
+						if_block2.i(1);
+						if_block2.m(if_block2_anchor.parentNode, if_block2_anchor);
+					}
+				} else if (if_block2) {
+					group_outros();
+					on_outro(() => {
+						if_block2.d(1);
+						if_block2 = null;
+					});
+
+					if_block2.o(1);
+					check_outros();
+				}
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				for (var i = 0; i < each_value_1.length; i += 1) each_blocks[i].i();
+
+				if (if_block2) if_block2.i();
+				current = true;
+			},
+
+			o: function outro(local) {
+				each_blocks = each_blocks.filter(Boolean);
+				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+				if (if_block2) if_block2.o();
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(div);
+				}
+
+				if (if_block0) if_block0.d();
 
 				destroy_each(each_blocks, detaching);
 
 				ctx.div_binding(null, div);
+
+				if (detaching) {
+					detach(t1);
+				}
+
+				if (if_block1) if_block1.d(detaching);
+
+				if (detaching) {
+					detach(t2);
+				}
+
+				if (if_block2) if_block2.d(detaching);
+
+				if (detaching) {
+					detach(if_block2_anchor);
+				}
+
 				run_all(dispose);
 			}
 		};
@@ -883,6 +1351,16 @@ var app = (function () {
 
 	  const dispatch = createEventDispatcher();
 	  let myCollection;
+	  let zoomed;
+	  let darkness;
+
+	  // //spring settings
+	  // let coords = spring({ x: 50, y: 50 }, {
+		// 	stiffness: 0.1,
+		// 	damping: 0.25
+		// });
+
+		// let size = spring(10);
 	  
 	  function rotate() {
 	    let images = myCollection.getElementsByTagName('span');
@@ -902,7 +1380,7 @@ var app = (function () {
 	      value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
 	    });
 	    firstImage.style.transform = 'scale(1)';
-	    myCollection.style.zIndex = '0'; $$invalidate('myCollection', myCollection);
+	    //myCollection.style.zIndex = '0';
 	  }
 	  
 	  function showContents(){
@@ -910,11 +1388,72 @@ var app = (function () {
 	    dispatch('expand', {
 	        active: id
 	    });
+	      
+	        // var cln = myCollection.cloneNode(true);
+	        // cln.classList.add('cloned');
+	        // var translatePos = "translateX("+rect.left+"px) translateY("+rect.top+"px)";
+	        // cln.style.transform = translatePos;
+	        // console.log("translateX("+rect.left+"px) translateY("+rect.top+"px);");
+	        // document.documentElement.appendChild(cln);
+	        // console.log(rect.top, rect.right, rect.bottom, rect.left);
+
+	      // const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+
+	      // (async () => {
+	      //   console.log('スタート');
+	      //   await sleep(500);
+	      //   console.log('1秒経ってる!')
+	      //   cln.classList.add('animatetofull');
+	      // })();
 	  }
+
+	  function removeDarkness(event){
+	    console.log(event);
+	    event.stopPropagation();
+	    dispatch('expand', {
+	        active: 0
+	    });
+	  }
+
+	  afterUpdate(() => {
+	    console.log('the component has mounted');
+	    if($activeCollection != id && $activeCollection!==0){
+	      //console.log('id ',id,'is dark');
+	      $$invalidate('darkness', darkness = 'dark');
+	    }else if($activeCollection === id){
+	      $$invalidate('darkness', darkness = 'active');
+	      
+	    }else{
+	      $$invalidate('darkness', darkness = '');
+	    }
+	  });
+	  
+	  function customZoom(node, { duration }) {
+	    var rect = myCollection.getBoundingClientRect();
+	    var translatePos = "translateX("+rect.left+"px) translateY("+rect.top+"px)";
+
+	    //zoomed.style.transform = translatePos;
+	    zoomed.style.transformOrigin = 'top left'; $$invalidate('zoomed', zoomed);
+			return {
+				duration,
+				css: t => {
+					const eased = backOut(t);
+	        const easePos = backOut(t);
+					return `
+          transform: translateX(${rect.left * ( 1 - eased)}px) translateY(${rect.top *( 1 - eased)}px) scale(${eased});
+          `
+				}
+			};
+		}
 
 		function div_binding($$node, check) {
 			myCollection = $$node;
 			$$invalidate('myCollection', myCollection);
+		}
+
+		function div_binding_1($$node, check) {
+			zoomed = $$node;
+			$$invalidate('zoomed', zoomed);
 		}
 
 		$$self.$set = $$props => {
@@ -926,11 +1465,16 @@ var app = (function () {
 			imagecollection,
 			id,
 			myCollection,
+			zoomed,
+			darkness,
 			rotate,
 			unRotate,
 			showContents,
+			removeDarkness,
+			customZoom,
 			$activeCollection,
-			div_binding
+			div_binding,
+			div_binding_1
 		};
 	}
 
@@ -1046,7 +1590,7 @@ var app = (function () {
 				t7 = space();
 				imagecollection5.$$.fragment.c();
 				add_location(p, file$2, 56, 0, 1931);
-				div.className = "nicediv svelte-wkbt4z";
+				div.className = "nicediv svelte-1uqsqaj";
 				add_location(div, file$2, 57, 0, 1981);
 			},
 

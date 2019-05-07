@@ -11,7 +11,7 @@
   left: 0;
   display: block;
   transition: 0.2s all;
-  animation: loading 4s infinite linear;
+  /* animation: loading 4s infinite linear; */
   pointer-events: none;
 }
 img{
