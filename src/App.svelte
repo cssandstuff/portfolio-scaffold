@@ -51,7 +51,6 @@
 	function handleExpand(event) {
 		console.log(event.detail.active);
 		activeCollection.update(n => event.detail.active);
-
 	}
 </script>
 <p>Active collection is: {$activeCollection}</p> 
@@ -62,6 +61,8 @@
 	<ImageCollection on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
 	<ImageCollection on:expand={handleExpand} imagecollection={collection5} id="{uid++}" />
 	<ImageCollection on:expand={handleExpand} imagecollection={collection6} id="{uid++}" />
+	<ImageCollection on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
+	<ImageCollection on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
 </div>
 
 <style>
