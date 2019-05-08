@@ -12,23 +12,27 @@
   let secondlevel;
   const dispatch = createEventDispatcher();
 
-  onMount(() => {
-
-    //want to reverse stacking order for z-indexes
-
-
-    // stuff to fiogure out central positions
+  function consolidateStuff(){
     var rect = originaltarget.getBoundingClientRect();
     let images = secondlevel.getElementsByTagName('img');
-    let imageCount = secondlevel.getElementsByTagName('img').length
+    let imageCount = secondlevel.getElementsByTagName('img').length;
+    
+     
     Object.entries(images).forEach(([key, value]) => {
       var imageDivRect = value.getBoundingClientRect();
-      //23/(imagecollection.length - 1) * (parseInt(key)+ 1)
-      //secondlevel.style.transform = `rotate(-1.5deg)`;
       value.style.transform = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`
-      value.style.zIndex = imageCount - key;
+      if($destroyingCollection){
+        value.classList.add('slowtransition');
+      }else{
+        value.style.zIndex = imageCount - key;
+      }
+      
+
     });
-    
+  }
+
+  function expandStuff(){
+    let images = secondlevel.getElementsByTagName('img');
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
     (async () => {
@@ -40,12 +44,18 @@
         value.style.transform = `translateX(0px) translateY(0px)`
       });
     })();
+  }
+
+  onMount(() => {
+    consolidateStuff();
+    expandStuff();
   });
 
   afterUpdate(() => {
     console.log('the component has mounted');
     if($destroyingCollection){
-     console.log("Image GALLERY is BeiNG DestoryED!!!")
+      console.log("Image GALLERY is BeiNG DestoryED!!!");
+      consolidateStuff();
     }
   });
 
@@ -53,9 +63,7 @@
     // do something
     destroyingCollection.update(n => false);
   });
-  function handleDestroy(event) {
-		alert(event.detail.destroy);
-	}
+
   
 </script>
 
