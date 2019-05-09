@@ -1094,18 +1094,18 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (261:4) {:else}
+	// (262:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-8huqji";
+				span.className = "dummyimage svelte-qzdqxu";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 261, 6, 6676);
+				add_location(span, file$2, 262, 6, 6709);
 			},
 
 			m: function mount(target, anchor) {
@@ -1129,7 +1129,7 @@ var app = (function () {
 		};
 	}
 
-	// (259:4) {#if index==0}
+	// (260:4) {#if index==0}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -1172,7 +1172,7 @@ var app = (function () {
 		};
 	}
 
-	// (258:2) {#each imagecollection as image, index}
+	// (259:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1248,7 +1248,7 @@ var app = (function () {
 		};
 	}
 
-	// (268:0) {#if attemptingtoLoad}
+	// (269:0) {#if attemptingtoLoad}
 	function create_if_block$1(ctx) {
 		var div, div_class_value, div_outro, t, if_block_anchor, current;
 
@@ -1270,8 +1270,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-8huqji";
-				add_location(div, file$2, 268, 3, 6948);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qzdqxu";
+				add_location(div, file$2, 269, 3, 6981);
 			},
 
 			m: function mount(target, anchor) {
@@ -1289,7 +1289,7 @@ var app = (function () {
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-8huqji")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qzdqxu")) {
 					div.className = div_class_value;
 				}
 
@@ -1347,15 +1347,15 @@ var app = (function () {
 		};
 	}
 
-	// (272:2) {#if $activeCollection == id}
+	// (273:2) {#if $activeCollection == id}
 	function create_if_block_1(ctx) {
 		var div, dispose;
 
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "bg svelte-8huqji";
-				add_location(div, file$2, 271, 31, 7162);
+				div.className = "bg svelte-qzdqxu";
+				add_location(div, file$2, 272, 31, 7195);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1412,8 +1412,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-8huqji";
-				add_location(div, file$2, 248, 0, 6144);
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-qzdqxu";
+				add_location(div, file$2, 249, 0, 6177);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1468,7 +1468,7 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-8huqji")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-qzdqxu")) {
 					div.className = div_class_value;
 				}
 
@@ -1603,7 +1603,7 @@ var app = (function () {
 	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 	        destroyingCollection.update(n => true);
 	        (async () => {
-	          await sleep(250);
+	          await sleep(200);
 	          dispatch('expand', {
 	              active: 0
 	          });
@@ -1619,7 +1619,7 @@ var app = (function () {
 	    let centerX = document.documentElement.clientWidth/2;
 	    let centerY = document.documentElement.clientHeight/2;
 	    
-	    collection.style.transform = `translateX(${rect.left - centerX}px) translateY(${rect.top - centerY}px)`; $$invalidate('collection', collection);
+	    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`; $$invalidate('collection', collection);
 	  }
 
 

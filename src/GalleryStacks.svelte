@@ -66,7 +66,7 @@
       const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
         destroyingCollection.update(n => true);
         (async () => {
-          await sleep(250);
+          await sleep(200);
           dispatch('expand', {
               active: 0
           });
@@ -83,7 +83,7 @@
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
     
-    collection.style.transform = `translateX(${rect.left - centerX}px) translateY(${rect.top - centerY}px)`
+    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
   }
 
 
@@ -123,6 +123,7 @@
   /* clean up these styles a little bro */
   .total{
     opacity: 0;
+    pointer-events: none;
   }
   .notransition{
     opacity: 0;
@@ -150,7 +151,7 @@
 
   .collection{
     position: relative;
-    transition: 0.15s all ease-out;
+    transition: 0.2s all ease-out;
   }
 
   .spinner {
