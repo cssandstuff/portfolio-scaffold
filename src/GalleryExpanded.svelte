@@ -10,6 +10,7 @@
   let secondlevel;
   let ExpandedBefore = false;
   let ConsolidatedBefore = false;
+  let y;
   const dispatch = createEventDispatcher();
 
   // Function for bringing everything together.
@@ -36,7 +37,10 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
-    //TODO: When expanded expand relative to scroll position.
+    var doc = document.documentElement;
+    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    console.log(`OFFSET is ${doc.clientTop}`);
+
     let images = secondlevel.getElementsByTagName('img');
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -128,8 +132,8 @@
   } */
 
 </style>
-
-<div class="stack gallery" bind:this={secondlevel} >
+<svelte:window bind:scrollY={y}/>
+<div class="stack gallery" bind:this={secondlevel} style="transform: translateY({y}px);" >
   {#each stack as image, index}
     <Image image={image.src} on:loadingComplete/>
   {/each}

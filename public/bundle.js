@@ -762,7 +762,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (133:2) {#each stack as image, index}
+	// (137:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -807,7 +807,9 @@ var app = (function () {
 	}
 
 	function create_fragment$1(ctx) {
-		var div, current;
+		var scrolling = false, clear_scrolling = () => { scrolling = false; }, scrolling_timeout, div, current, dispose;
+
+		add_render_callback(ctx.onwindowscroll);
 
 		var each_value = ctx.stack;
 
@@ -838,7 +840,14 @@ var app = (function () {
 					each_blocks[i].c();
 				}
 				div.className = "stack gallery svelte-44k8ds";
-				add_location(div, file$1, 131, 0, 3449);
+				set_style(div, "transform", "translateY(" + ctx.y + "px)");
+				add_location(div, file$1, 135, 0, 3594);
+				dispose = listen(window, "scroll", () => {
+					scrolling = true;
+					clearTimeout(scrolling_timeout);
+					scrolling_timeout = setTimeout(clear_scrolling, 100);
+					ctx.onwindowscroll();
+				});
 			},
 
 			l: function claim(nodes) {
@@ -857,6 +866,13 @@ var app = (function () {
 			},
 
 			p: function update(changed, ctx) {
+				if (changed.y && !scrolling) {
+					scrolling = true;
+					clearTimeout(scrolling_timeout);
+					window.scrollTo(window.pageXOffset, ctx.y);
+					scrolling_timeout = setTimeout(clear_scrolling, 100);
+				}
+
 				if (changed.stack) {
 					each_value = ctx.stack;
 
@@ -883,6 +899,10 @@ var app = (function () {
 					ctx.div_binding(null, div);
 					ctx.div_binding(div, null);
 				}
+
+				if (!current || changed.y) {
+					set_style(div, "transform", "translateY(" + ctx.y + "px)");
+				}
 			},
 
 			i: function intro(local) {
@@ -907,6 +927,7 @@ var app = (function () {
 				destroy_each(each_blocks, detaching);
 
 				ctx.div_binding(null, div);
+				dispose();
 			}
 		};
 	}
@@ -927,6 +948,7 @@ var app = (function () {
 	  let secondlevel;
 	  let ExpandedBefore = false;
 	  let ConsolidatedBefore = false;
+	  let y;
 
 	  // Function for bringing everything together.
 	  function consolidateStuff(){
@@ -952,7 +974,10 @@ var app = (function () {
 
 	  // Function for Expanding things into place.
 	  function expandStuff(){
-	    //TODO: When expanded expand relative to scroll position.
+	    var doc = document.documentElement;
+	    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+	    console.log(`OFFSET is ${doc.clientTop}`);
+
 	    let images = secondlevel.getElementsByTagName('img');
 	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -990,6 +1015,10 @@ var app = (function () {
 			bubble($$self, event);
 		}
 
+		function onwindowscroll() {
+			y = window.pageYOffset; $$invalidate('y', y);
+		}
+
 		function div_binding($$node, check) {
 			secondlevel = $$node;
 			$$invalidate('secondlevel', secondlevel);
@@ -1004,7 +1033,9 @@ var app = (function () {
 			stack,
 			originaltarget,
 			secondlevel,
+			y,
 			loadingComplete_handler,
+			onwindowscroll,
 			div_binding
 		};
 	}
@@ -1786,7 +1817,7 @@ var app = (function () {
 				t6 = space();
 				gallerystacks7.$$.fragment.c();
 				div.className = "container svelte-rby08";
-				add_location(div, file$3, 75, 0, 1843);
+				add_location(div, file$3, 76, 0, 1851);
 			},
 
 			l: function claim(nodes) {

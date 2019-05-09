@@ -3,6 +3,7 @@
 	import GalleryStacks from './GalleryStacks.svelte';
 	import { activeCollection } from './stores.js';
 	let uid = 1;
+	let y;
 	let collection1 = [
 		{ src: 'images/IMG_0003.JPG' },
 		{ src: 'images/IMG_0004.JPG' },
