@@ -8,8 +8,8 @@
 
   // Local stuff
   let secondlevel;
-  let notExpandedBefore = true;
-  let notConsolidatedBefore = true;
+  let ExpandedBefore = false;
+  let ConsolidatedBefore = false;
   const dispatch = createEventDispatcher();
 
   // Function for bringing everything together.
@@ -20,7 +20,7 @@
      
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
-      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
+      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
       
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingCollection){
@@ -54,19 +54,21 @@
   });
 
   afterUpdate(() => {
-    if($loadingSecondary && notExpandedBefore){
+    if($loadingSecondary && !ExpandedBefore){
       expandStuff();
-      notExpandedBefore = false;
+      ExpandedBefore = true;
     }
-    if($destroyingCollection && notConsolidatedBefore){
+    if($destroyingCollection && !ConsolidatedBefore){
       consolidateStuff();
-      notConsolidatedBefore = false;
+      ConsolidatedBefore = true;
     }
   });
 
   onDestroy(() => {
+    console.log('being destoryed');
     destroyingCollection.update(n => false);
   });
+
 </script>
 
 <style>

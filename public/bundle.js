@@ -562,7 +562,7 @@ var app = (function () {
 
 	const file = "src/Image.svelte";
 
-	// (83:0) {#if !visible}
+	// (82:0) {#if !visible}
 	function create_if_block(ctx) {
 		var div;
 
@@ -571,7 +571,7 @@ var app = (function () {
 				div = element("div");
 				div.className = "loader svelte-m5fr7l";
 				set_style(div, "background", "#ccc");
-				add_location(div, file, 83, 2, 1571);
+				add_location(div, file, 82, 2, 1535);
 			},
 
 			m: function mount(target, anchor) {
@@ -598,10 +598,9 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				img.src = ctx.image;
-				img.style.cssText = ctx.style;
 				img.alt = "";
 				img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-m5fr7l";
-				add_location(img, file, 81, 0, 1473);
+				add_location(img, file, 80, 0, 1453);
 			},
 
 			l: function claim(nodes) {
@@ -618,10 +617,6 @@ var app = (function () {
 			p: function update(changed, ctx) {
 				if (changed.image) {
 					img.src = ctx.image;
-				}
-
-				if (changed.style) {
-					img.style.cssText = ctx.style;
 				}
 
 				if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-m5fr7l")) {
@@ -660,7 +655,7 @@ var app = (function () {
 
 	function instance($$self, $$props, $$invalidate) {
 		
-	  let { image, style, visible = 0 } = $$props;
+	  let { image, visible = 0 } = $$props;
 
 	  const dispatch = createEventDispatcher();
 
@@ -684,25 +679,21 @@ var app = (function () {
 
 		$$self.$set = $$props => {
 			if ('image' in $$props) $$invalidate('image', image = $$props.image);
-			if ('style' in $$props) $$invalidate('style', style = $$props.style);
 			if ('visible' in $$props) $$invalidate('visible', visible = $$props.visible);
 		};
 
-		return { image, style, visible };
+		return { image, visible };
 	}
 
 	class Image_1 extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance, create_fragment, safe_not_equal, ["image", "style", "visible"]);
+			init(this, options, instance, create_fragment, safe_not_equal, ["image", "visible"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
 			if (ctx.image === undefined && !('image' in props)) {
 				console.warn("<Image> was created without expected prop 'image'");
-			}
-			if (ctx.style === undefined && !('style' in props)) {
-				console.warn("<Image> was created without expected prop 'style'");
 			}
 		}
 
@@ -711,14 +702,6 @@ var app = (function () {
 		}
 
 		set image(value) {
-			throw new Error("<Image>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-		}
-
-		get style() {
-			throw new Error("<Image>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-		}
-
-		set style(value) {
 			throw new Error("<Image>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 
@@ -779,7 +762,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (130:2) {#each stack as image, index}
+	// (132:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -855,7 +838,7 @@ var app = (function () {
 					each_blocks[i].c();
 				}
 				div.className = "stack gallery svelte-44k8ds";
-				add_location(div, file$1, 128, 0, 3382);
+				add_location(div, file$1, 130, 0, 3387);
 			},
 
 			l: function claim(nodes) {
@@ -942,8 +925,8 @@ var app = (function () {
 
 	  // Local stuff
 	  let secondlevel;
-	  let notExpandedBefore = true;
-	  let notConsolidatedBefore = true;
+	  let ExpandedBefore = false;
+	  let ConsolidatedBefore = false;
 
 	  // Function for bringing everything together.
 	  function consolidateStuff(){
@@ -953,7 +936,7 @@ var app = (function () {
 	     
 	    Object.entries(images).forEach(([key, value]) => {
 	      let imageDivRect = value.getBoundingClientRect();
-	      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
+	      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
 	      
 	      // if gallery is being closed/destroyed we want a quicker transition.
 	      if($destroyingCollection){
@@ -987,17 +970,18 @@ var app = (function () {
 	  });
 
 	  afterUpdate(() => {
-	    if($loadingSecondary && notExpandedBefore){
+	    if($loadingSecondary && !ExpandedBefore){
 	      expandStuff();
-	      $$invalidate('notExpandedBefore', notExpandedBefore = false);
+	      $$invalidate('ExpandedBefore', ExpandedBefore = true);
 	    }
-	    if($destroyingCollection && notConsolidatedBefore){
+	    if($destroyingCollection && !ConsolidatedBefore){
 	      consolidateStuff();
-	      $$invalidate('notConsolidatedBefore', notConsolidatedBefore = false);
+	      $$invalidate('ConsolidatedBefore', ConsolidatedBefore = true);
 	    }
 	  });
 
 	  onDestroy(() => {
+	    console.log('being destoryed');
 	    destroyingCollection.update(n => false);
 	  });
 
@@ -1085,18 +1069,18 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (258:4) {:else}
+	// (260:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-5mg6b2";
+				span.className = "dummyimage svelte-12v9zoz";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 258, 6, 6456);
+				add_location(span, file$2, 260, 6, 6632);
 			},
 
 			m: function mount(target, anchor) {
@@ -1120,7 +1104,7 @@ var app = (function () {
 		};
 	}
 
-	// (256:4) {#if index==0}
+	// (258:4) {#if index==0}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -1163,7 +1147,7 @@ var app = (function () {
 		};
 	}
 
-	// (255:2) {#each imagecollection as image, index}
+	// (257:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1239,7 +1223,7 @@ var app = (function () {
 		};
 	}
 
-	// (265:0) {#if attemptingtoLoad}
+	// (267:0) {#if attemptingtoLoad}
 	function create_if_block$1(ctx) {
 		var div, div_class_value, div_outro, t, if_block_anchor, current;
 
@@ -1261,8 +1245,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-5mg6b2";
-				add_location(div, file$2, 265, 3, 6728);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-12v9zoz";
+				add_location(div, file$2, 267, 3, 6904);
 			},
 
 			m: function mount(target, anchor) {
@@ -1280,7 +1264,7 @@ var app = (function () {
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-5mg6b2")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-12v9zoz")) {
 					div.className = div_class_value;
 				}
 
@@ -1338,15 +1322,15 @@ var app = (function () {
 		};
 	}
 
-	// (269:2) {#if $activeCollection == id}
+	// (271:2) {#if $activeCollection == id}
 	function create_if_block_1(ctx) {
 		var div, dispose;
 
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "bg svelte-5mg6b2";
-				add_location(div, file$2, 268, 31, 6942);
+				div.className = "bg svelte-12v9zoz";
+				add_location(div, file$2, 270, 31, 7118);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1403,8 +1387,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-5mg6b2";
-				add_location(div, file$2, 245, 0, 5924);
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-12v9zoz";
+				add_location(div, file$2, 247, 0, 6100);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1459,7 +1443,7 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-5mg6b2")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-12v9zoz")) {
 					div.className = div_class_value;
 				}
 
@@ -1544,9 +1528,9 @@ var app = (function () {
 	  // Local stuff
 	  let collection;
 	  let darkness;
-	  let stack = 'stack';
 	  let count = 0;
 	  let attemptingtoLoad = false;
+	  let resetStacksBefore = false;
 
 	  // Rotate images on hover
 	  function rotate() {
@@ -1586,19 +1570,22 @@ var app = (function () {
 
 	  // Function for resetting the stacks
 	  function resetStacks(){
-	    var rect = collection.getBoundingClientRect();
-	    collection.style.transform = `translateX(0px) translateY(0px)`; $$invalidate('collection', collection);
+	    if(!resetStacksBefore){
+	      console.log('resetting stacks');
+	      var rect = collection.getBoundingClientRect();
+	      collection.style.transform = `translateX(0px) translateY(0px)`; $$invalidate('collection', collection);
 
-	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-	      destroyingCollection.update(n => true);
-	      (async () => {
-	        await sleep(250);
-	        dispatch('expand', {
-	            active: 0
-	        });
-	      })();
-	   
-	    $$invalidate('stack', stack = 'stack');
+	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+	        destroyingCollection.update(n => true);
+	        (async () => {
+	          await sleep(250);
+	          dispatch('expand', {
+	              active: 0
+	          });
+	          $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
+	        })();
+	        $$invalidate('resetStacksBefore', resetStacksBefore = true);
+	    }
 	  }
 
 	  // Blow away the other stacks when we're initiating an Expanded Gallery
@@ -1615,18 +1602,18 @@ var app = (function () {
 	  // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
 	  afterUpdate(() => {
 	    if($activeCollection != id && $activeCollection!==0){
-	      $$invalidate('darkness', darkness = 'dark');
+	      $$invalidate('darkness', darkness = 'total');
 	      collection.classList.add('notransition');
 	      blowStacks();
-
 	    }else if($activeCollection === id){
-	      $$invalidate('darkness', darkness = 'active');
+	      $$invalidate('darkness', darkness = 'none');
 	      collection.classList.add('notransition');
+	      $$invalidate('resetStacksBefore', resetStacksBefore = false);
 	    }else{
 	      $$invalidate('darkness', darkness = '');
 	      collection.classList.remove('notransition');
 	      if($destroyingCollection){
-	        $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
+	        $$invalidate('resetStacksBefore', resetStacksBefore = false);
 	        resetStacks();
 	      }
 	    }
@@ -1639,7 +1626,6 @@ var app = (function () {
 	      loadingSecondary.update(n => false);
 	      $$invalidate('count', count = 0);
 	    }
-	    
 		}
 
 		function div_binding($$node, check) {
@@ -1798,8 +1784,8 @@ var app = (function () {
 				gallerystacks6.$$.fragment.c();
 				t6 = space();
 				gallerystacks7.$$.fragment.c();
-				div.className = "container svelte-1klaw6v";
-				add_location(div, file$3, 75, 0, 1834);
+				div.className = "container svelte-rby08";
+				add_location(div, file$3, 75, 0, 1843);
 			},
 
 			l: function claim(nodes) {

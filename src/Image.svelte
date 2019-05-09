@@ -3,7 +3,6 @@
   import { onMount } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   export let image;
-  export let style;
   export let visible = 0;
 
   const dispatch = createEventDispatcher();
@@ -79,7 +78,7 @@
   }
 </style>
 
-<img src="{image}" style="{style}" alt="" class="{visible ? '' : 'opacity--0'}">
+<img src="{image}" alt="" class="{visible ? '' : 'opacity--0'}">
 {#if !visible}
   <div class="loader" style="background: #ccc"></div>
 {/if}

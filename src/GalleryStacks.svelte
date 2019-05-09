@@ -15,9 +15,9 @@
   let collection;
   let secondLevel;
   let darkness;
-  let stack = 'stack';
   let count = 0;
   let attemptingtoLoad = false;
+  let resetStacksBefore = false;
 
   // Rotate images on hover
   function rotate() {
@@ -57,20 +57,23 @@
 
   // Function for resetting the stacks
   function resetStacks(){
-    let images = collection;
-    var rect = collection.getBoundingClientRect();
-    collection.style.transform = `translateX(0px) translateY(0px)`
+    if(!resetStacksBefore){
+      console.log('resetting stacks');
+      let images = collection;
+      var rect = collection.getBoundingClientRect();
+      collection.style.transform = `translateX(0px) translateY(0px)`
 
-    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-      destroyingCollection.update(n => true);
-      (async () => {
-        await sleep(250);
-        dispatch('expand', {
-            active: 0
-        });
-      })();
-   
-    stack = 'stack';
+      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+        destroyingCollection.update(n => true);
+        (async () => {
+          await sleep(250);
+          dispatch('expand', {
+              active: 0
+          });
+          attemptingtoLoad = false;
+        })();
+        resetStacksBefore = true;
+    }
   }
 
   // Blow away the other stacks when we're initiating an Expanded Gallery
@@ -88,18 +91,18 @@
   // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
   afterUpdate(() => {
     if($activeCollection != id && $activeCollection!==0){
-      darkness = 'dark';
+      darkness = 'total';
       collection.classList.add('notransition');
       blowStacks();
-
     }else if($activeCollection === id){
-      darkness = 'active';
+      darkness = 'none';
       collection.classList.add('notransition');
+      resetStacksBefore = false;
     }else{
       darkness = '';
       collection.classList.remove('notransition');
       if($destroyingCollection){
-        attemptingtoLoad = false;
+        resetStacksBefore = false;
         resetStacks();
       }
     }
@@ -112,21 +115,20 @@
       loadingSecondary.update(n => false);
       count = 0;
     }
-    
 	}
   
 </script>
 
 <style>
   /* clean up these styles a little bro */
-  .dark{
+  .total{
     opacity: 0;
   }
   .notransition{
     opacity: 0;
     transition: 0s !important;
   }
-  .active{
+  .none{
     z-index: 2 !important;
     opacity: 0;
   }
@@ -216,7 +218,7 @@
     opacity: 1;
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 10vh;
+    width: 100vw; height: 20px;
     animation: hello 0s forwards;
     pointer-events: none;
     z-index: 1;

@@ -64,7 +64,7 @@
 		justify-content: center;
 		height: 100%;
 		width: auto;
-		margin: 1em;
+		margin: 40px 1em 1em;
 	}
 	.container :global(.collection) {
 		width: calc(25em - 3em);
