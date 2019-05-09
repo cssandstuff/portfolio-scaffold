@@ -762,7 +762,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (135:2) {#each stack as image, index}
+	// (140:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -839,8 +839,8 @@ var app = (function () {
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "stack gallery svelte-44k8ds";
-				add_location(div, file$1, 133, 0, 3535);
+				div.className = "stack gallery svelte-ree74p";
+				add_location(div, file$1, 138, 0, 3722);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1320,7 +1320,7 @@ var app = (function () {
 				galleryexpanded.$$.fragment.o(local);
 
 				if (local) {
-					div_outro = create_out_transition(div, fade, {});
+					div_outro = create_out_transition(div, fade, {duration: 500});
 				}
 
 				current = false;
@@ -1355,7 +1355,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				div.className = "bg svelte-qzdqxu";
-				add_location(div, file$2, 272, 31, 7195);
+				add_location(div, file$2, 272, 31, 7213);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 

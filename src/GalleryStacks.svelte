@@ -267,7 +267,7 @@
 </div>
 <!-- Real Gallery, we only load all images and the can be expanded -->
 {#if attemptingtoLoad}
-   <div out:fade class="loading--{$loadingSecondary}">
+   <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
     <GalleryExpanded stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
   {#if $activeCollection == id}<div class="bg" on:click={resetStacks}></div>{/if}

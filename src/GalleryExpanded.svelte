@@ -91,7 +91,12 @@
     transition: all 0.6s cubic-bezier(0,0,.13,1.33) !important;
   }
   .stack :global(.quicktransition) {
-    transition: all 0.3s cubic-bezier(0,0,.13,1.2) !important;
+    transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
+    opacity: 0;
+  }
+  .stack :global(img:first-child.quicktransition) {
+    transition: transform 0.2s cubic-bezier(0,0,.13,1.06) !important;
+    opacity: 1;
   }
 
   .gallery{
