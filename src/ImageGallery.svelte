@@ -1,15 +1,15 @@
 <script>
   import Image from './Image.svelte'
-  import { onMount } from 'svelte';
-  import { afterUpdate } from 'svelte';
-  import { onDestroy } from 'svelte';
-  import { createEventDispatcher } from 'svelte';
-  import { destroyingCollection } from './stores.js';
+  import { onMount, afterUpdate, onDestroy, getContext, createEventDispatcher } from 'svelte';
+
+  import { destroyingCollection, loadingSecondary } from './stores.js';
 
 
   export let stack;
   export let originaltarget;
   let secondlevel;
+  let expanded;
+  let notRunBefore = true;
   const dispatch = createEventDispatcher();
 
   function consolidateStuff(){
@@ -20,15 +20,18 @@
      
     Object.entries(images).forEach(([key, value]) => {
       var imageDivRect = value.getBoundingClientRect();
-      value.style.transform = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`
       if($destroyingCollection){
         value.classList.add('slowtransition');
       }else{
         value.style.zIndex = imageCount - key;
       }
-      
-
+      console.log("WTF>???");
+      console.log(value);
+      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
+      value.style.transform = transformedStyle;
+      console.log(`translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`);
     });
+    expanded = false;
   }
 
   function expandStuff(){
@@ -43,16 +46,22 @@
         value.classList.add('slowtransition');
         value.style.transform = `translateX(0px) translateY(0px)`
       });
+      expanded = true;
     })();
   }
 
   onMount(() => {
     consolidateStuff();
-    expandStuff();
+    console.log(`this is the value of LOADING ${loadingSecondary}`);
   });
 
   afterUpdate(() => {
-    console.log('the component has mounted');
+    console.log('the component has mounted', $loadingSecondary);
+    // use get/set context somehow....instead of this
+    if($loadingSecondary && notRunBefore){
+      expandStuff();
+      notRunBefore = false;
+    }
     if($destroyingCollection){
       console.log("Image GALLERY is BeiNG DestoryED!!!");
       consolidateStuff();
@@ -63,6 +72,7 @@
     // do something
     destroyingCollection.update(n => false);
   });
+
 
   
 </script>
@@ -79,6 +89,8 @@
     border-radius: 4px;
     transition: 0s all !important;
     background: #ccc;
+    /* border: 1px solid #ccc; */
+
   }
   .stack :global(.slowtransition) {
     transition: all 0.6s cubic-bezier(0,0,.13,1.33) !important;
@@ -101,6 +113,7 @@
     height: 15em;
     min-width: 0 !important;
     min-height: 0 !important;
+    
   }
   /* .gallery{ 
     display: grid;
@@ -116,11 +129,16 @@
     grid-row-start: 1;
     grid-row-end: -1;
   } */
- 
+
 </style>
 
 <div class="stack gallery" bind:this={secondlevel} >
   {#each stack as image, index}
-    <Image image={image.src} />
+    <Image image={image.src} on:loadingComplete/>
   {/each}
 </div>
+
+<!-- <div style="z-index:99; position: absolute">
+  <p on:click={expandStuff}>Expand</p>
+  <p on:click={consolidateStuff}>consolidate</p>
+</div> -->

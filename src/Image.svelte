@@ -1,9 +1,12 @@
 <script>
 
   import { onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   export let image;
   export let style;
-  let visible = false;
+  export let visible = 0;
+
+  const dispatch = createEventDispatcher();
 
   onMount(async () => {
     const res = await fetch(image);
@@ -11,7 +14,12 @@
     if(res.status === 200){
        image = res.url;
        const loader = new Image(); //  the script equivalent to the html image element
-       loader.onload = () => visible = true;
+       loader.onload = () => {
+         visible = true;
+         dispatch('loadingComplete', {
+          loadingComplete: 1
+         });
+       }
        loader.src = image;
     }else{
       visible = false
