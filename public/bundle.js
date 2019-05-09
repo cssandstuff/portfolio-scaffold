@@ -1114,11 +1114,11 @@ var app = (function () {
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-mfp4jx";
+				span.className = "dummyimage svelte-1jqm7z9";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 334, 6, 8602);
+				add_location(span, file$2, 334, 6, 8596);
 			},
 
 			m: function mount(target, anchor) {
@@ -1283,8 +1283,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-mfp4jx";
-				add_location(div, file$2, 340, 3, 8803);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1jqm7z9";
+				add_location(div, file$2, 340, 3, 8797);
 			},
 
 			m: function mount(target, anchor) {
@@ -1302,7 +1302,7 @@ var app = (function () {
 				if (changed.collection) imagegallery_changes.originaltarget = ctx.collection;
 				imagegallery.$set(imagegallery_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-mfp4jx")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1jqm7z9")) {
 					div.className = div_class_value;
 				}
 
@@ -1367,8 +1367,8 @@ var app = (function () {
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "bg svelte-mfp4jx";
-				add_location(div, file$2, 343, 31, 9014);
+				div.className = "bg svelte-1jqm7z9";
+				add_location(div, file$2, 343, 31, 9008);
 				dispose = listen(div, "click", ctx.removeDarkness);
 			},
 
@@ -1429,8 +1429,8 @@ var app = (function () {
 				t1 = space();
 				if (if_block1) if_block1.c();
 				if_block1_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-mfp4jx";
-				add_location(div, file$2, 323, 0, 8172);
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-1jqm7z9";
+				add_location(div, file$2, 323, 0, 8166);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1498,7 +1498,7 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-mfp4jx")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-1jqm7z9")) {
 					div.className = div_class_value;
 				}
 
@@ -1910,7 +1910,7 @@ var app = (function () {
 				t9 = space();
 				imagecollection7.$$.fragment.c();
 				add_location(p, file$3, 55, 0, 1930);
-				div.className = "nicediv svelte-1uqsqaj";
+				div.className = "nicediv svelte-96h1sf";
 				add_location(div, file$3, 56, 0, 1980);
 			},
 

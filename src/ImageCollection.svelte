@@ -197,7 +197,7 @@
   }
   .active{
     z-index: 2 !important;
-    /* opacity: 0; */
+    opacity: 0;
     /* display: grid;
     position: absolute !important;
     grid-template-columns: repeat(4, 1fr);

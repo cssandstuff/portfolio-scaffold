@@ -66,6 +66,7 @@
 </div>
 
 <style>
+
 .nicediv{
 	display: flex;
 	flex: 1 auto;
