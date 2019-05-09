@@ -1,80 +1,73 @@
 <script>
   import Image from './Image.svelte'
-  import { onMount, afterUpdate, onDestroy, getContext, createEventDispatcher } from 'svelte';
-
+  import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingCollection, loadingSecondary } from './stores.js';
 
 
   export let stack;
   export let originaltarget;
+
+  // Local stuff
   let secondlevel;
-  let expanded;
-  let notRunBefore = true;
+  let notExpandedBefore = true;
+  let notConsolidatedBefore = true;
   const dispatch = createEventDispatcher();
 
+  // Function for bringing everything together.
   function consolidateStuff(){
-    var rect = originaltarget.getBoundingClientRect();
+    let rect = originaltarget.getBoundingClientRect();
     let images = secondlevel.getElementsByTagName('img');
     let imageCount = secondlevel.getElementsByTagName('img').length;
-    
      
     Object.entries(images).forEach(([key, value]) => {
-      var imageDivRect = value.getBoundingClientRect();
+      let imageDivRect = value.getBoundingClientRect();
+      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
+      
+      // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingCollection){
-        value.classList.add('slowtransition');
+        value.classList.add('quicktransition');
       }else{
         value.style.zIndex = imageCount - key;
       }
-      console.log("WTF>???");
-      console.log(value);
-      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
+      // Set tranformed style.
       value.style.transform = transformedStyle;
-      console.log(`translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`);
     });
-    expanded = false;
+
   }
 
+  // Function for Expanding things into place.
   function expandStuff(){
     let images = secondlevel.getElementsByTagName('img');
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
     (async () => {
-      console.log('スタート');
-      await sleep(10);
+      await sleep(50);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
         value.classList.add('slowtransition');
         value.style.transform = `translateX(0px) translateY(0px)`
       });
-      expanded = true;
     })();
   }
 
   onMount(() => {
     consolidateStuff();
-    console.log(`this is the value of LOADING ${loadingSecondary}`);
   });
 
   afterUpdate(() => {
-    console.log('the component has mounted', $loadingSecondary);
-    // use get/set context somehow....instead of this
-    if($loadingSecondary && notRunBefore){
+    if($loadingSecondary && notExpandedBefore){
       expandStuff();
-      notRunBefore = false;
+      notExpandedBefore = false;
     }
-    if($destroyingCollection){
-      console.log("Image GALLERY is BeiNG DestoryED!!!");
+    if($destroyingCollection && notConsolidatedBefore){=
       consolidateStuff();
+      notConsolidatedBefore = false;
     }
   });
 
   onDestroy(() => {
-    // do something
     destroyingCollection.update(n => false);
   });
-
-
-  
 </script>
 
 <style>
@@ -89,11 +82,12 @@
     border-radius: 4px;
     transition: 0s all !important;
     background: #ccc;
-    /* border: 1px solid #ccc; */
-
   }
   .stack :global(.slowtransition) {
     transition: all 0.6s cubic-bezier(0,0,.13,1.33) !important;
+  }
+  .stack :global(.quicktransition) {
+    transition: all 0.3s cubic-bezier(0,0,.13,1.2) !important;
   }
 
   .gallery{
@@ -115,7 +109,8 @@
     min-height: 0 !important;
     
   }
-  /* .gallery{ 
+  /* Experimenting with grid. 
+  .gallery{ 
     display: grid;
     position: absolute;
     grid-template-columns: 4fr 1fr 1fr;
@@ -137,8 +132,3 @@
     <Image image={image.src} on:loadingComplete/>
   {/each}
 </div>
-
-<!-- <div style="z-index:99; position: absolute">
-  <p on:click={expandStuff}>Expand</p>
-  <p on:click={consolidateStuff}>consolidate</p>
-</div> -->

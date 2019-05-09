@@ -1,21 +1,17 @@
 <script>
   import Image from './Image.svelte'
   import ImageGallery from './ImageGallery.svelte'
-  import { afterUpdate, setContext, createEventDispatcher } from 'svelte';
+  import { afterUpdate, createEventDispatcher } from 'svelte';
   import { expoOut } from 'svelte/easing';
-
   import { fade, fly } from 'svelte/transition';
-  
   import { activeCollection, destroyingCollection, loadingSecondary } from './stores.js';
-  // export const posX = writable(0);
-  // export const posY = writable(0);
-
-  setContext('');
   
   export let imagecollection;
   export let id;
 
   const dispatch = createEventDispatcher();
+
+  // Local stuff
   let collection;
   let secondLevel;
   let darkness;
@@ -23,8 +19,7 @@
   let count = 0;
   let attemptingtoLoad = false;
 
-
-  
+  // Rotate images on hover
   function rotate() {
     let images = collection.getElementsByTagName('span');
     let firstImage = collection.getElementsByTagName('img')[0];
@@ -34,7 +29,8 @@
     })
     firstImage.style.transform = 'scale(1.08) translateY(10px)';
   }
-  
+
+  // Un-Rotate images on hover out
   function unRotate() {
     let images = collection.getElementsByTagName('span');
     let firstImage = collection.getElementsByTagName('img')[0];
@@ -46,8 +42,8 @@
     //collection.style.zIndex = '0';
   }
   
+  // Initiate the gallery and expand the stack
   function showContents(){
-    //console.log(document.documentElement.clientWidth);
     attemptingtoLoad = true;
     
     //this makes the child component load.
@@ -57,32 +53,14 @@
 
     //this sets the loading to true.
     loadingSecondary.update(n => true);
-        // var cln = collection.cloneNode(true);
-        // cln.classList.add('cloned');
-        // var translatePos = "translateX("+rect.left+"px) translateY("+rect.top+"px)";
-        // cln.style.transform = translatePos;
-        // console.log("translateX("+rect.left+"px) translateY("+rect.top+"px);");
-        // document.documentElement.appendChild(cln);
-        // console.log(rect.top, rect.right, rect.bottom, rect.left);
-
-      // const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-
-      // (async () => {
-      //   console.log('スタート');
-      //   await sleep(500);
-      //   console.log('1秒経ってる!')
-      //   cln.classList.add('animatetofull');
-      // })();
   }
 
-  function removeDarkness(event){
-    //event.stopPropagation();
+  // Function for 
+  function resetStacks(event){
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
       destroyingCollection.update(n => true);
       (async () => {
-        console.log('スタート');
-        await sleep(500);
-
+        await sleep(250);
         dispatch('expand', {
             active: 0
         });
@@ -91,7 +69,8 @@
     stack = 'stack';
   }
 
-  function expandStuff(){
+  // Blow away the other stacks when we're initiating an Expanded Gallery
+  function blowStacks(){
     let images = collection;
     var rect = collection.getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
@@ -106,77 +85,31 @@
     collection.style.transform = `translateX(0px) translateY(0px)`
   }
 
+  // Lifecycle event. Calls whenever an update happens.
+  // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
   afterUpdate(() => {
     if($activeCollection != id && $activeCollection!==0){
-      //console.log('id ',id,'is dark');
       darkness = 'dark';
       collection.classList.add('notransition');
-      expandStuff();
+      blowStacks();
 
     }else if($activeCollection === id){
       darkness = 'active';
-
+      collection.classList.add('notransition');
     }else{
       darkness = '';
       collection.classList.remove('notransition');
       if($destroyingCollection){
-        console.log("BURRRRRN");
         attemptingtoLoad = false;
-        
         consolidateStuff();
       }
     }
   });
   
-  
-  // function unZoom(node, { duration }) {
-  //   var rect = collection.getBoundingClientRect();
-	// 	return {
-	// 		duration,
-	// 		css: t => {
-	// 			const eased = expoOut(t);
-  //       const easePos = expoOut(t);
-	// 			return `
-  //         transform: translateX(${rect.x * ( 1 - eased)}px) translateY(${rect.y *( 1 - eased)}px);
-  //         `
-	// 		}
-  //   };
-  // }
-
-  // function customZoomy(node, { duration }) {
-  //   var rect = galleryChild.getBoundingClientRect();
-  //   console.log(rect);
-  //   var translatePos = "translateX("+rect.x+"px) translateY("+rect.y+"px)";
-
-  //   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-
-  //     (async () => {
-  //       console.log('スタート');
-  //       await sleep(1500);
-  //       console.log(rect);
-  //     })();
-
-  //   //secondLevel.style.transform = translatePos;
-  //   //secondLevel.style.transformOrigin = 'top left';
-	// 	return {
-	// 		duration,
-	// 		css: t => {
-	// 			const eased = expoOut(t);
-	// 			return `
-  //         transform: translateX(${rect.x * ( 1 - eased)}px) translateY(${rect.y *( 1 - eased)}px);
-  //         `
-	// 		}
-	// 	};
-  // }
-  
-  //in:customZoom="{{duration: 3400}}" 
+  // Wanted to have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
   function handleLoadingComplete(event) {
-    
-    console.log(` loading complete is ${event.detail.loadingComplete}`);
     count = count + event.detail.loadingComplete;
-    console.log(count);
     if(count === imagecollection.length){
-      console.log('everything loaded OK');
       loadingSecondary.update(n => false);
       count = 0;
     }
@@ -186,10 +119,9 @@
 </script>
 
 <style>
+  /* clean up these styles a little bro */
   .dark{
     opacity: 0;
-    /* animation: dropAway 0.5s cubic-bezier(1, 0, 1, 1) forwards; */
-
   }
   .notransition{
     opacity: 0;
@@ -198,18 +130,6 @@
   .active{
     z-index: 2 !important;
     opacity: 0;
-    /* display: grid;
-    position: absolute !important;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 200px;
-    grid-gap: 4em;
-    width: calc(100% - 8em);
-    height: 100%; */
-    /* z-index: 2;
-    order: -1;
-    width: 100% !important;
-    transition-delay: 1s !important;
-    transition-duration: 3s !important; */
   }
 
   .dummyimage{
@@ -221,15 +141,17 @@
     height: 100%;
     position: absolute; top: 0; left: 0;
     transition: 0.15s transform ease-out;
-    /* box-shadow: 0 0 2px #ccc; */
   }
+
   .collection:hover span{
     transition: 0.3s transform ease-out;
   }
+
   .collection{
     position: relative;
     transition: 0.15s all ease-out;
   }
+
   .spinner {
     animation: rotate 2s linear infinite;
     z-index: 2;
@@ -240,6 +162,7 @@
     width: 50px;
     height: 50px;
   }
+
   .spinner .path {
       stroke: rgb(26, 118, 211);
       stroke-linecap: round;
@@ -322,12 +245,14 @@
 
 
 <div class="collection {darkness}" on:mouseenter={rotate} on:mouseleave={unRotate} bind:this={collection} on:click={showContents}>
-  
-{#if $activeCollection == id}
-  <!-- <svg class="spinner" viewBox="0 0 50 50">
-  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
-  </svg> -->
-{/if}
+  <!-- in case we want a spinner 
+  {#if $activeCollection == id}
+    <svg class="spinner" viewBox="0 0 50 50">
+    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
+    </svg>
+  {/if} -->
+
+  <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}
       <Image image={image.src} />
@@ -337,9 +262,10 @@
   {/each}
 
 </div>
+<!-- Real Gallery, we only load all images and the can be expanded -->
 {#if attemptingtoLoad}
    <div out:fade class="loading--{$loadingSecondary}">
     <ImageGallery stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
-  {#if $activeCollection == id}<div class="bg" on:click={removeDarkness}></div>{/if}
+  {#if $activeCollection == id}<div class="bg" on:click={resetStacks}></div>{/if}
 {/if}

@@ -121,11 +121,6 @@ var app = (function () {
 		return Array.from(element.childNodes);
 	}
 
-	function set_data(text, data) {
-		data = '' + data;
-		if (text.data !== data) text.data = data;
-	}
-
 	function set_style(node, key, value) {
 		node.style.setProperty(key, value);
 	}
@@ -238,10 +233,6 @@ var app = (function () {
 				});
 			}
 		};
-	}
-
-	function setContext(key, context) {
-		get_current_component().$$.context.set(key, context);
 	}
 
 	// TODO figure out if we still want to support
@@ -788,7 +779,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (136:2) {#each stack as image, index}
+	// (139:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -863,8 +854,8 @@ var app = (function () {
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "stack gallery svelte-7vkxa2";
-				add_location(div, file$1, 134, 0, 3518);
+				div.className = "stack gallery svelte-zpn63c";
+				add_location(div, file$1, 137, 0, 3680);
 			},
 
 			l: function claim(nodes) {
@@ -951,7 +942,8 @@ var app = (function () {
 	  let { stack, originaltarget } = $$props;
 	  let secondlevel;
 	  let expanded;
-	  let notRunBefore = true;
+	  let notExpandedBefore = true;
+	  let notConsolidatedBefore = true;
 
 	  function consolidateStuff(){
 	    var rect = originaltarget.getBoundingClientRect();
@@ -962,12 +954,10 @@ var app = (function () {
 	    Object.entries(images).forEach(([key, value]) => {
 	      var imageDivRect = value.getBoundingClientRect();
 	      if($destroyingCollection){
-	        value.classList.add('slowtransition');
+	        value.classList.add('quicktransition');
 	      }else{
 	        value.style.zIndex = imageCount - key;
 	      }
-	      console.log("WTF>???");
-	      console.log(value);
 	      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`;
 	      value.style.transform = transformedStyle;
 	      console.log(`translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${(38/imageCount-1) * key}deg)`);
@@ -981,7 +971,7 @@ var app = (function () {
 
 	    (async () => {
 	      console.log('スタート');
-	      await sleep(10);
+	      await sleep(50);
 	      Object.entries(images).forEach(([key, value]) => {
 	        var imageDivRect = value.getBoundingClientRect();
 	        value.classList.add('slowtransition');
@@ -999,13 +989,14 @@ var app = (function () {
 	  afterUpdate(() => {
 	    console.log('the component has mounted', $loadingSecondary);
 	    // use get/set context somehow....instead of this
-	    if($loadingSecondary && notRunBefore){
+	    if($loadingSecondary && notExpandedBefore){
 	      expandStuff();
-	      $$invalidate('notRunBefore', notRunBefore = false);
+	      $$invalidate('notExpandedBefore', notExpandedBefore = false);
 	    }
-	    if($destroyingCollection){
+	    if($destroyingCollection && notConsolidatedBefore){
 	      console.log("Image GALLERY is BeiNG DestoryED!!!");
 	      consolidateStuff();
+	      $$invalidate('notConsolidatedBefore', notConsolidatedBefore = false);
 	    }
 	  });
 
@@ -1098,7 +1089,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (326:0) {#if $activeCollection == id}
+	// (324:0) {#if $activeCollection == id}
 	function create_if_block_3(ctx) {
 		return {
 			c: noop,
@@ -1107,18 +1098,18 @@ var app = (function () {
 		};
 	}
 
-	// (334:4) {:else}
+	// (332:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-1jqm7z9";
+				span.className = "dummyimage svelte-qhsbbt";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 334, 6, 8596);
+				add_location(span, file$2, 332, 6, 8659);
 			},
 
 			m: function mount(target, anchor) {
@@ -1142,7 +1133,7 @@ var app = (function () {
 		};
 	}
 
-	// (332:4) {#if index==0}
+	// (330:4) {#if index==0}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -1185,7 +1176,7 @@ var app = (function () {
 		};
 	}
 
-	// (331:2) {#each imagecollection as image, index}
+	// (329:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1261,7 +1252,7 @@ var app = (function () {
 		};
 	}
 
-	// (340:0) {#if attemptingtoLoad}
+	// (338:0) {#if attemptingtoLoad}
 	function create_if_block$1(ctx) {
 		var div, div_class_value, div_outro, t, if_block_anchor, current;
 
@@ -1283,8 +1274,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1jqm7z9";
-				add_location(div, file$2, 340, 3, 8797);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qhsbbt";
+				add_location(div, file$2, 338, 3, 8860);
 			},
 
 			m: function mount(target, anchor) {
@@ -1302,7 +1293,7 @@ var app = (function () {
 				if (changed.collection) imagegallery_changes.originaltarget = ctx.collection;
 				imagegallery.$set(imagegallery_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1jqm7z9")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qhsbbt")) {
 					div.className = div_class_value;
 				}
 
@@ -1360,15 +1351,15 @@ var app = (function () {
 		};
 	}
 
-	// (344:2) {#if $activeCollection == id}
+	// (342:2) {#if $activeCollection == id}
 	function create_if_block_1(ctx) {
 		var div, dispose;
 
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "bg svelte-1jqm7z9";
-				add_location(div, file$2, 343, 31, 9008);
+				div.className = "bg svelte-qhsbbt";
+				add_location(div, file$2, 341, 31, 9071);
 				dispose = listen(div, "click", ctx.removeDarkness);
 			},
 
@@ -1429,8 +1420,8 @@ var app = (function () {
 				t1 = space();
 				if (if_block1) if_block1.c();
 				if_block1_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-1jqm7z9";
-				add_location(div, file$2, 323, 0, 8166);
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-qhsbbt";
+				add_location(div, file$2, 321, 0, 8229);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1498,7 +1489,7 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-1jqm7z9")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-qhsbbt")) {
 					div.className = div_class_value;
 				}
 
@@ -1577,22 +1568,19 @@ var app = (function () {
 		subscribe($$self, loadingSecondary, $$value => { $loadingSecondary = $$value; $$invalidate('$loadingSecondary', $loadingSecondary); });
 
 		
-	  // export const posX = writable(0);
-	  // export const posY = writable(0);
-
-	  setContext('');
 	  
 	  let { imagecollection, id } = $$props;
 
 	  const dispatch = createEventDispatcher();
+
+	  // Local stuff
 	  let collection;
 	  let darkness;
 	  let stack = 'stack';
 	  let count = 0;
 	  let attemptingtoLoad = false;
 
-
-	  
+	  // Rotate images on hover
 	  function rotate() {
 	    let images = collection.getElementsByTagName('span');
 	    let firstImage = collection.getElementsByTagName('img')[0];
@@ -1602,7 +1590,8 @@ var app = (function () {
 	    });
 	    firstImage.style.transform = 'scale(1.08) translateY(10px)';
 	  }
-	  
+
+	  // Un-Rotate images on hover out
 	  function unRotate() {
 	    let images = collection.getElementsByTagName('span');
 	    let firstImage = collection.getElementsByTagName('img')[0];
@@ -1614,6 +1603,7 @@ var app = (function () {
 	    //collection.style.zIndex = '0';
 	  }
 	  
+	  // Initiate the gallery and expand the stack
 	  function showContents(){
 	    //console.log(document.documentElement.clientWidth);
 	    $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
@@ -1649,7 +1639,7 @@ var app = (function () {
 	      destroyingCollection.update(n => true);
 	      (async () => {
 	        console.log('スタート');
-	        await sleep(500);
+	        await sleep(250);
 
 	        dispatch('expand', {
 	            active: 0
@@ -1681,7 +1671,7 @@ var app = (function () {
 
 	    }else if($activeCollection === id){
 	      $$invalidate('darkness', darkness = 'active');
-
+	      collection.classList.add('notransition');
 	    }else{
 	      $$invalidate('darkness', darkness = '');
 	      collection.classList.remove('notransition');
@@ -1813,7 +1803,7 @@ var app = (function () {
 	const file$3 = "src/App.svelte";
 
 	function create_fragment$3(ctx) {
-		var p, t0, t1, t2, div, t3, t4, t5, t6, t7, t8, t9, current;
+		var div, t0, t1, t2, t3, t4, t5, t6, current;
 
 		var imagecollection0 = new ImageCollection({
 			props: {
@@ -1889,29 +1879,24 @@ var app = (function () {
 
 		return {
 			c: function create() {
-				p = element("p");
-				t0 = text("Active collection is: ");
-				t1 = text(ctx.$activeCollection);
-				t2 = space();
 				div = element("div");
 				imagecollection0.$$.fragment.c();
-				t3 = space();
+				t0 = space();
 				imagecollection1.$$.fragment.c();
-				t4 = space();
+				t1 = space();
 				imagecollection2.$$.fragment.c();
-				t5 = space();
+				t2 = space();
 				imagecollection3.$$.fragment.c();
-				t6 = space();
+				t3 = space();
 				imagecollection4.$$.fragment.c();
-				t7 = space();
+				t4 = space();
 				imagecollection5.$$.fragment.c();
-				t8 = space();
+				t5 = space();
 				imagecollection6.$$.fragment.c();
-				t9 = space();
+				t6 = space();
 				imagecollection7.$$.fragment.c();
-				add_location(p, file$3, 55, 0, 1930);
-				div.className = "nicediv svelte-96h1sf";
-				add_location(div, file$3, 56, 0, 1980);
+				div.className = "container svelte-1klaw6v";
+				add_location(div, file$3, 75, 0, 1838);
 			},
 
 			l: function claim(nodes) {
@@ -1919,34 +1904,26 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, p, anchor);
-				append(p, t0);
-				append(p, t1);
-				insert(target, t2, anchor);
 				insert(target, div, anchor);
 				mount_component(imagecollection0, div, null);
-				append(div, t3);
+				append(div, t0);
 				mount_component(imagecollection1, div, null);
-				append(div, t4);
+				append(div, t1);
 				mount_component(imagecollection2, div, null);
-				append(div, t5);
+				append(div, t2);
 				mount_component(imagecollection3, div, null);
-				append(div, t6);
+				append(div, t3);
 				mount_component(imagecollection4, div, null);
-				append(div, t7);
+				append(div, t4);
 				mount_component(imagecollection5, div, null);
-				append(div, t8);
+				append(div, t5);
 				mount_component(imagecollection6, div, null);
-				append(div, t9);
+				append(div, t6);
 				mount_component(imagecollection7, div, null);
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
-				if (!current || changed.$activeCollection) {
-					set_data(t1, ctx.$activeCollection);
-				}
-
 				var imagecollection0_changes = {};
 				if (changed.collection1) imagecollection0_changes.imagecollection = ctx.collection1;
 				if (changed.uid) imagecollection0_changes.id = uid++;
@@ -2023,8 +2000,6 @@ var app = (function () {
 
 			d: function destroy(detaching) {
 				if (detaching) {
-					detach(p);
-					detach(t2);
 					detach(div);
 				}
 
@@ -2055,55 +2030,50 @@ var app = (function () {
 	}
 
 	function instance$3($$self, $$props, $$invalidate) {
-		let $activeCollection;
-
-		validate_store(activeCollection, 'activeCollection');
-		subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
-
 		let { name } = $$props;
 		let collection1 = [
-			{ src: 'images/IMG_0003.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0005.JPG', name: 'moo' },
-			{ src: 'images/IMG_0007.JPG', name: 'moo' },
-			{ src: 'images/IMG_0008.JPG', name: 'moo' },
-			{ src: 'images/IMG_0009.JPG', name: 'moo' },
-			{ src: 'images/IMG_0010.JPG', name: 'moo' }
+			{ src: 'images/IMG_0003.JPG' },
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0005.JPG' },
+			{ src: 'images/IMG_0007.JPG' },
+			{ src: 'images/IMG_0008.JPG' },
+			{ src: 'images/IMG_0009.JPG' },
+			{ src: 'images/IMG_0010.JPG' }
 		];
 		let collection2 = [
-			{ src: 'images/IMG_0007.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0005.JPG', name: 'moo' },
-			{ src: 'images/IMG_0007.JPG', name: 'moo' },
-			{ src: 'images/IMG_0008.JPG', name: 'moo' },
-			{ src: 'images/IMG_0009.JPG', name: 'moo' },
-			{ src: 'images/IMG_0010.JPG', name: 'moo' }
+			{ src: 'images/IMG_0007.JPG' },
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0005.JPG' },
+			{ src: 'images/IMG_0007.JPG' },
+			{ src: 'images/IMG_0008.JPG' },
+			{ src: 'images/IMG_0009.JPG' },
+			{ src: 'images/IMG_0010.JPG' }
 		];
 		let collection3 = [
-			{ src: 'images/IMG_0009.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0005.JPG', name: 'moo' },
-			{ src: 'images/IMG_0007.JPG', name: 'moo' },
-			{ src: 'images/IMG_0008.JPG', name: 'moo' },
-			{ src: 'images/IMG_0009.JPG', name: 'moo' },
-			{ src: 'images/IMG_0010.JPG', name: 'moo' }
+			{ src: 'images/IMG_0009.JPG' },
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0005.JPG' },
+			{ src: 'images/IMG_0007.JPG' },
+			{ src: 'images/IMG_0008.JPG' },
+			{ src: 'images/IMG_0009.JPG' },
+			{ src: 'images/IMG_0010.JPG' }
 		];
 		let collection4 = [
-			{ src: 'images/IMG_0010.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0005.JPG', name: 'moo' },
-			{ src: 'images/IMG_0007.JPG', name: 'moo' },
-			{ src: 'images/IMG_0008.JPG', name: 'moo' },
-			{ src: 'images/IMG_0010.JPG', name: 'moo' }
+			{ src: 'images/IMG_0010.JPG' },
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0005.JPG' },
+			{ src: 'images/IMG_0007.JPG' },
+			{ src: 'images/IMG_0008.JPG' },
+			{ src: 'images/IMG_0010.JPG' }
 		];
 		let collection5 = [
-			{ src: 'images/IMG_0008.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' }
+			{ src: 'images/IMG_0008.JPG' },
+			{ src: 'images/IMG_0004.JPG' }
 		];
 		let collection6 = [
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0004.JPG', name: 'moo' },
-			{ src: 'images/IMG_0005.JPG', name: 'moo' }
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0004.JPG' },
+			{ src: 'images/IMG_0005.JPG' }
 		];
 
 		$$self.$set = $$props => {
@@ -2117,8 +2087,7 @@ var app = (function () {
 			collection3,
 			collection4,
 			collection5,
-			collection6,
-			$activeCollection
+			collection6
 		};
 	}
 
