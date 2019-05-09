@@ -37,10 +37,8 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
-    var doc = document.documentElement;
-    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-    console.log(`OFFSET is ${doc.clientTop}`);
-
+    secondlevel.style.transform = `translateY(${scrollY}px)`
+    console.log(`translateY(${scrollY}px)`);
     let images = secondlevel.getElementsByTagName('img');
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -133,7 +131,7 @@
 
 </style>
 <svelte:window bind:scrollY={y}/>
-<div class="stack gallery" bind:this={secondlevel} style="transform: translateY({y}px);" >
+<div class="stack gallery" bind:this={secondlevel} >
   {#each stack as image, index}
     <Image image={image.src} on:loadingComplete/>
   {/each}

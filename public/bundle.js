@@ -762,7 +762,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (137:2) {#each stack as image, index}
+	// (135:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -840,8 +840,7 @@ var app = (function () {
 					each_blocks[i].c();
 				}
 				div.className = "stack gallery svelte-44k8ds";
-				set_style(div, "transform", "translateY(" + ctx.y + "px)");
-				add_location(div, file$1, 135, 0, 3594);
+				add_location(div, file$1, 133, 0, 3535);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -898,10 +897,6 @@ var app = (function () {
 				if (changed.items) {
 					ctx.div_binding(null, div);
 					ctx.div_binding(div, null);
-				}
-
-				if (!current || changed.y) {
-					set_style(div, "transform", "translateY(" + ctx.y + "px)");
 				}
 			},
 
@@ -974,10 +969,8 @@ var app = (function () {
 
 	  // Function for Expanding things into place.
 	  function expandStuff(){
-	    var doc = document.documentElement;
-	    var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-	    console.log(`OFFSET is ${doc.clientTop}`);
-
+	    secondlevel.style.transform = `translateY(${scrollY}px)`; $$invalidate('secondlevel', secondlevel);
+	    console.log(`translateY(${scrollY}px)`);
 	    let images = secondlevel.getElementsByTagName('img');
 	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
