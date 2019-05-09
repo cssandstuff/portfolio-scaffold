@@ -1,8 +1,7 @@
 <script>
-  import Image from './Image.svelte'
+  import Image from './Image.svelte';
   import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingCollection, loadingSecondary } from './stores.js';
-
 
   export let stack;
   export let originaltarget;
@@ -59,7 +58,7 @@
       expandStuff();
       notExpandedBefore = false;
     }
-    if($destroyingCollection && notConsolidatedBefore){=
+    if($destroyingCollection && notConsolidatedBefore){
       consolidateStuff();
       notConsolidatedBefore = false;
     }

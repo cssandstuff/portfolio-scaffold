@@ -1,6 +1,6 @@
 <script>
 	export let name;
-	import ImageCollection from './ImageCollection.svelte';
+	import GalleryStacks from './GalleryStacks.svelte';
 	import { activeCollection } from './stores.js';
 	let uid = 1;
 	let collection1 = [
@@ -74,13 +74,13 @@
 </style>
 
 <div class="container">
-	<ImageCollection on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection2} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection3} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection5} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection6} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
-	<ImageCollection on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection2} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection3} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection5} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection6} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
+	<GalleryStacks on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
 </div>
 

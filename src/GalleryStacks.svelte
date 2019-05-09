@@ -1,6 +1,6 @@
 <script>
-  import Image from './Image.svelte'
-  import ImageGallery from './ImageGallery.svelte'
+  import Image from './Image.svelte';
+  import GalleryExpanded from './GalleryExpanded.svelte';
   import { afterUpdate, createEventDispatcher } from 'svelte';
   import { expoOut } from 'svelte/easing';
   import { fade, fly } from 'svelte/transition';
@@ -55,8 +55,12 @@
     loadingSecondary.update(n => true);
   }
 
-  // Function for 
-  function resetStacks(event){
+  // Function for resetting the stacks
+  function resetStacks(){
+    let images = collection;
+    var rect = collection.getBoundingClientRect();
+    collection.style.transform = `translateX(0px) translateY(0px)`
+
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
       destroyingCollection.update(n => true);
       (async () => {
@@ -79,11 +83,6 @@
     collection.style.transform = `translateX(${rect.left - centerX}px) translateY(${rect.top - centerY}px)`
   }
 
-  function consolidateStuff(){
-    let images = collection;
-    var rect = collection.getBoundingClientRect();
-    collection.style.transform = `translateX(0px) translateY(0px)`
-  }
 
   // Lifecycle event. Calls whenever an update happens.
   // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
@@ -101,7 +100,7 @@
       collection.classList.remove('notransition');
       if($destroyingCollection){
         attemptingtoLoad = false;
-        consolidateStuff();
+        resetStacks();
       }
     }
   });
@@ -265,7 +264,7 @@
 <!-- Real Gallery, we only load all images and the can be expanded -->
 {#if attemptingtoLoad}
    <div out:fade class="loading--{$loadingSecondary}">
-    <ImageGallery stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
+    <GalleryExpanded stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
   {#if $activeCollection == id}<div class="bg" on:click={resetStacks}></div>{/if}
 {/if}
