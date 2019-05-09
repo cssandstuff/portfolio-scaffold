@@ -36,6 +36,7 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
+    //TODO: When expanded expand relative to scroll position.
     let images = secondlevel.getElementsByTagName('img');
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 

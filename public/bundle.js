@@ -762,7 +762,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (132:2) {#each stack as image, index}
+	// (133:2) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var current;
 
@@ -838,7 +838,7 @@ var app = (function () {
 					each_blocks[i].c();
 				}
 				div.className = "stack gallery svelte-44k8ds";
-				add_location(div, file$1, 130, 0, 3387);
+				add_location(div, file$1, 131, 0, 3449);
 			},
 
 			l: function claim(nodes) {
@@ -952,6 +952,7 @@ var app = (function () {
 
 	  // Function for Expanding things into place.
 	  function expandStuff(){
+	    //TODO: When expanded expand relative to scroll position.
 	    let images = secondlevel.getElementsByTagName('img');
 	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -1069,18 +1070,18 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (260:4) {:else}
+	// (261:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-12v9zoz";
+				span.className = "dummyimage svelte-8huqji";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 260, 6, 6632);
+				add_location(span, file$2, 261, 6, 6676);
 			},
 
 			m: function mount(target, anchor) {
@@ -1104,7 +1105,7 @@ var app = (function () {
 		};
 	}
 
-	// (258:4) {#if index==0}
+	// (259:4) {#if index==0}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -1147,7 +1148,7 @@ var app = (function () {
 		};
 	}
 
-	// (257:2) {#each imagecollection as image, index}
+	// (258:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1223,7 +1224,7 @@ var app = (function () {
 		};
 	}
 
-	// (267:0) {#if attemptingtoLoad}
+	// (268:0) {#if attemptingtoLoad}
 	function create_if_block$1(ctx) {
 		var div, div_class_value, div_outro, t, if_block_anchor, current;
 
@@ -1245,8 +1246,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-12v9zoz";
-				add_location(div, file$2, 267, 3, 6904);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-8huqji";
+				add_location(div, file$2, 268, 3, 6948);
 			},
 
 			m: function mount(target, anchor) {
@@ -1264,7 +1265,7 @@ var app = (function () {
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-12v9zoz")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-8huqji")) {
 					div.className = div_class_value;
 				}
 
@@ -1322,15 +1323,15 @@ var app = (function () {
 		};
 	}
 
-	// (271:2) {#if $activeCollection == id}
+	// (272:2) {#if $activeCollection == id}
 	function create_if_block_1(ctx) {
 		var div, dispose;
 
 		return {
 			c: function create() {
 				div = element("div");
-				div.className = "bg svelte-12v9zoz";
-				add_location(div, file$2, 270, 31, 7118);
+				div.className = "bg svelte-8huqji";
+				add_location(div, file$2, 271, 31, 7162);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1387,8 +1388,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-12v9zoz";
-				add_location(div, file$2, 247, 0, 6100);
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-8huqji";
+				add_location(div, file$2, 248, 0, 6144);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1443,7 +1444,7 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-12v9zoz")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-8huqji")) {
 					div.className = div_class_value;
 				}
 

@@ -214,6 +214,7 @@
   }
 
   .bg{
+    /*TODO need this to be a sticky menu */
     background: #fff;
     opacity: 1;
     position: fixed;
