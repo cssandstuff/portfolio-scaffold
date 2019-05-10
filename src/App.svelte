@@ -1,6 +1,5 @@
 <script>
 	export let name;
-	// import BreadBar from './BreadBar.svelte';
 	import GalleryStacks from './GalleryStacks.svelte';
 	import { activeCollection } from './stores.js';
 
