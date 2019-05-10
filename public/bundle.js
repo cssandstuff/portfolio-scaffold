@@ -1094,7 +1094,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (262:4) {:else}
+	// (264:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
@@ -1105,7 +1105,7 @@ var app = (function () {
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 262, 6, 6709);
+				add_location(span, file$2, 264, 6, 6478);
 			},
 
 			m: function mount(target, anchor) {
@@ -1129,7 +1129,7 @@ var app = (function () {
 		};
 	}
 
-	// (260:4) {#if index==0}
+	// (262:4) {#if index==0}
 	function create_if_block_2(ctx) {
 		var current;
 
@@ -1172,7 +1172,7 @@ var app = (function () {
 		};
 	}
 
-	// (259:2) {#each imagecollection as image, index}
+	// (261:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1248,7 +1248,7 @@ var app = (function () {
 		};
 	}
 
-	// (269:0) {#if attemptingtoLoad}
+	// (272:0) {#if attemptingtoLoad}
 	function create_if_block$1(ctx) {
 		var div, div_class_value, div_outro, t, if_block_anchor, current;
 
@@ -1271,7 +1271,7 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qzdqxu";
-				add_location(div, file$2, 269, 3, 6981);
+				add_location(div, file$2, 272, 3, 6750);
 			},
 
 			m: function mount(target, anchor) {
@@ -1347,7 +1347,7 @@ var app = (function () {
 		};
 	}
 
-	// (273:2) {#if $activeCollection == id}
+	// (276:2) {#if $activeCollection == id}
 	function create_if_block_1(ctx) {
 		var div, dispose;
 
@@ -1355,7 +1355,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				div.className = "bg svelte-qzdqxu";
-				add_location(div, file$2, 272, 31, 7213);
+				add_location(div, file$2, 275, 31, 6982);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1413,7 +1413,7 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				div.className = div_class_value = "collection " + ctx.darkness + " svelte-qzdqxu";
-				add_location(div, file$2, 249, 0, 6177);
+				add_location(div, file$2, 251, 0, 5946);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1553,38 +1553,42 @@ var app = (function () {
 	  // Local stuff
 	  let collection;
 	  let darkness;
+	  let images;
+	  let firstImage;
+
+	  // count for loading
 	  let count = 0;
+	  
 	  let attemptingtoLoad = false;
 	  let resetStacksBefore = false;
 
+
+	  onMount(() => {
+			$$invalidate('images', images = collection.getElementsByTagName('span'));
+	    $$invalidate('firstImage', firstImage = collection.getElementsByTagName('img')[0]);
+		});
+	  
 	  // Rotate images on hover
 	  function rotate() {
-	    let images = collection.getElementsByTagName('span');
-	    let firstImage = collection.getElementsByTagName('img')[0];
 	    collection.style.transform = 'rotate(-1.5deg)'; $$invalidate('collection', collection);
 	    Object.entries(images).forEach(([key, value]) => {
 	      value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
 	    });
-	    firstImage.style.transform = 'scale(1.08) translateY(10px)';
+	    firstImage.style.transform = 'scale(1.08) translateY(10px)'; $$invalidate('firstImage', firstImage);
 	  }
 
 	  // Un-Rotate images on hover out
 	  function unRotate() {
-	    let images = collection.getElementsByTagName('span');
-	    let firstImage = collection.getElementsByTagName('img')[0];
 	    collection.style.transform = 'rotate(0deg)'; $$invalidate('collection', collection);
 	    Object.entries(images).forEach(([key, value]) => {
 	      value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
 	    });
-	    firstImage.style.transform = 'scale(1)';
-	    //collection.style.zIndex = '0';
+	    firstImage.style.transform = 'scale(1)'; $$invalidate('firstImage', firstImage);
 	  }
 	  
 	  // Initiate the gallery and expand the stack
 	  function showContents(){
 	    $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
-	    
-	    //this makes the child component load.
 	    dispatch('expand', {
 	        active: id
 	    }); 
@@ -1593,10 +1597,18 @@ var app = (function () {
 	    loadingSecondary.update(n => true);
 	  }
 
+	  // Blow away the other stacks when we're initiating an Expanded Gallery
+	  function blowStacks(){
+	    var rect = collection.getBoundingClientRect();
+	    let centerX = document.documentElement.clientWidth/2;
+	    let centerY = document.documentElement.clientHeight/2;
+	    
+	    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`; $$invalidate('collection', collection);
+	  }
+
 	  // Function for resetting the stacks
 	  function resetStacks(){
 	    if(!resetStacksBefore){
-	      console.log('resetting stacks');
 	      var rect = collection.getBoundingClientRect();
 	      collection.style.transform = `translateX(0px) translateY(0px)`; $$invalidate('collection', collection);
 
@@ -1613,14 +1625,6 @@ var app = (function () {
 	    }
 	  }
 
-	  // Blow away the other stacks when we're initiating an Expanded Gallery
-	  function blowStacks(){
-	    var rect = collection.getBoundingClientRect();
-	    let centerX = document.documentElement.clientWidth/2;
-	    let centerY = document.documentElement.clientHeight/2;
-	    
-	    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`; $$invalidate('collection', collection);
-	  }
 
 
 	  // Lifecycle event. Calls whenever an update happens.
@@ -1644,7 +1648,7 @@ var app = (function () {
 	    }
 	  });
 	  
-	  // Wanted to have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
+	  // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
 	  function handleLoadingComplete(event) {
 	    $$invalidate('count', count = count + event.detail.loadingComplete);
 	    if(count === imagecollection.length){
@@ -1810,7 +1814,7 @@ var app = (function () {
 				t6 = space();
 				gallerystacks7.$$.fragment.c();
 				div.className = "container svelte-rby08";
-				add_location(div, file$3, 76, 0, 1851);
+				add_location(div, file$3, 85, 0, 2065);
 			},
 
 			l: function claim(nodes) {

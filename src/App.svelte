@@ -1,7 +1,9 @@
 <script>
 	export let name;
+	// import BreadBar from './BreadBar.svelte';
 	import GalleryStacks from './GalleryStacks.svelte';
 	import { activeCollection } from './stores.js';
+
 	let uid = 1;
 	let y;
 	let collection1 = [
@@ -53,6 +55,13 @@
 		console.log(event.detail.active);
 		activeCollection.update(n => event.detail.active);
 	}
+
+	function handleBreadBarClick() {
+		console.log('Hi Breadbar was clicked');
+		//alertTotal();
+		testStacks();
+	}
+
 </script>
 
 <style>
@@ -73,7 +82,7 @@
 		height: 15em;
 	}
 </style>
-
+<!-- <BreadBar on:click={handleBreadBarClick} /> -->
 <div class="container">
 	<GalleryStacks on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
 	<GalleryStacks on:expand={handleExpand} imagecollection={collection2} id="{uid++}" />

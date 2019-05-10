@@ -1,9 +1,8 @@
 <script>
   import Image from './Image.svelte';
   import GalleryExpanded from './GalleryExpanded.svelte';
-  import { afterUpdate, createEventDispatcher } from 'svelte';
-  import { expoOut } from 'svelte/easing';
-  import { fade, fly } from 'svelte/transition';
+  import { onMount, afterUpdate, createEventDispatcher } from 'svelte';
+  import { fade } from 'svelte/transition';
   import { activeCollection, destroyingCollection, loadingSecondary } from './stores.js';
   
   export let imagecollection;
@@ -15,14 +14,23 @@
   let collection;
   let secondLevel;
   let darkness;
+  let images;
+  let firstImage;
+
+  // count for loading
   let count = 0;
+  
   let attemptingtoLoad = false;
   let resetStacksBefore = false;
 
+
+  onMount(() => {
+		images = collection.getElementsByTagName('span');
+    firstImage = collection.getElementsByTagName('img')[0];
+	});
+  
   // Rotate images on hover
   function rotate() {
-    let images = collection.getElementsByTagName('span');
-    let firstImage = collection.getElementsByTagName('img')[0];
     collection.style.transform = 'rotate(-1.5deg)';
     Object.entries(images).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
@@ -32,21 +40,16 @@
 
   // Un-Rotate images on hover out
   function unRotate() {
-    let images = collection.getElementsByTagName('span');
-    let firstImage = collection.getElementsByTagName('img')[0];
     collection.style.transform = 'rotate(0deg)';
     Object.entries(images).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1)';
-    //collection.style.zIndex = '0';
   }
   
   // Initiate the gallery and expand the stack
   function showContents(){
     attemptingtoLoad = true;
-    
-    //this makes the child component load.
     dispatch('expand', {
         active: id
     }); 
@@ -55,10 +58,18 @@
     loadingSecondary.update(n => true);
   }
 
+  // Blow away the other stacks when we're initiating an Expanded Gallery
+  function blowStacks(){
+    var rect = collection.getBoundingClientRect();
+    let centerX = document.documentElement.clientWidth/2;
+    let centerY = document.documentElement.clientHeight/2;
+    
+    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
+  }
+
   // Function for resetting the stacks
   function resetStacks(){
     if(!resetStacksBefore){
-      console.log('resetting stacks');
       let images = collection;
       var rect = collection.getBoundingClientRect();
       collection.style.transform = `translateX(0px) translateY(0px)`
@@ -76,15 +87,6 @@
     }
   }
 
-  // Blow away the other stacks when we're initiating an Expanded Gallery
-  function blowStacks(){
-    let images = collection;
-    var rect = collection.getBoundingClientRect();
-    let centerX = document.documentElement.clientWidth/2;
-    let centerY = document.documentElement.clientHeight/2;
-    
-    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
-  }
 
 
   // Lifecycle event. Calls whenever an update happens.
@@ -108,7 +110,7 @@
     }
   });
   
-  // Wanted to have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
+  // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
   function handleLoadingComplete(event) {
     count = count + event.detail.loadingComplete;
     if(count === imagecollection.length){
@@ -247,7 +249,7 @@
 </style>
 
 
-<div class="collection {darkness}" on:mouseenter={rotate} on:mouseleave={unRotate} bind:this={collection} on:click={showContents}>
+<div class="collection {darkness}" bind:this={collection} on:mouseenter={rotate} on:mouseleave={unRotate} on:click={showContents}>
   <!-- in case we want a spinner 
   {#if $activeCollection == id}
     <svg class="spinner" viewBox="0 0 50 50">
@@ -265,7 +267,8 @@
   {/each}
 
 </div>
-<!-- Real Gallery, we only load all images and the can be expanded -->
+
+<!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
    <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
     <GalleryExpanded stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
