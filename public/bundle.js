@@ -121,8 +121,17 @@ var app = (function () {
 		return Array.from(element.childNodes);
 	}
 
+	function set_data(text, data) {
+		data = '' + data;
+		if (text.data !== data) text.data = data;
+	}
+
 	function set_style(node, key, value) {
 		node.style.setProperty(key, value);
+	}
+
+	function toggle_class(element, name, toggle) {
+		element.classList[toggle ? 'add' : 'remove'](name);
 	}
 
 	function custom_event(type, detail) {
@@ -345,6 +354,82 @@ var app = (function () {
 
 	function on_outro(callback) {
 		outros.callbacks.push(callback);
+	}
+
+	function create_in_transition(node, fn, params) {
+		let config = fn(node, params);
+		let running = false;
+		let animation_name;
+		let task;
+		let uid = 0;
+
+		function cleanup() {
+			if (animation_name) delete_rule(node, animation_name);
+		}
+
+		function go() {
+			const {
+				delay = 0,
+				duration = 300,
+				easing = identity,
+				tick: tick$$1 = noop,
+				css
+			} = config;
+
+			if (css) animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+			tick$$1(0, 1);
+
+			const start_time = window.performance.now() + delay;
+			const end_time = start_time + duration;
+
+			if (task) task.abort();
+			running = true;
+
+			task = loop(now => {
+				if (running) {
+					if (now >= end_time) {
+						tick$$1(1, 0);
+						cleanup();
+						return running = false;
+					}
+
+					if (now >= start_time) {
+						const t = easing((now - start_time) / duration);
+						tick$$1(t, 1 - t);
+					}
+				}
+
+				return running;
+			});
+		}
+
+		let started = false;
+
+		return {
+			start() {
+				if (started) return;
+
+				delete_rule(node);
+
+				if (typeof config === 'function') {
+					config = config();
+					wait().then(go);
+				} else {
+					go();
+				}
+			},
+
+			invalidate() {
+				started = false;
+			},
+
+			end() {
+				if (running) {
+					cleanup();
+					running = false;
+				}
+			}
+		};
 	}
 
 	function create_out_transition(node, fn, params) {
@@ -747,7 +832,7 @@ var app = (function () {
 		return { set, update, subscribe };
 	}
 
-	const destroyingCollection = writable(false);
+	const destroyingExpandedGallery = writable(false);
 	const activeCollection = writable(0);
 	const loadingSecondary = writable(false);
 
@@ -762,54 +847,83 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (140:2) {#each stack as image, index}
-	function create_each_block(ctx) {
-		var current;
+	function get_each_context_1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.image = list[i];
+		child_ctx.index = i;
+		return child_ctx;
+	}
+
+	// (222:2) {#each stack as image, index}
+	function create_each_block_1(ctx) {
+		var a, a_href_value, current_1, dispose;
 
 		var image = new Image_1({
-			props: { image: ctx.image.src },
+			props: {
+			image: "" + ctx.lowresdir + "/" + ctx.image.src
+		},
 			$$inline: true
 		});
 		image.$on("loadingComplete", ctx.loadingComplete_handler);
 
+		function click_handler(...args) {
+			return ctx.click_handler(ctx, ...args);
+		}
+
 		return {
 			c: function create() {
+				a = element("a");
 				image.$$.fragment.c();
+				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
+				a.className = "svelte-k8z9y";
+				add_location(a, file$1, 222, 4, 5315);
+				dispose = listen(a, "click", click_handler);
 			},
 
 			m: function mount(target, anchor) {
-				mount_component(image, target, anchor);
-				current = true;
+				insert(target, a, anchor);
+				mount_component(image, a, null);
+				current_1 = true;
 			},
 
-			p: function update(changed, ctx) {
+			p: function update(changed, new_ctx) {
+				ctx = new_ctx;
 				var image_changes = {};
-				if (changed.stack) image_changes.image = ctx.image.src;
+				if (changed.lowresdir || changed.stack) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
 				image.$set(image_changes);
+
+				if ((!current_1 || changed.hiresdir || changed.stack) && a_href_value !== (a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src)) {
+					a.href = a_href_value;
+				}
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				image.$$.fragment.i(local);
 
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
 				image.$$.fragment.o(local);
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
-				image.$destroy(detaching);
+				if (detaching) {
+					detach(a);
+				}
+
+				image.$destroy();
+
+				dispose();
 			}
 		};
 	}
 
-	function create_fragment$1(ctx) {
-		var scrolling = false, clear_scrolling = () => { scrolling = false; }, scrolling_timeout, div, current, dispose;
-
-		add_render_callback(ctx.onwindowscroll);
+	// (229:0) {#if ready}
+	function create_if_block$1(ctx) {
+		var div, t0, span0, t1, span1, current_1, dispose;
 
 		var each_value = ctx.stack;
 
@@ -839,8 +953,195 @@ var app = (function () {
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "stack gallery svelte-ree74p";
-				add_location(div, file$1, 138, 0, 3722);
+
+				t0 = space();
+				span0 = element("span");
+				t1 = space();
+				span1 = element("span");
+				span0.className = "previous svelte-k8z9y";
+				add_location(span0, file$1, 235, 4, 5748);
+				span1.className = "next svelte-k8z9y";
+				add_location(span1, file$1, 236, 4, 5807);
+				div.className = "hires svelte-k8z9y";
+				add_location(div, file$1, 229, 2, 5500);
+
+				dispose = [
+					listen(span0, "click", ctx.showPrevious),
+					listen(span1, "click", ctx.showNext)
+				];
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div, null);
+				}
+
+				append(div, t0);
+				append(div, span0);
+				append(div, t1);
+				append(div, span1);
+				add_binding_callback(() => ctx.div_binding_1(div, null));
+				current_1 = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.current || changed.hiresdir || changed.stack || changed.handleLoadingHiResComplete) {
+					each_value = ctx.stack;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+							each_blocks[i].i(1);
+						} else {
+							each_blocks[i] = create_each_block(child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].i(1);
+							each_blocks[i].m(div, t0);
+						}
+					}
+
+					group_outros();
+					for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+					check_outros();
+				}
+
+				if (changed.items) {
+					ctx.div_binding_1(null, div);
+					ctx.div_binding_1(div, null);
+				}
+			},
+
+			i: function intro(local) {
+				if (current_1) return;
+				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+
+				current_1 = true;
+			},
+
+			o: function outro(local) {
+				each_blocks = each_blocks.filter(Boolean);
+				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+				current_1 = false;
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(div);
+				}
+
+				destroy_each(each_blocks, detaching);
+
+				ctx.div_binding_1(null, div);
+				run_all(dispose);
+			}
+		};
+	}
+
+	// (231:4) {#each stack as image, index}
+	function create_each_block(ctx) {
+		var div, current_1;
+
+		var image = new Image_1({
+			props: {
+			image: "" + ctx.hiresdir + "/" + ctx.image.src
+		},
+			$$inline: true
+		});
+		image.$on("loadingComplete", ctx.handleLoadingHiResComplete);
+
+		return {
+			c: function create() {
+				div = element("div");
+				image.$$.fragment.c();
+				div.className = "svelte-k8z9y";
+				toggle_class(div, "active", ctx.current === ctx.index);
+				add_location(div, file$1, 231, 6, 5584);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				mount_component(image, div, null);
+				current_1 = true;
+			},
+
+			p: function update(changed, ctx) {
+				var image_changes = {};
+				if (changed.hiresdir || changed.stack) image_changes.image = "" + ctx.hiresdir + "/" + ctx.image.src;
+				image.$set(image_changes);
+
+				if (changed.current) {
+					toggle_class(div, "active", ctx.current === ctx.index);
+				}
+			},
+
+			i: function intro(local) {
+				if (current_1) return;
+				image.$$.fragment.i(local);
+
+				current_1 = true;
+			},
+
+			o: function outro(local) {
+				image.$$.fragment.o(local);
+				current_1 = false;
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(div);
+				}
+
+				image.$destroy();
+			}
+		};
+	}
+
+	function create_fragment$1(ctx) {
+		var scrolling = false, clear_scrolling = () => { scrolling = false; }, scrolling_timeout, div, t, if_block_anchor, current_1, dispose;
+
+		add_render_callback(ctx.onwindowscroll);
+
+		var each_value_1 = ctx.stack;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+		}
+
+		function outro_block(i, detaching, local) {
+			if (each_blocks[i]) {
+				if (detaching) {
+					on_outro(() => {
+						each_blocks[i].d(detaching);
+						each_blocks[i] = null;
+					});
+				}
+
+				each_blocks[i].o(local);
+			}
+		}
+
+		var if_block = (ctx.ready) && create_if_block$1(ctx);
+
+		return {
+			c: function create() {
+				div = element("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				t = space();
+				if (if_block) if_block.c();
+				if_block_anchor = empty();
+				div.className = "stack gallery svelte-k8z9y";
+				add_location(div, file$1, 220, 0, 5226);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -861,7 +1162,10 @@ var app = (function () {
 				}
 
 				add_binding_callback(() => ctx.div_binding(div, null));
-				current = true;
+				insert(target, t, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
@@ -872,17 +1176,17 @@ var app = (function () {
 					scrolling_timeout = setTimeout(clear_scrolling, 100);
 				}
 
-				if (changed.stack) {
-					each_value = ctx.stack;
+				if (changed.hiresdir || changed.stack || changed.lowresdir) {
+					each_value_1 = ctx.stack;
 
-					for (var i = 0; i < each_value.length; i += 1) {
-						const child_ctx = get_each_context(ctx, each_value, i);
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						const child_ctx = get_each_context_1(ctx, each_value_1, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 							each_blocks[i].i(1);
 						} else {
-							each_blocks[i] = create_each_block(child_ctx);
+							each_blocks[i] = create_each_block_1(child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].i(1);
 							each_blocks[i].m(div, null);
@@ -898,20 +1202,43 @@ var app = (function () {
 					ctx.div_binding(null, div);
 					ctx.div_binding(div, null);
 				}
+
+				if (ctx.ready) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+						if_block.i(1);
+					} else {
+						if_block = create_if_block$1(ctx);
+						if_block.c();
+						if_block.i(1);
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					group_outros();
+					on_outro(() => {
+						if_block.d(1);
+						if_block = null;
+					});
+
+					if_block.o(1);
+					check_outros();
+				}
 			},
 
 			i: function intro(local) {
-				if (current) return;
-				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+				if (current_1) return;
+				for (var i = 0; i < each_value_1.length; i += 1) each_blocks[i].i();
 
-				current = true;
+				if (if_block) if_block.i();
+				current_1 = true;
 			},
 
 			o: function outro(local) {
 				each_blocks = each_blocks.filter(Boolean);
 				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
 
-				current = false;
+				if (if_block) if_block.o();
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -922,44 +1249,60 @@ var app = (function () {
 				destroy_each(each_blocks, detaching);
 
 				ctx.div_binding(null, div);
+
+				if (detaching) {
+					detach(t);
+				}
+
+				if (if_block) if_block.d(detaching);
+
+				if (detaching) {
+					detach(if_block_anchor);
+				}
+
 				dispose();
 			}
 		};
 	}
 
 	function instance$1($$self, $$props, $$invalidate) {
-		let $destroyingCollection, $loadingSecondary;
+		let $destroyingExpandedGallery, $loadingSecondary;
 
-		validate_store(destroyingCollection, 'destroyingCollection');
-		subscribe($$self, destroyingCollection, $$value => { $destroyingCollection = $$value; $$invalidate('$destroyingCollection', $destroyingCollection); });
+		validate_store(destroyingExpandedGallery, 'destroyingExpandedGallery');
+		subscribe($$self, destroyingExpandedGallery, $$value => { $destroyingExpandedGallery = $$value; $$invalidate('$destroyingExpandedGallery', $destroyingExpandedGallery); });
 		validate_store(loadingSecondary, 'loadingSecondary');
 		subscribe($$self, loadingSecondary, $$value => { $loadingSecondary = $$value; $$invalidate('$loadingSecondary', $loadingSecondary); });
 
 		
 
-	  let { stack, originaltarget } = $$props;
+	  let { stack, lowresdir, hiresdir, originaltarget } = $$props;
 
 	  // Local stuff
-	  let secondlevel;
+	  let secondLevel;
+	  let thirdLevel;
+	  let images;
+	  let imageCount;
 	  let ExpandedBefore = false;
 	  let ConsolidatedBefore = false;
+	  let ready;
+	  let current;
 	  let y;
+	  // count for loading
+	  let count = 0;
 
 	  // Function for bringing everything together.
 	  function consolidateStuff(){
 	    let rect = originaltarget.getBoundingClientRect();
-	    let images = secondlevel.getElementsByTagName('img');
-	    let imageCount = secondlevel.getElementsByTagName('img').length;
 	     
 	    Object.entries(images).forEach(([key, value]) => {
 	      let imageDivRect = value.getBoundingClientRect();
 	      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
 	      
 	      // if gallery is being closed/destroyed we want a quicker transition.
-	      if($destroyingCollection){
+	      if($destroyingExpandedGallery){
 	        value.classList.add('quicktransition');
 	      }else{
-	        value.style.zIndex = imageCount - key;
+	        value.parentNode.style.zIndex = imageCount - key;
 	      }
 	      // Set tranformed style.
 	      value.style.transform = transformedStyle;
@@ -969,9 +1312,7 @@ var app = (function () {
 
 	  // Function for Expanding things into place.
 	  function expandStuff(){
-	    secondlevel.style.transform = `translateY(${scrollY}px)`; $$invalidate('secondlevel', secondlevel);
-	    console.log(`translateY(${scrollY}px)`);
-	    let images = secondlevel.getElementsByTagName('img');
+	    secondLevel.style.transform = `translateY(${scrollY}px)`; $$invalidate('secondLevel', secondLevel);
 	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 	    (async () => {
@@ -985,7 +1326,10 @@ var app = (function () {
 	  }
 
 	  onMount(() => {
+	    $$invalidate('images', images = secondLevel.getElementsByTagName('img'));
+	    $$invalidate('imageCount', imageCount = secondLevel.getElementsByTagName('img').length);
 	    consolidateStuff();
+	    
 	  });
 
 	  afterUpdate(() => {
@@ -993,7 +1337,7 @@ var app = (function () {
 	      expandStuff();
 	      $$invalidate('ExpandedBefore', ExpandedBefore = true);
 	    }
-	    if($destroyingCollection && !ConsolidatedBefore){
+	    if($destroyingExpandedGallery && !ConsolidatedBefore){
 	      consolidateStuff();
 	      $$invalidate('ConsolidatedBefore', ConsolidatedBefore = true);
 	    }
@@ -1001,8 +1345,49 @@ var app = (function () {
 
 	  onDestroy(() => {
 	    console.log('being destoryed');
-	    destroyingCollection.update(n => false);
+	    destroyingExpandedGallery.update(n => false);
 	  });
+
+	  function loadLargeImages(event, index){
+	    $$invalidate('current', current = index);
+	    event.preventDefault();
+	    // after loading 
+	    $$invalidate('ready', ready = true);
+	  }
+
+	  function handleLoadingHiResComplete(event){
+	    $$invalidate('count', count = count + event.detail.loadingComplete);
+	    if(count === stack.length){
+	      // show the image that was clicked.
+	      console.log(count);
+	      console.log(current);
+	      console.log(thirdLevel);
+
+	      $$invalidate('count', count = 0);
+	    }
+	  }
+
+	  function showPrevious(){
+	    console.log(`current image is ${current}`);
+	    console.log("go prev");
+	    
+	    if(current <= 0) {
+	      $$invalidate('current', current = stack.length - 1);
+	    }else{
+	      current--; $$invalidate('current', current);
+	    }
+	    console.log(`current image is ${current}`);
+	  }
+	  function showNext(){
+	    
+	    if(current >= (stack.length - 1)) {
+	      $$invalidate('current', current = 0);
+	    }else{
+	      current++; $$invalidate('current', current);
+	    }
+	    console.log(`current image is ${current}`);
+
+	  }
 
 		function loadingComplete_handler(event) {
 			bubble($$self, event);
@@ -1012,36 +1397,64 @@ var app = (function () {
 			y = window.pageYOffset; $$invalidate('y', y);
 		}
 
+		function click_handler({ index }, e) {
+			return loadLargeImages(e, index);
+		}
+
 		function div_binding($$node, check) {
-			secondlevel = $$node;
-			$$invalidate('secondlevel', secondlevel);
+			secondLevel = $$node;
+			$$invalidate('secondLevel', secondLevel);
+		}
+
+		function div_binding_1($$node, check) {
+			thirdLevel = $$node;
+			$$invalidate('thirdLevel', thirdLevel);
 		}
 
 		$$self.$set = $$props => {
 			if ('stack' in $$props) $$invalidate('stack', stack = $$props.stack);
+			if ('lowresdir' in $$props) $$invalidate('lowresdir', lowresdir = $$props.lowresdir);
+			if ('hiresdir' in $$props) $$invalidate('hiresdir', hiresdir = $$props.hiresdir);
 			if ('originaltarget' in $$props) $$invalidate('originaltarget', originaltarget = $$props.originaltarget);
 		};
 
 		return {
 			stack,
+			lowresdir,
+			hiresdir,
 			originaltarget,
-			secondlevel,
+			secondLevel,
+			thirdLevel,
+			ready,
+			current,
 			y,
+			loadLargeImages,
+			handleLoadingHiResComplete,
+			showPrevious,
+			showNext,
 			loadingComplete_handler,
 			onwindowscroll,
-			div_binding
+			click_handler,
+			div_binding,
+			div_binding_1
 		};
 	}
 
 	class GalleryExpanded extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$1, create_fragment$1, safe_not_equal, ["stack", "originaltarget"]);
+			init(this, options, instance$1, create_fragment$1, safe_not_equal, ["stack", "lowresdir", "hiresdir", "originaltarget"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
 			if (ctx.stack === undefined && !('stack' in props)) {
 				console.warn("<GalleryExpanded> was created without expected prop 'stack'");
+			}
+			if (ctx.lowresdir === undefined && !('lowresdir' in props)) {
+				console.warn("<GalleryExpanded> was created without expected prop 'lowresdir'");
+			}
+			if (ctx.hiresdir === undefined && !('hiresdir' in props)) {
+				console.warn("<GalleryExpanded> was created without expected prop 'hiresdir'");
 			}
 			if (ctx.originaltarget === undefined && !('originaltarget' in props)) {
 				console.warn("<GalleryExpanded> was created without expected prop 'originaltarget'");
@@ -1053,6 +1466,22 @@ var app = (function () {
 		}
 
 		set stack(value) {
+			throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get lowresdir() {
+			throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set lowresdir(value) {
+			throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get hiresdir() {
+			throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set hiresdir(value) {
 			throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 
@@ -1070,6 +1499,11 @@ var app = (function () {
 	Distributed under MIT License https://github.com/mattdesl/eases/blob/master/LICENSE.md
 	*/
 
+	function cubicOut(t) {
+		const f = t - 1.0;
+		return f * f * f + 1.0;
+	}
+
 	function fade(node, {
 		delay = 0,
 		duration = 400
@@ -1080,6 +1514,30 @@ var app = (function () {
 			delay,
 			duration,
 			css: t => `opacity: ${t * o}`
+		};
+	}
+
+	function fly(node, {
+		delay = 0,
+		duration = 400,
+		easing = cubicOut,
+		x = 0,
+		y = 0,
+		opacity = 0
+	}) {
+		const style = getComputedStyle(node);
+		const target_opacity = +style.opacity;
+		const transform = style.transform === 'none' ? '' : style.transform;
+
+		const od = target_opacity * (1 - opacity);
+
+		return {
+			delay,
+			duration,
+			easing,
+			css: (t, u) => `
+			transform: ${transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);
+			opacity: ${target_opacity - (od * u)}`
 		};
 	}
 
@@ -1094,18 +1552,95 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (264:4) {:else}
+	// (291:0) {#if $activeCollection == id}
+	function create_if_block_2(ctx) {
+		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current, dispose;
+
+		return {
+			c: function create() {
+				div = element("div");
+				p = element("p");
+				t0 = text(ctx.name);
+				t1 = space();
+				span = element("span");
+				t2 = text("(");
+				t3 = text(t3_value);
+				t4 = text(" images)");
+				span.className = "svelte-c4dcfe";
+				add_location(span, file$2, 292, 14, 7245);
+				p.className = "svelte-c4dcfe";
+				add_location(p, file$2, 292, 4, 7235);
+				div.className = "breadcrumb svelte-c4dcfe";
+				add_location(div, file$2, 291, 2, 7107);
+				dispose = listen(div, "click", ctx.resetStacks);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, p);
+				append(p, t0);
+				append(p, t1);
+				append(p, span);
+				append(span, t2);
+				append(span, t3);
+				append(span, t4);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (!current || changed.name) {
+					set_data(t0, ctx.name);
+				}
+
+				if ((!current || changed.imagecollection) && t3_value !== (t3_value = ctx.imagecollection.length)) {
+					set_data(t3, t3_value);
+				}
+			},
+
+			i: function intro(local) {
+				if (current) return;
+				add_render_callback(() => {
+					if (div_outro) div_outro.end(1);
+					if (!div_intro) div_intro = create_in_transition(div, fly, { y: -40, duration: 400 });
+					div_intro.start();
+				});
+
+				current = true;
+			},
+
+			o: function outro(local) {
+				if (div_intro) div_intro.invalidate();
+
+				if (local) {
+					div_outro = create_out_transition(div, fly, { y: -40, duration: 400 });
+				}
+
+				current = false;
+			},
+
+			d: function destroy(detaching) {
+				if (detaching) {
+					detach(div);
+					if (div_outro) div_outro.end();
+				}
+
+				dispose();
+			}
+		};
+	}
+
+	// (308:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-qzdqxu";
+				span.className = "dummyimage svelte-c4dcfe";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 264, 6, 6478);
+				add_location(span, file$2, 308, 6, 7857);
 			},
 
 			m: function mount(target, anchor) {
@@ -1129,12 +1664,14 @@ var app = (function () {
 		};
 	}
 
-	// (262:4) {#if index==0}
-	function create_if_block_2(ctx) {
+	// (306:4) {#if index==0}
+	function create_if_block_1(ctx) {
 		var current;
 
 		var image = new Image_1({
-			props: { image: ctx.image.src },
+			props: {
+			image: "" + ctx.lowresdir + "/" + ctx.image.src
+		},
 			$$inline: true
 		});
 
@@ -1150,7 +1687,7 @@ var app = (function () {
 
 			p: function update(changed, ctx) {
 				var image_changes = {};
-				if (changed.imagecollection) image_changes.image = ctx.image.src;
+				if (changed.lowresdir || changed.imagecollection) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
 				image.$set(image_changes);
 			},
 
@@ -1172,12 +1709,12 @@ var app = (function () {
 		};
 	}
 
-	// (261:2) {#each imagecollection as image, index}
+	// (305:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
 		var if_block_creators = [
-			create_if_block_2,
+			create_if_block_1,
 			create_else_block
 		];
 
@@ -1248,12 +1785,14 @@ var app = (function () {
 		};
 	}
 
-	// (272:0) {#if attemptingtoLoad}
-	function create_if_block$1(ctx) {
-		var div, div_class_value, div_outro, t, if_block_anchor, current;
+	// (316:0) {#if attemptingtoLoad}
+	function create_if_block$2(ctx) {
+		var div, div_class_value, div_outro, current;
 
 		var galleryexpanded = new GalleryExpanded({
 			props: {
+			lowresdir: ctx.lowresdir,
+			hiresdir: ctx.hiresdir,
 			stack: ctx.imagecollection,
 			originaltarget: ctx.collection
 		},
@@ -1261,49 +1800,30 @@ var app = (function () {
 		});
 		galleryexpanded.$on("loadingComplete", ctx.handleLoadingComplete);
 
-		var if_block = (ctx.$activeCollection == ctx.id) && create_if_block_1(ctx);
-
 		return {
 			c: function create() {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
-				t = space();
-				if (if_block) if_block.c();
-				if_block_anchor = empty();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qzdqxu";
-				add_location(div, file$2, 272, 3, 6750);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-c4dcfe";
+				add_location(div, file$2, 316, 3, 8129);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
 				mount_component(galleryexpanded, div, null);
-				insert(target, t, anchor);
-				if (if_block) if_block.m(target, anchor);
-				insert(target, if_block_anchor, anchor);
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
 				var galleryexpanded_changes = {};
+				if (changed.lowresdir) galleryexpanded_changes.lowresdir = ctx.lowresdir;
+				if (changed.hiresdir) galleryexpanded_changes.hiresdir = ctx.hiresdir;
 				if (changed.imagecollection) galleryexpanded_changes.stack = ctx.imagecollection;
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-qzdqxu")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-c4dcfe")) {
 					div.className = div_class_value;
-				}
-
-				if (ctx.$activeCollection == ctx.id) {
-					if (if_block) {
-						if_block.p(changed, ctx);
-					} else {
-						if_block = create_if_block_1(ctx);
-						if_block.c();
-						if_block.m(if_block_anchor.parentNode, if_block_anchor);
-					}
-				} else if (if_block) {
-					if_block.d(1);
-					if_block = null;
 				}
 			},
 
@@ -1335,48 +1855,15 @@ var app = (function () {
 
 				if (detaching) {
 					if (div_outro) div_outro.end();
-					detach(t);
 				}
-
-				if (if_block) if_block.d(detaching);
-
-				if (detaching) {
-					detach(if_block_anchor);
-				}
-			}
-		};
-	}
-
-	// (276:2) {#if $activeCollection == id}
-	function create_if_block_1(ctx) {
-		var div, dispose;
-
-		return {
-			c: function create() {
-				div = element("div");
-				div.className = "bg svelte-qzdqxu";
-				add_location(div, file$2, 275, 31, 6982);
-				dispose = listen(div, "click", ctx.resetStacks);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-			},
-
-			p: noop,
-
-			d: function destroy(detaching) {
-				if (detaching) {
-					detach(div);
-				}
-
-				dispose();
 			}
 		};
 	}
 
 	function create_fragment$2(ctx) {
-		var div, div_class_value, t, if_block_anchor, current, dispose;
+		var t0, div, div_class_value, t1, if_block1_anchor, current, dispose;
+
+		var if_block0 = (ctx.$activeCollection == ctx.id) && create_if_block_2(ctx);
 
 		var each_value = ctx.imagecollection;
 
@@ -1399,21 +1886,23 @@ var app = (function () {
 			}
 		}
 
-		var if_block = (ctx.attemptingtoLoad) && create_if_block$1(ctx);
+		var if_block1 = (ctx.attemptingtoLoad) && create_if_block$2(ctx);
 
 		return {
 			c: function create() {
+				if (if_block0) if_block0.c();
+				t0 = space();
 				div = element("div");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
 
-				t = space();
-				if (if_block) if_block.c();
-				if_block_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-qzdqxu";
-				add_location(div, file$2, 251, 0, 5946);
+				t1 = space();
+				if (if_block1) if_block1.c();
+				if_block1_anchor = empty();
+				div.className = div_class_value = "collection " + ctx.darkness + " svelte-c4dcfe";
+				add_location(div, file$2, 295, 0, 7311);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1427,6 +1916,8 @@ var app = (function () {
 			},
 
 			m: function mount(target, anchor) {
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, t0, anchor);
 				insert(target, div, anchor);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -1434,14 +1925,35 @@ var app = (function () {
 				}
 
 				add_binding_callback(() => ctx.div_binding(div, null));
-				insert(target, t, anchor);
-				if (if_block) if_block.m(target, anchor);
-				insert(target, if_block_anchor, anchor);
+				insert(target, t1, anchor);
+				if (if_block1) if_block1.m(target, anchor);
+				insert(target, if_block1_anchor, anchor);
 				current = true;
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.imagecollection) {
+				if (ctx.$activeCollection == ctx.id) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+						if_block0.i(1);
+					} else {
+						if_block0 = create_if_block_2(ctx);
+						if_block0.c();
+						if_block0.i(1);
+						if_block0.m(t0.parentNode, t0);
+					}
+				} else if (if_block0) {
+					group_outros();
+					on_outro(() => {
+						if_block0.d(1);
+						if_block0 = null;
+					});
+
+					if_block0.o(1);
+					check_outros();
+				}
+
+				if (changed.lowresdir || changed.imagecollection) {
 					each_value = ctx.imagecollection;
 
 					for (var i = 0; i < each_value.length; i += 1) {
@@ -1468,50 +1980,57 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-qzdqxu")) {
+				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-c4dcfe")) {
 					div.className = div_class_value;
 				}
 
 				if (ctx.attemptingtoLoad) {
-					if (if_block) {
-						if_block.p(changed, ctx);
-						if_block.i(1);
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+						if_block1.i(1);
 					} else {
-						if_block = create_if_block$1(ctx);
-						if_block.c();
-						if_block.i(1);
-						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+						if_block1 = create_if_block$2(ctx);
+						if_block1.c();
+						if_block1.i(1);
+						if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
 					}
-				} else if (if_block) {
+				} else if (if_block1) {
 					group_outros();
 					on_outro(() => {
-						if_block.d(1);
-						if_block = null;
+						if_block1.d(1);
+						if_block1 = null;
 					});
 
-					if_block.o(1);
+					if_block1.o(1);
 					check_outros();
 				}
 			},
 
 			i: function intro(local) {
 				if (current) return;
+				if (if_block0) if_block0.i();
+
 				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
 
-				if (if_block) if_block.i();
+				if (if_block1) if_block1.i();
 				current = true;
 			},
 
 			o: function outro(local) {
+				if (if_block0) if_block0.o();
+
 				each_blocks = each_blocks.filter(Boolean);
 				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
 
-				if (if_block) if_block.o();
+				if (if_block1) if_block1.o();
 				current = false;
 			},
 
 			d: function destroy(detaching) {
+				if (if_block0) if_block0.d(detaching);
+
 				if (detaching) {
+					detach(t0);
 					detach(div);
 				}
 
@@ -1520,13 +2039,13 @@ var app = (function () {
 				ctx.div_binding(null, div);
 
 				if (detaching) {
-					detach(t);
+					detach(t1);
 				}
 
-				if (if_block) if_block.d(detaching);
+				if (if_block1) if_block1.d(detaching);
 
 				if (detaching) {
-					detach(if_block_anchor);
+					detach(if_block1_anchor);
 				}
 
 				run_all(dispose);
@@ -1535,25 +2054,25 @@ var app = (function () {
 	}
 
 	function instance$2($$self, $$props, $$invalidate) {
-		let $activeCollection, $destroyingCollection, $loadingSecondary;
+		let $activeCollection, $destroyingExpandedGallery, $loadingSecondary;
 
 		validate_store(activeCollection, 'activeCollection');
 		subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
-		validate_store(destroyingCollection, 'destroyingCollection');
-		subscribe($$self, destroyingCollection, $$value => { $destroyingCollection = $$value; $$invalidate('$destroyingCollection', $destroyingCollection); });
+		validate_store(destroyingExpandedGallery, 'destroyingExpandedGallery');
+		subscribe($$self, destroyingExpandedGallery, $$value => { $destroyingExpandedGallery = $$value; $$invalidate('$destroyingExpandedGallery', $destroyingExpandedGallery); });
 		validate_store(loadingSecondary, 'loadingSecondary');
 		subscribe($$self, loadingSecondary, $$value => { $loadingSecondary = $$value; $$invalidate('$loadingSecondary', $loadingSecondary); });
 
 		
 	  
-	  let { imagecollection, id } = $$props;
+	  let { imagecollection, lowresdir, hiresdir, id, name } = $$props;
 
 	  const dispatch = createEventDispatcher();
 
 	  // Local stuff
 	  let collection;
 	  let darkness;
-	  let images;
+	  let fakeImages;
 	  let firstImage;
 
 	  // count for loading
@@ -1562,25 +2081,24 @@ var app = (function () {
 	  let attemptingtoLoad = false;
 	  let resetStacksBefore = false;
 
-
 	  onMount(() => {
-			$$invalidate('images', images = collection.getElementsByTagName('span'));
+			$$invalidate('fakeImages', fakeImages = collection.getElementsByTagName('span'));
 	    $$invalidate('firstImage', firstImage = collection.getElementsByTagName('img')[0]);
 		});
 	  
-	  // Rotate images on hover
+	  // Rotate image stack on hover
 	  function rotate() {
 	    collection.style.transform = 'rotate(-1.5deg)'; $$invalidate('collection', collection);
-	    Object.entries(images).forEach(([key, value]) => {
+	    Object.entries(fakeImages).forEach(([key, value]) => {
 	      value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
 	    });
 	    firstImage.style.transform = 'scale(1.08) translateY(10px)'; $$invalidate('firstImage', firstImage);
 	  }
 
-	  // Un-Rotate images on hover out
+	  // Un-Rotate image stack on hover out
 	  function unRotate() {
 	    collection.style.transform = 'rotate(0deg)'; $$invalidate('collection', collection);
-	    Object.entries(images).forEach(([key, value]) => {
+	    Object.entries(fakeImages).forEach(([key, value]) => {
 	      value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
 	    });
 	    firstImage.style.transform = 'scale(1)'; $$invalidate('firstImage', firstImage);
@@ -1606,45 +2124,49 @@ var app = (function () {
 	    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`; $$invalidate('collection', collection);
 	  }
 
-	  // Function for resetting the stacks
+	  // Function for bringing the stacks back after we've closed an Expanded Gallery
 	  function resetStacks(){
 	    if(!resetStacksBefore){
 	      var rect = collection.getBoundingClientRect();
 	      collection.style.transform = `translateX(0px) translateY(0px)`; $$invalidate('collection', collection);
 
 	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-	        destroyingCollection.update(n => true);
+	        destroyingExpandedGallery.update(n => true);
 	        (async () => {
 	          await sleep(200);
 	          dispatch('expand', {
 	              active: 0
 	          });
 	          $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
+	          collection.classList.remove('no-pointer-events');
 	        })();
 	        $$invalidate('resetStacksBefore', resetStacksBefore = true);
 	    }
 	  }
 
-
-
 	  // Lifecycle event. Calls whenever an update happens.
-	  // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
+	  // some of this might need refactoring, not quite sure how it got like this.
 	  afterUpdate(() => {
+	    // If this is NOT the active collection.
 	    if($activeCollection != id && $activeCollection!==0){
 	      $$invalidate('darkness', darkness = 'total');
 	      collection.classList.add('notransition');
+	      collection.classList.add('no-pointer-events');
 	      blowStacks();
+	    
+	    // If this IS the active collection.
 	    }else if($activeCollection === id){
 	      $$invalidate('darkness', darkness = 'none');
 	      collection.classList.add('notransition');
 	      $$invalidate('resetStacksBefore', resetStacksBefore = false);
-	    }else{
+	    
+	    // If we're destroying the Expanded Gallery
+	    }else if($destroyingExpandedGallery){
 	      $$invalidate('darkness', darkness = '');
 	      collection.classList.remove('notransition');
-	      if($destroyingCollection){
-	        $$invalidate('resetStacksBefore', resetStacksBefore = false);
-	        resetStacks();
-	      }
+	      collection.classList.add('no-pointer-events');
+	      $$invalidate('resetStacksBefore', resetStacksBefore = false);
+	      resetStacks();
 	    }
 	  });
 	  
@@ -1664,12 +2186,18 @@ var app = (function () {
 
 		$$self.$set = $$props => {
 			if ('imagecollection' in $$props) $$invalidate('imagecollection', imagecollection = $$props.imagecollection);
+			if ('lowresdir' in $$props) $$invalidate('lowresdir', lowresdir = $$props.lowresdir);
+			if ('hiresdir' in $$props) $$invalidate('hiresdir', hiresdir = $$props.hiresdir);
 			if ('id' in $$props) $$invalidate('id', id = $$props.id);
+			if ('name' in $$props) $$invalidate('name', name = $$props.name);
 		};
 
 		return {
 			imagecollection,
+			lowresdir,
+			hiresdir,
 			id,
+			name,
 			collection,
 			darkness,
 			attemptingtoLoad,
@@ -1687,15 +2215,24 @@ var app = (function () {
 	class GalleryStacks extends SvelteComponentDev {
 		constructor(options) {
 			super(options);
-			init(this, options, instance$2, create_fragment$2, safe_not_equal, ["imagecollection", "id"]);
+			init(this, options, instance$2, create_fragment$2, safe_not_equal, ["imagecollection", "lowresdir", "hiresdir", "id", "name"]);
 
 			const { ctx } = this.$$;
 			const props = options.props || {};
 			if (ctx.imagecollection === undefined && !('imagecollection' in props)) {
 				console.warn("<GalleryStacks> was created without expected prop 'imagecollection'");
 			}
+			if (ctx.lowresdir === undefined && !('lowresdir' in props)) {
+				console.warn("<GalleryStacks> was created without expected prop 'lowresdir'");
+			}
+			if (ctx.hiresdir === undefined && !('hiresdir' in props)) {
+				console.warn("<GalleryStacks> was created without expected prop 'hiresdir'");
+			}
 			if (ctx.id === undefined && !('id' in props)) {
 				console.warn("<GalleryStacks> was created without expected prop 'id'");
+			}
+			if (ctx.name === undefined && !('name' in props)) {
+				console.warn("<GalleryStacks> was created without expected prop 'name'");
 			}
 		}
 
@@ -1707,11 +2244,35 @@ var app = (function () {
 			throw new Error("<GalleryStacks>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 
+		get lowresdir() {
+			throw new Error("<GalleryStacks>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set lowresdir(value) {
+			throw new Error("<GalleryStacks>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get hiresdir() {
+			throw new Error("<GalleryStacks>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set hiresdir(value) {
+			throw new Error("<GalleryStacks>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
 		get id() {
 			throw new Error("<GalleryStacks>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 
 		set id(value) {
+			throw new Error("<GalleryStacks>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		get name() {
+			throw new Error("<GalleryStacks>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+		}
+
+		set name(value) {
 			throw new Error("<GalleryStacks>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 	}
@@ -1725,8 +2286,11 @@ var app = (function () {
 
 		var gallerystacks0 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection1,
-			id: uid++
+			id: uid++,
+			name: "Spider"
 		},
 			$$inline: true
 		});
@@ -1734,8 +2298,11 @@ var app = (function () {
 
 		var gallerystacks1 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection2,
-			id: uid++
+			id: uid++,
+			name: "Head"
 		},
 			$$inline: true
 		});
@@ -1743,8 +2310,11 @@ var app = (function () {
 
 		var gallerystacks2 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection3,
-			id: uid++
+			id: uid++,
+			name: "Octopus"
 		},
 			$$inline: true
 		});
@@ -1752,8 +2322,11 @@ var app = (function () {
 
 		var gallerystacks3 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection4,
-			id: uid++
+			id: uid++,
+			name: "Robot"
 		},
 			$$inline: true
 		});
@@ -1761,8 +2334,11 @@ var app = (function () {
 
 		var gallerystacks4 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection5,
-			id: uid++
+			id: uid++,
+			name: "Cash Suitcase"
 		},
 			$$inline: true
 		});
@@ -1770,8 +2346,11 @@ var app = (function () {
 
 		var gallerystacks5 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection6,
-			id: uid++
+			id: uid++,
+			name: "Citizens of Science"
 		},
 			$$inline: true
 		});
@@ -1779,8 +2358,11 @@ var app = (function () {
 
 		var gallerystacks6 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection4,
-			id: uid++
+			id: uid++,
+			name: "Robo"
 		},
 			$$inline: true
 		});
@@ -1788,8 +2370,11 @@ var app = (function () {
 
 		var gallerystacks7 = new GalleryStacks({
 			props: {
+			lowresdir: "images",
+			hiresdir: "images/originals",
 			imagecollection: ctx.collection1,
-			id: uid++
+			id: uid++,
+			name: "Kumo"
 		},
 			$$inline: true
 		});
@@ -1814,7 +2399,7 @@ var app = (function () {
 				t6 = space();
 				gallerystacks7.$$.fragment.c();
 				div.className = "container svelte-rby08";
-				add_location(div, file$3, 84, 0, 2019);
+				add_location(div, file$3, 77, 0, 1680);
 			},
 
 			l: function claim(nodes) {
@@ -1950,48 +2535,48 @@ var app = (function () {
 	function instance$3($$self, $$props, $$invalidate) {
 		let { name } = $$props;
 		let collection1 = [
-			{ src: 'images/IMG_0003.JPG' },
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0005.JPG' },
-			{ src: 'images/IMG_0007.JPG' },
-			{ src: 'images/IMG_0008.JPG' },
-			{ src: 'images/IMG_0009.JPG' },
-			{ src: 'images/IMG_0010.JPG' }
+			{ src: 'IMG_0003.JPG' },
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0005.JPG' },
+			{ src: 'IMG_0007.JPG' },
+			{ src: 'IMG_0008.JPG' },
+			{ src: 'IMG_0009.JPG' },
+			{ src: 'IMG_0010.JPG' }
 		];
 		let collection2 = [
-			{ src: 'images/IMG_0007.JPG' },
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0005.JPG' },
-			{ src: 'images/IMG_0007.JPG' },
-			{ src: 'images/IMG_0008.JPG' },
-			{ src: 'images/IMG_0009.JPG' },
-			{ src: 'images/IMG_0010.JPG' }
+			{ src: 'IMG_0007.JPG' },
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0005.JPG' },
+			{ src: 'IMG_0007.JPG' },
+			{ src: 'IMG_0008.JPG' },
+			{ src: 'IMG_0009.JPG' },
+			{ src: 'IMG_0010.JPG' }
 		];
 		let collection3 = [
-			{ src: 'images/IMG_0009.JPG' },
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0005.JPG' },
-			{ src: 'images/IMG_0007.JPG' },
-			{ src: 'images/IMG_0008.JPG' },
-			{ src: 'images/IMG_0009.JPG' },
-			{ src: 'images/IMG_0010.JPG' }
+			{ src: 'IMG_0009.JPG' },
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0005.JPG' },
+			{ src: 'IMG_0007.JPG' },
+			{ src: 'IMG_0008.JPG' },
+			{ src: 'IMG_0009.JPG' },
+			{ src: 'IMG_0010.JPG' }
 		];
 		let collection4 = [
-			{ src: 'images/IMG_0010.JPG' },
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0005.JPG' },
-			{ src: 'images/IMG_0007.JPG' },
-			{ src: 'images/IMG_0008.JPG' },
-			{ src: 'images/IMG_0010.JPG' }
+			{ src: 'IMG_0010.JPG' },
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0005.JPG' },
+			{ src: 'IMG_0007.JPG' },
+			{ src: 'IMG_0008.JPG' },
+			{ src: 'IMG_0010.JPG' }
 		];
 		let collection5 = [
-			{ src: 'images/IMG_0008.JPG' },
-			{ src: 'images/IMG_0004.JPG' }
+			{ src: 'IMG_0008.JPG' },
+			{ src: 'IMG_0004.JPG' }
 		];
 		let collection6 = [
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0004.JPG' },
-			{ src: 'images/IMG_0005.JPG' }
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0004.JPG' },
+			{ src: 'IMG_0005.JPG' }
 		];
 
 		$$self.$set = $$props => {

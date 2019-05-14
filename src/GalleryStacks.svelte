@@ -2,11 +2,14 @@
   import Image from './Image.svelte';
   import GalleryExpanded from './GalleryExpanded.svelte';
   import { onMount, afterUpdate, createEventDispatcher } from 'svelte';
-  import { fade } from 'svelte/transition';
-  import { activeCollection, destroyingCollection, loadingSecondary } from './stores.js';
+  import { fly, fade } from 'svelte/transition';
+  import { activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
   
   export let imagecollection;
+  export let lowresdir;
+  export let hiresdir;
   export let id;
+  export let name;
 
   const dispatch = createEventDispatcher();
 
@@ -14,7 +17,7 @@
   let collection;
   let secondLevel;
   let darkness;
-  let images;
+  let fakeImages;
   let firstImage;
 
   // count for loading
@@ -23,25 +26,24 @@
   let attemptingtoLoad = false;
   let resetStacksBefore = false;
 
-
   onMount(() => {
-		images = collection.getElementsByTagName('span');
+		fakeImages = collection.getElementsByTagName('span');
     firstImage = collection.getElementsByTagName('img')[0];
 	});
   
-  // Rotate images on hover
+  // Rotate image stack on hover
   function rotate() {
     collection.style.transform = 'rotate(-1.5deg)';
-    Object.entries(images).forEach(([key, value]) => {
+    Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1.08) translateY(10px)';
   }
 
-  // Un-Rotate images on hover out
+  // Un-Rotate image stack on hover out
   function unRotate() {
     collection.style.transform = 'rotate(0deg)';
-    Object.entries(images).forEach(([key, value]) => {
+    Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1)';
@@ -67,7 +69,7 @@
     collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
   }
 
-  // Function for resetting the stacks
+  // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
     if(!resetStacksBefore){
       let images = collection;
@@ -75,38 +77,42 @@
       collection.style.transform = `translateX(0px) translateY(0px)`
 
       const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-        destroyingCollection.update(n => true);
+        destroyingExpandedGallery.update(n => true);
         (async () => {
           await sleep(200);
           dispatch('expand', {
               active: 0
           });
           attemptingtoLoad = false;
+          collection.classList.remove('no-pointer-events');
         })();
         resetStacksBefore = true;
     }
   }
 
-
-
   // Lifecycle event. Calls whenever an update happens.
-  // some of this might need refactoring, not quite sure why it can't be in mnormal functions.
+  // some of this might need refactoring, not quite sure how it got like this.
   afterUpdate(() => {
+    // If this is NOT the active collection.
     if($activeCollection != id && $activeCollection!==0){
       darkness = 'total';
       collection.classList.add('notransition');
+      collection.classList.add('no-pointer-events');
       blowStacks();
+    
+    // If this IS the active collection.
     }else if($activeCollection === id){
       darkness = 'none';
       collection.classList.add('notransition');
       resetStacksBefore = false;
-    }else{
+    
+    // If we're destroying the Expanded Gallery
+    }else if($destroyingExpandedGallery){
       darkness = '';
       collection.classList.remove('notransition');
-      if($destroyingCollection){
-        resetStacksBefore = false;
-        resetStacks();
-      }
+      collection.classList.add('no-pointer-events');
+      resetStacksBefore = false;
+      resetStacks();
     }
   });
   
@@ -156,7 +162,10 @@
     transition: 0.2s all ease-out;
   }
 
-  .spinner {
+  .no-pointer-events{
+    pointer-events: none;
+  }
+  /* .spinner {
     animation: rotate 2s linear infinite;
     z-index: 2;
     position: absolute;
@@ -171,7 +180,7 @@
       stroke: rgb(26, 118, 211);
       stroke-linecap: round;
       animation: dash 1.5s ease-in-out infinite;
-  }
+  } */
 
   @keyframes rotate {
     100% {
@@ -216,16 +225,46 @@
     box-shadow: 0px -5px 30px rgba(90,90,90, 0.3)
   }
 
-  .bg{
+  .breadcrumb{
     /*TODO need this to be a sticky menu */
-    background: #fff;
+    /* background: #efefef; */
     opacity: 1;
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 20px;
     animation: hello 0s forwards;
     pointer-events: none;
-    z-index: 1;
+    z-index: 99;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  .breadcrumb p{
+    margin: 0;
+    position: relative;
+    display: block;
+    color: #333;
+    padding-left: 10px;
+    text-transform: uppercase;
+  }
+  .breadcrumb p:before, .breadcrumb p:after{
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0; top: 7px;
+    height: 6px; width: 2px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+  .breadcrumb p span{
+    text-transform: none;
+    font-weight: 300;
+    color: #a5a4a4;
+  }
+  .breadcrumb p:after{
+    top: 10px;
+    transform: rotate(-45deg);
   }
   @keyframes hello{
     0%{
@@ -249,6 +288,11 @@
 </style>
 
 
+{#if $activeCollection == id}
+  <div class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
+    <p>{name} <span>({imagecollection.length} images)</span></p>
+  </div>
+{/if}
 <div class="collection {darkness}" bind:this={collection} on:mouseenter={rotate} on:mouseleave={unRotate} on:click={showContents}>
   <!-- in case we want a spinner 
   {#if $activeCollection == id}
@@ -260,7 +304,7 @@
   <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}
-      <Image image={image.src} />
+      <Image image="{lowresdir}/{image.src}" />
     {:else}
       <span class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></span>
     {/if}
@@ -271,7 +315,8 @@
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
    <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
-    <GalleryExpanded stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
+    <GalleryExpanded lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
-  {#if $activeCollection == id}<div class="bg" on:click={resetStacks}></div>{/if}
 {/if}
+
+
