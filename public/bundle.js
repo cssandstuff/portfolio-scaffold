@@ -854,7 +854,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (222:2) {#each stack as image, index}
+	// (281:2) {#each stack as image, index}
 	function create_each_block_1(ctx) {
 		var a, a_href_value, current_1, dispose;
 
@@ -875,8 +875,8 @@ var app = (function () {
 				a = element("a");
 				image.$$.fragment.c();
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-				a.className = "svelte-k8z9y";
-				add_location(a, file$1, 222, 4, 5315);
+				a.className = "svelte-1vi02zg";
+				add_location(a, file$1, 281, 4, 6550);
 				dispose = listen(a, "click", click_handler);
 			},
 
@@ -921,9 +921,9 @@ var app = (function () {
 		};
 	}
 
-	// (229:0) {#if ready}
+	// (288:0) {#if ready}
 	function create_if_block$1(ctx) {
-		var div, t0, span0, t1, span1, current_1, dispose;
+		var div, t0, span0, t1, span1, t2, span2, current_1, dispose;
 
 		var each_value = ctx.stack;
 
@@ -958,16 +958,22 @@ var app = (function () {
 				span0 = element("span");
 				t1 = space();
 				span1 = element("span");
-				span0.className = "previous svelte-k8z9y";
-				add_location(span0, file$1, 235, 4, 5748);
-				span1.className = "next svelte-k8z9y";
-				add_location(span1, file$1, 236, 4, 5807);
-				div.className = "hires svelte-k8z9y";
-				add_location(div, file$1, 229, 2, 5500);
+				t2 = space();
+				span2 = element("span");
+				span2.textContent = "close";
+				span0.className = "previous svelte-1vi02zg";
+				add_location(span0, file$1, 294, 4, 6983);
+				span1.className = "next svelte-1vi02zg";
+				add_location(span1, file$1, 295, 4, 7042);
+				span2.className = "close svelte-1vi02zg";
+				add_location(span2, file$1, 296, 4, 7093);
+				div.className = "hires svelte-1vi02zg";
+				add_location(div, file$1, 288, 2, 6735);
 
 				dispose = [
 					listen(span0, "click", ctx.showPrevious),
-					listen(span1, "click", ctx.showNext)
+					listen(span1, "click", ctx.showNext),
+					listen(span2, "click", ctx.closeGallery)
 				];
 			},
 
@@ -982,6 +988,8 @@ var app = (function () {
 				append(div, span0);
 				append(div, t1);
 				append(div, span1);
+				append(div, t2);
+				append(div, span2);
 				add_binding_callback(() => ctx.div_binding_1(div, null));
 				current_1 = true;
 			},
@@ -1042,7 +1050,7 @@ var app = (function () {
 		};
 	}
 
-	// (231:4) {#each stack as image, index}
+	// (290:4) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var div, current_1;
 
@@ -1058,9 +1066,9 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				image.$$.fragment.c();
-				div.className = "svelte-k8z9y";
+				div.className = "svelte-1vi02zg";
 				toggle_class(div, "active", ctx.current === ctx.index);
-				add_location(div, file$1, 231, 6, 5584);
+				add_location(div, file$1, 290, 6, 6819);
 			},
 
 			m: function mount(target, anchor) {
@@ -1140,8 +1148,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = "stack gallery svelte-k8z9y";
-				add_location(div, file$1, 220, 0, 5226);
+				div.className = "stack gallery svelte-1vi02zg";
+				add_location(div, file$1, 279, 0, 6461);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1358,12 +1366,8 @@ var app = (function () {
 	  function handleLoadingHiResComplete(event){
 	    $$invalidate('count', count = count + event.detail.loadingComplete);
 	    if(count === stack.length){
-	      // show the image that was clicked.
-	      console.log(count);
-	      console.log(current);
-	      console.log(thirdLevel);
-
 	      $$invalidate('count', count = 0);
+	      document.documentElement.classList.add('locked');
 	    }
 	  }
 
@@ -1386,7 +1390,11 @@ var app = (function () {
 	      current++; $$invalidate('current', current);
 	    }
 	    console.log(`current image is ${current}`);
+	  }
 
+	  function closeGallery(){
+	    $$invalidate('ready', ready = false);
+	    document.documentElement.classList.remove('locked');
 	  }
 
 		function loadingComplete_handler(event) {
@@ -1432,6 +1440,7 @@ var app = (function () {
 			handleLoadingHiResComplete,
 			showPrevious,
 			showNext,
+			closeGallery,
 			loadingComplete_handler,
 			onwindowscroll,
 			click_handler,

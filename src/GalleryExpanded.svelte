@@ -90,12 +90,8 @@
   function handleLoadingHiResComplete(event){
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
-      // show the image that was clicked.
-      console.log(count);
-      console.log(current);
-      console.log(thirdLevel);
-
       count = 0;
+      document.documentElement.classList.add('locked');
     }
   }
 
@@ -118,7 +114,11 @@
       current++;
     }
     console.log(`current image is ${current}`)
+  }
 
+  function closeGallery(){
+    ready = false;
+    document.documentElement.classList.remove('locked');
   }
 </script>
 
@@ -188,8 +188,7 @@
     position: fixed;
     top: 0; left: 0;
     z-index: 99;
-    height: calc(100vh - 40px); width: 100vw;
-    margin-top: 40px;
+    height: 100vh; width: 100vw;
     background: #222;
   }
   .hires :global(img){
@@ -205,15 +204,75 @@
   }
   .previous, .next{
     position: absolute;
-    top: calc(50vh - 40px);
-    background: yellow;
-    height: 40px; width: 40px;
+    top: calc(50vh - 60px);
+    background: rgba(255,255,255,0.05);
+    height: 120px; width: 80px;
+    cursor: pointer;
+    transition: 0.4s all;
+  }
+  .previous:hover, .next:hover{
+    background: rgba(255,255,255,0.15);
+  }
+  .previous:hover{
+    transform: translateX(-5px);
+  }
+  .next:hover{
+    transform: translateX(5px);
+  }
+  .previous:before, .previous:after, .next:before, .next:after{
+    content:'';
+    position: absolute;
+    width: 22px;
+    height: 2px;
+    background: #999;
+    right: 20px; top: 50px;
+  }
+  .previous:before{
+    transform: rotate(-45deg)
+  }
+  .previous::after{
+    transform: rotate(45deg);
+    top: 65px;
+  }
+  .next:before{
+    transform: rotate(45deg)
+  }
+  .next::after{
+    transform: rotate(-45deg);
+    top: 65px;
   }
   .previous{
     left: 0;
+    border-radius: 0 20px 20px 0;
   }
   .next{
     right: 0;
+    border-radius: 20px 0 0 20px;
+  }
+  .close{
+    color: #999;
+    right: 1em; top: 1em;
+    position: absolute;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    width: 40px; height: 40px;
+    padding-right: 20px;
+    cursor: pointer;
+  }
+  .close:before, .close:after{
+    content:'';
+    position: absolute;
+    width: 15px;
+    height: 2px;
+    background: #999;
+    right: 0; top: 7px;
+  }
+  .close:before{
+    transform: rotate(-45deg);
+  }
+  .close:after{
+    transform: rotate(45deg);
   }
 </style>
 
@@ -235,5 +294,6 @@
     {/each}
     <span class="previous" on:click={showPrevious}></span>
     <span class="next" on:click={showNext}></span>
+    <span class="close" on:click={closeGallery}>close</span>
   </div>
 {/if}

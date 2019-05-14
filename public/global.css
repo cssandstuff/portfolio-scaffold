@@ -13,6 +13,9 @@ body {
 	overflow-x: hidden;
 }
 
+.locked{
+	overflow-y: hidden;
+}
 a {
 	color: rgb(0,100,200);
 	text-decoration: none;
