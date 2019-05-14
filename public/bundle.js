@@ -1563,7 +1563,7 @@ var app = (function () {
 
 	// (291:0) {#if $activeCollection == id}
 	function create_if_block_2(ctx) {
-		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current, dispose;
+		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current_1, dispose;
 
 		return {
 			c: function create() {
@@ -1575,12 +1575,12 @@ var app = (function () {
 				t2 = text("(");
 				t3 = text(t3_value);
 				t4 = text(" images)");
-				span.className = "svelte-c4dcfe";
-				add_location(span, file$2, 292, 14, 7245);
-				p.className = "svelte-c4dcfe";
-				add_location(p, file$2, 292, 4, 7235);
-				div.className = "breadcrumb svelte-c4dcfe";
-				add_location(div, file$2, 291, 2, 7107);
+				span.className = "svelte-1qr48j0";
+				add_location(span, file$2, 292, 14, 7099);
+				p.className = "svelte-1qr48j0";
+				add_location(p, file$2, 292, 4, 7089);
+				div.className = "breadcrumb svelte-1qr48j0";
+				add_location(div, file$2, 291, 2, 6961);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1593,28 +1593,28 @@ var app = (function () {
 				append(span, t2);
 				append(span, t3);
 				append(span, t4);
-				current = true;
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
-				if (!current || changed.name) {
+				if (!current_1 || changed.name) {
 					set_data(t0, ctx.name);
 				}
 
-				if ((!current || changed.imagecollection) && t3_value !== (t3_value = ctx.imagecollection.length)) {
+				if ((!current_1 || changed.imagecollection) && t3_value !== (t3_value = ctx.imagecollection.length)) {
 					set_data(t3, t3_value);
 				}
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				add_render_callback(() => {
 					if (div_outro) div_outro.end(1);
 					if (!div_intro) div_intro = create_in_transition(div, fly, { y: -40, duration: 400 });
 					div_intro.start();
 				});
 
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
@@ -1624,7 +1624,7 @@ var app = (function () {
 					div_outro = create_out_transition(div, fly, { y: -40, duration: 400 });
 				}
 
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -1638,18 +1638,18 @@ var app = (function () {
 		};
 	}
 
-	// (308:4) {:else}
+	// (315:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-c4dcfe";
+				span.className = "dummyimage svelte-1qr48j0";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 308, 6, 7857);
+				add_location(span, file$2, 315, 6, 7869);
 			},
 
 			m: function mount(target, anchor) {
@@ -1673,9 +1673,9 @@ var app = (function () {
 		};
 	}
 
-	// (306:4) {#if index==0}
+	// (313:4) {#if index==0}
 	function create_if_block_1(ctx) {
-		var current;
+		var current_1;
 
 		var image = new Image_1({
 			props: {
@@ -1691,7 +1691,7 @@ var app = (function () {
 
 			m: function mount(target, anchor) {
 				mount_component(image, target, anchor);
-				current = true;
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
@@ -1701,15 +1701,15 @@ var app = (function () {
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				image.$$.fragment.i(local);
 
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
 				image.$$.fragment.o(local);
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -1718,9 +1718,9 @@ var app = (function () {
 		};
 	}
 
-	// (305:2) {#each imagecollection as image, index}
+	// (312:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
-		var current_block_type_index, if_block, if_block_anchor, current;
+		var current_block_type_index, if_block, if_block_anchor, current_1;
 
 		var if_block_creators = [
 			create_if_block_1,
@@ -1746,7 +1746,7 @@ var app = (function () {
 			m: function mount(target, anchor) {
 				if_blocks[current_block_type_index].m(target, anchor);
 				insert(target, if_block_anchor, anchor);
-				current = true;
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
@@ -1774,14 +1774,14 @@ var app = (function () {
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				if (if_block) if_block.i();
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
 				if (if_block) if_block.o();
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -1794,9 +1794,9 @@ var app = (function () {
 		};
 	}
 
-	// (316:0) {#if attemptingtoLoad}
+	// (323:0) {#if attemptingtoLoad}
 	function create_if_block$2(ctx) {
-		var div, div_class_value, div_outro, current;
+		var div, div_class_value, div_outro, current_1;
 
 		var galleryexpanded = new GalleryExpanded({
 			props: {
@@ -1813,14 +1813,14 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-c4dcfe";
-				add_location(div, file$2, 316, 3, 8129);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1qr48j0";
+				add_location(div, file$2, 323, 3, 8141);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div, anchor);
 				mount_component(galleryexpanded, div, null);
-				current = true;
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
@@ -1831,18 +1831,18 @@ var app = (function () {
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-c4dcfe")) {
+				if ((!current_1 || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1qr48j0")) {
 					div.className = div_class_value;
 				}
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				galleryexpanded.$$.fragment.i(local);
 
 				if (div_outro) div_outro.end(1);
 
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
@@ -1852,7 +1852,7 @@ var app = (function () {
 					div_outro = create_out_transition(div, fade, {duration: 500});
 				}
 
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -1870,7 +1870,7 @@ var app = (function () {
 	}
 
 	function create_fragment$2(ctx) {
-		var t0, div, div_class_value, t1, if_block1_anchor, current, dispose;
+		var t0, div, t1, if_block1_anchor, current_1, dispose;
 
 		var if_block0 = (ctx.$activeCollection == ctx.id) && create_if_block_2(ctx);
 
@@ -1910,8 +1910,11 @@ var app = (function () {
 				t1 = space();
 				if (if_block1) if_block1.c();
 				if_block1_anchor = empty();
-				div.className = div_class_value = "collection " + ctx.darkness + " svelte-c4dcfe";
-				add_location(div, file$2, 295, 0, 7311);
+				div.className = "collection svelte-1qr48j0";
+				div.dataset.id = ctx.id;
+				toggle_class(div, "active", ctx.id === ctx.$activeCollection);
+				toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
+				add_location(div, file$2, 295, 0, 7165);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -1937,7 +1940,7 @@ var app = (function () {
 				insert(target, t1, anchor);
 				if (if_block1) if_block1.m(target, anchor);
 				insert(target, if_block1_anchor, anchor);
-				current = true;
+				current_1 = true;
 			},
 
 			p: function update(changed, ctx) {
@@ -1989,8 +1992,16 @@ var app = (function () {
 					ctx.div_binding(div, null);
 				}
 
-				if ((!current || changed.darkness) && div_class_value !== (div_class_value = "collection " + ctx.darkness + " svelte-c4dcfe")) {
-					div.className = div_class_value;
+				if (!current_1 || changed.id) {
+					div.dataset.id = ctx.id;
+				}
+
+				if ((changed.id || changed.$activeCollection)) {
+					toggle_class(div, "active", ctx.id === ctx.$activeCollection);
+				}
+
+				if ((changed.$activeCollection || changed.id)) {
+					toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
 				}
 
 				if (ctx.attemptingtoLoad) {
@@ -2016,13 +2027,13 @@ var app = (function () {
 			},
 
 			i: function intro(local) {
-				if (current) return;
+				if (current_1) return;
 				if (if_block0) if_block0.i();
 
 				for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
 
 				if (if_block1) if_block1.i();
-				current = true;
+				current_1 = true;
 			},
 
 			o: function outro(local) {
@@ -2032,7 +2043,7 @@ var app = (function () {
 				for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
 
 				if (if_block1) if_block1.o();
-				current = false;
+				current_1 = false;
 			},
 
 			d: function destroy(detaching) {
@@ -2062,6 +2073,8 @@ var app = (function () {
 		};
 	}
 
+	const elements = new Set();
+
 	function instance$2($$self, $$props, $$invalidate) {
 		let $activeCollection, $destroyingExpandedGallery, $loadingSecondary;
 
@@ -2080,7 +2093,6 @@ var app = (function () {
 
 	  // Local stuff
 	  let collection;
-	  let darkness;
 	  let fakeImages;
 	  let firstImage;
 
@@ -2093,6 +2105,10 @@ var app = (function () {
 	  onMount(() => {
 			$$invalidate('fakeImages', fakeImages = collection.getElementsByTagName('span'));
 	    $$invalidate('firstImage', firstImage = collection.getElementsByTagName('img')[0]);
+	    
+	    // some wizardry for keeping tabs on the collections
+	    elements.add(collection);
+			return () => elements.delete(collection);
 		});
 	  
 	  // Rotate image stack on hover
@@ -2112,69 +2128,66 @@ var app = (function () {
 	    });
 	    firstImage.style.transform = 'scale(1)'; $$invalidate('firstImage', firstImage);
 	  }
-	  
+
 	  // Initiate the gallery and expand the stack
 	  function showContents(){
 	    $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
+
+	    // this sets the loading to true.
+	    loadingSecondary.update(n => true);
+	    
 	    dispatch('expand', {
 	        active: id
 	    }); 
-
-	    //this sets the loading to true.
-	    loadingSecondary.update(n => true);
+	    blowStacks();
 	  }
 
 	  // Blow away the other stacks when we're initiating an Expanded Gallery
 	  function blowStacks(){
-	    var rect = collection.getBoundingClientRect();
+	    
 	    let centerX = document.documentElement.clientWidth/2;
 	    let centerY = document.documentElement.clientHeight/2;
 	    
-	    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`; $$invalidate('collection', collection);
+	    elements.forEach(element => {
+	      var rect = element.getBoundingClientRect();
+	      element.classList.add('notransition');
+	      if(id!==$activeCollection){
+	        element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`;
+	      }
+	    });
+	    
+	    // collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
+
 	  }
 
 	  // Function for bringing the stacks back after we've closed an Expanded Gallery
 	  function resetStacks(){
-	    if(!resetStacksBefore){
-	      var rect = collection.getBoundingClientRect();
-	      collection.style.transform = `translateX(0px) translateY(0px)`; $$invalidate('collection', collection);
 
-	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-	        destroyingExpandedGallery.update(n => true);
-	        (async () => {
-	          await sleep(200);
-	          dispatch('expand', {
-	              active: 0
-	          });
-	          $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
-	          collection.classList.remove('no-pointer-events');
-	        })();
-	        $$invalidate('resetStacksBefore', resetStacksBefore = true);
-	    }
+	    elements.forEach(element => {
+	      element.classList.add('no-pointer-events');
+	      element.classList.remove('notransition');
+	    });
+
+	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+	      destroyingExpandedGallery.update(n => true);
+	      (async () => {
+	        await sleep(200);
+	        dispatch('expand', {
+	            active: 0
+	        });
+	        $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
+	        
+	        elements.forEach(element => {
+	          element.classList.remove('no-pointer-events');
+	          element.style.transform = `translateX(0px) translateY(0px)`;
+	        });
+	      })();
+	      $$invalidate('resetStacksBefore', resetStacksBefore = true);
 	  }
 
 	  // Lifecycle event. Calls whenever an update happens.
-	  // some of this might need refactoring, not quite sure how it got like this.
 	  afterUpdate(() => {
-	    // If this is NOT the active collection.
-	    if($activeCollection != id && $activeCollection!==0){
-	      $$invalidate('darkness', darkness = 'total');
-	      collection.classList.add('notransition');
-	      collection.classList.add('no-pointer-events');
-	      blowStacks();
-	    
-	    // If this IS the active collection.
-	    }else if($activeCollection === id){
-	      $$invalidate('darkness', darkness = 'none');
-	      collection.classList.add('notransition');
-	      $$invalidate('resetStacksBefore', resetStacksBefore = false);
-	    
-	    // If we're destroying the Expanded Gallery
-	    }else if($destroyingExpandedGallery){
-	      $$invalidate('darkness', darkness = '');
-	      collection.classList.remove('notransition');
-	      collection.classList.add('no-pointer-events');
-	      $$invalidate('resetStacksBefore', resetStacksBefore = false);
+	   if($destroyingExpandedGallery && $activeCollection==id){
 	      resetStacks();
 	    }
 	  });
@@ -2208,7 +2221,6 @@ var app = (function () {
 			id,
 			name,
 			collection,
-			darkness,
 			attemptingtoLoad,
 			rotate,
 			unRotate,

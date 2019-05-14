@@ -1,3 +1,7 @@
+<script context="module">
+	const elements = new Set();
+</script>
+
 <script>
   import Image from './Image.svelte';
   import GalleryExpanded from './GalleryExpanded.svelte';
@@ -16,9 +20,10 @@
   // Local stuff
   let collection;
   let secondLevel;
-  let darkness;
+  let activeState = '';
   let fakeImages;
   let firstImage;
+  let current;
 
   // count for loading
   let count = 0;
@@ -29,6 +34,10 @@
   onMount(() => {
 		fakeImages = collection.getElementsByTagName('span');
     firstImage = collection.getElementsByTagName('img')[0];
+    
+    // some wizardry for keeping tabs on the collections
+    elements.add(collection);
+		return () => elements.delete(collection);
 	});
   
   // Rotate image stack on hover
@@ -48,70 +57,66 @@
     })
     firstImage.style.transform = 'scale(1)';
   }
-  
+
   // Initiate the gallery and expand the stack
   function showContents(){
     attemptingtoLoad = true;
+
+    // this sets the loading to true.
+    loadingSecondary.update(n => true);
+    
     dispatch('expand', {
         active: id
     }); 
-
-    //this sets the loading to true.
-    loadingSecondary.update(n => true);
+    blowStacks();
   }
 
   // Blow away the other stacks when we're initiating an Expanded Gallery
   function blowStacks(){
-    var rect = collection.getBoundingClientRect();
+    
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
     
-    collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
+    elements.forEach(element => {
+      var rect = element.getBoundingClientRect();
+      element.classList.add('notransition');
+      if(id!==$activeCollection){
+        element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
+      }
+    });
+    
+    // collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
+
   }
 
   // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
-    if(!resetStacksBefore){
-      let images = collection;
-      var rect = collection.getBoundingClientRect();
-      collection.style.transform = `translateX(0px) translateY(0px)`
 
-      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-        destroyingExpandedGallery.update(n => true);
-        (async () => {
-          await sleep(200);
-          dispatch('expand', {
-              active: 0
-          });
-          attemptingtoLoad = false;
-          collection.classList.remove('no-pointer-events');
-        })();
-        resetStacksBefore = true;
-    }
+    elements.forEach(element => {
+      element.classList.add('no-pointer-events');
+      element.classList.remove('notransition');
+    });
+
+    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+      destroyingExpandedGallery.update(n => true);
+      (async () => {
+        await sleep(200);
+        dispatch('expand', {
+            active: 0
+        });
+        attemptingtoLoad = false;
+        
+        elements.forEach(element => {
+          element.classList.remove('no-pointer-events');
+          element.style.transform = `translateX(0px) translateY(0px)`
+        });
+      })();
+      resetStacksBefore = true;
   }
 
   // Lifecycle event. Calls whenever an update happens.
-  // some of this might need refactoring, not quite sure how it got like this.
   afterUpdate(() => {
-    // If this is NOT the active collection.
-    if($activeCollection != id && $activeCollection!==0){
-      darkness = 'total';
-      collection.classList.add('notransition');
-      collection.classList.add('no-pointer-events');
-      blowStacks();
-    
-    // If this IS the active collection.
-    }else if($activeCollection === id){
-      darkness = 'none';
-      collection.classList.add('notransition');
-      resetStacksBefore = false;
-    
-    // If we're destroying the Expanded Gallery
-    }else if($destroyingExpandedGallery){
-      darkness = '';
-      collection.classList.remove('notransition');
-      collection.classList.add('no-pointer-events');
-      resetStacksBefore = false;
+   if($destroyingExpandedGallery && $activeCollection==id){
       resetStacks();
     }
   });
@@ -128,18 +133,14 @@
 </script>
 
 <style>
-  /* clean up these styles a little bro */
-  .total{
-    opacity: 0;
-    pointer-events: none;
-  }
-  .notransition{
-    opacity: 0;
-    transition: 0s !important;
-  }
-  .none{
+  /* These refer to the darkness class, none or total */
+  .collection.active{
     z-index: 2 !important;
     opacity: 0;
+  }
+  .collection.nonactive{
+    opacity: 0;
+    pointer-events: none;
   }
 
   .dummyimage{
@@ -162,46 +163,7 @@
     transition: 0.2s all ease-out;
   }
 
-  .no-pointer-events{
-    pointer-events: none;
-  }
-  /* .spinner {
-    animation: rotate 2s linear infinite;
-    z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
-  }
 
-  .spinner .path {
-      stroke: rgb(26, 118, 211);
-      stroke-linecap: round;
-      animation: dash 1.5s ease-in-out infinite;
-  } */
-
-  @keyframes rotate {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes dash {
-    0% {
-      stroke-dasharray: 1, 150;
-      stroke-dashoffset: 0;
-    }
-    50% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -55;
-    }
-    100% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -124;
-    }
-  }
 
   .collection:hover{
     transition: 0.3s all ease-out;
@@ -240,42 +202,43 @@
     font-weight: bold;
     font-size: 1.2em;
   }
-  .breadcrumb p{
-    margin: 0;
-    position: relative;
-    display: block;
-    color: #333;
-    padding-left: 10px;
-    text-transform: uppercase;
-  }
-  .breadcrumb p:before, .breadcrumb p:after{
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0; top: 7px;
-    height: 6px; width: 2px;
-    background: currentColor;
-    transform: rotate(45deg);
-  }
-  .breadcrumb p span{
-    text-transform: none;
-    font-weight: 300;
-    color: #a5a4a4;
-  }
-  .breadcrumb p:after{
-    top: 10px;
-    transform: rotate(-45deg);
-  }
-  @keyframes hello{
-    0%{
-      opacity: 0;
-      pointer-events: none;
+    .breadcrumb p{
+      margin: 0;
+      position: relative;
+      display: block;
+      color: #333;
+      padding-left: 10px;
+      text-transform: uppercase;
     }
-    100%{
-      opacity: 1;
-      pointer-events: auto;
+    .breadcrumb p:before, .breadcrumb p:after{
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0; top: 7px;
+      height: 6px; width: 2px;
+      background: currentColor;
+      transform: rotate(45deg);
     }
-  }
+    .breadcrumb p span{
+      text-transform: none;
+      font-weight: 300;
+      color: #a5a4a4;
+    }
+    .breadcrumb p:after{
+      top: 10px;
+      transform: rotate(-45deg);
+    }
+    
+    @keyframes hello{
+      0%{
+        opacity: 0;
+        pointer-events: none;
+      }
+      100%{
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
 
   .loading--false{
     opacity: 1;
@@ -285,16 +248,60 @@
     opacity: 0;
     pointer-events: none;
   }
-</style>
 
+  /* .spinner {
+    animation: rotate 2s linear infinite;
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .spinner .path {
+      stroke: rgb(26, 118, 211);
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+  } 
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -55;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+  */
+</style>
 
 {#if $activeCollection == id}
   <div class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
     <p>{name} <span>({imagecollection.length} images)</span></p>
   </div>
 {/if}
-<div class="collection {darkness}" bind:this={collection} on:mouseenter={rotate} on:mouseleave={unRotate} on:click={showContents}>
-  <!-- in case we want a spinner 
+<div class:active="{id === $activeCollection}" 
+     class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
+     class="collection" 
+     data-id={id} 
+     bind:this={collection} 
+     on:mouseenter={rotate} 
+     on:mouseleave={unRotate} 
+     on:click={showContents}>
+  <!-- in case we want a spinner  
   {#if $activeCollection == id}
     <svg class="spinner" viewBox="0 0 50 50">
     <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
