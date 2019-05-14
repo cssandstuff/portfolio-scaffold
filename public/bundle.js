@@ -2408,7 +2408,7 @@ var app = (function () {
 				t6 = space();
 				gallerystacks7.$$.fragment.c();
 				div.className = "container svelte-rby08";
-				add_location(div, file$3, 77, 0, 1680);
+				add_location(div, file$3, 77, 0, 1628);
 			},
 
 			l: function claim(nodes) {

@@ -74,7 +74,7 @@
 		height: 15em;
 	}
 </style>
-<!-- <BreadBar on:click={handleBreadBarClick} /> -->
+
 <div class="container">
 	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Spider"/>
 	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" name="Head" />
