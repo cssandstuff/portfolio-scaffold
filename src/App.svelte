@@ -1,10 +1,9 @@
 <script>
 	export let name;
-	import GalleryStacks from './GalleryStacks.svelte';
+	import GalleryStack from './GalleryStack.svelte';
 	import { activeCollection } from './stores.js';
 
 	let uid = 1;
-	let y;
 	let collection1 = [
 		{ src: 'IMG_0003.JPG' },
 		{ src: 'IMG_0004.JPG' },
@@ -76,13 +75,13 @@
 </style>
 
 <div class="container">
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Spider"/>
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" name="Head" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection3} id="{uid++}" name="Octopus" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robot" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection5} id="{uid++}" name="Cash Suitcase" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection6} id="{uid++}" name="Citizens of Science" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robo" />
-	<GalleryStacks lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Kumo" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Spider"/>
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" name="Head" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection3} id="{uid++}" name="Octopus" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robot" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection5} id="{uid++}" name="Cash Suitcase" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection6} id="{uid++}" name="Citizens of Science" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robo" />
+	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Kumo" />
 </div>
 
