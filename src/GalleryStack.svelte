@@ -29,7 +29,6 @@
   let count = 0;
   
   let attemptingtoLoad = false;
-  let resetStacksBefore = false;
 
   onMount(() => {
 		fakeImages = collection.getElementsByTagName('span');
@@ -44,7 +43,9 @@
   function rotate() {
     collection.style.transform = 'rotate(-1.5deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
-      value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
+      //value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
+      value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
+      //transform: rotate({index * 2}deg);
     })
     firstImage.style.transform = 'scale(1.08) translateY(10px)';
   }
@@ -80,7 +81,9 @@
     elements.forEach(element => {
       var rect = element.getBoundingClientRect();
       element.classList.add('notransition');
-      if(id!==$activeCollection){
+      let myId = parseInt(element.dataset.id);
+      if(myId!==$activeCollection){
+        element.classList.add('no-pointer-events');
         element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
       }
     });
@@ -91,9 +94,8 @@
 
   // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
-
+    console.log('resetting');
     elements.forEach(element => {
-      element.classList.add('no-pointer-events');
       element.classList.remove('notransition');
     });
 
@@ -105,20 +107,24 @@
             active: 0
         });
         attemptingtoLoad = false;
-        
         elements.forEach(element => {
-          element.classList.remove('no-pointer-events');
           element.style.transform = `translateX(0px) translateY(0px)`
         });
       })();
-      resetStacksBefore = true;
+      (async () => {
+        await sleep(400);
+        elements.forEach(element => {
+          element.classList.remove('no-pointer-events');
+        });
+      })();
+
   }
 
   // Lifecycle event. Calls whenever an update happens.
   afterUpdate(() => {
-   if($destroyingExpandedGallery && $activeCollection==id){
-      resetStacks();
-    }
+  //  if($destroyingExpandedGallery && $activeCollection==id){
+  //     resetStacks();
+  //   }
   });
   
   // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.

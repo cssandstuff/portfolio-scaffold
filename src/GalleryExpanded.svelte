@@ -25,14 +25,20 @@
   // Function for bringing everything together.
   function consolidateStuff(){
     let rect = originaltarget.getBoundingClientRect();
-     
+    
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
-      let transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+      
+      let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+      
+      if(key == 0){
+        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+      }
       
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingExpandedGallery){
         value.classList.add('quicktransition');
+        transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
       }else{
         value.parentNode.style.zIndex = imageCount - key;
       }
@@ -44,11 +50,12 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
+    //console.log('expandingh')
     secondLevel.style.transform = `translateY(${scrollY}px)`
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
     (async () => {
-      await sleep(50);
+      await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
         value.classList.add('slowtransition');
@@ -139,7 +146,8 @@
     background: #ccc;
   }
   .stack :global(.slowtransition) {
-    transition: all 0.6s cubic-bezier(0,0,.13,1.33) !important;
+    /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
+    transition: all 0.6s cubic-bezier(0.68, 0.56, 0.24, 1.53) !important;
   }
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
