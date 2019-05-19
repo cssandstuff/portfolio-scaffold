@@ -5,48 +5,40 @@
 
 	let uid = 1;
 	let collection1 = [
-		{ src: 'IMG_0003.JPG' },
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0005.JPG' },
-		{ src: 'IMG_0007.JPG' },
-		{ src: 'IMG_0008.JPG' },
-		{ src: 'IMG_0009.JPG' },
-		{ src: 'IMG_0010.JPG' }
+		{ src: 'Noa.JPG' },
+		{ src: 'dog.JPG' },
+		{ src: 'glass.JPG' }
 	];
-	let collection2 = [
-		{ src: 'IMG_0007.JPG' },
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0005.JPG' },
-		{ src: 'IMG_0007.JPG' },
-		{ src: 'IMG_0008.JPG' },
-		{ src: 'IMG_0009.JPG' },
-		{ src: 'IMG_0010.JPG' }
-	];
-	let collection3 = [
-		{ src: 'IMG_0009.JPG' },
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0005.JPG' },
-		{ src: 'IMG_0007.JPG' },
-		{ src: 'IMG_0008.JPG' },
-		{ src: 'IMG_0009.JPG' },
-		{ src: 'IMG_0010.JPG' }
-	];
+	
 	let collection4 = [
-		{ src: 'IMG_0010.JPG' },
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0005.JPG' },
-		{ src: 'IMG_0007.JPG' },
-		{ src: 'IMG_0008.JPG' },
-		{ src: 'IMG_0010.JPG' }
-	];
-	let collection5 = [
-		{ src: 'IMG_0008.JPG' },
-		{ src: 'IMG_0004.JPG' }
+		{ src: 'atami.JPG' },
+		{ src: 'kenodo.JPG' },
+		{ src: 'kenodo2.JPG' }
 	];
 	let collection6 = [
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0004.JPG' },
-		{ src: 'IMG_0005.JPG' }
+		{ src: 'boring.JPG' },
+		{ src: 'hownotto.JPG' },
+		{ src: 'isometric.JPG' },
+		{ src: 'notes.JPG' },
+		{ src: 'glass-b+w.JPG' }
+	];
+	let collection2 = [
+		{ src: 'cash.JPG' },
+		{ src: 'robo.JPG' },
+		{ src: 'tako.JPG' }
+	];
+	let collection5 = [
+		{ src: 'angrykid2.JPG' },
+		{ src: 'angrykid1.JPG' },
+		{ src: 'angrykid3.JPG' },
+		{ src: 'angrykid4.JPG' },
+		{ src: 'angrykid5.JPG' }
+	];
+	let collection3 = [
+		{ src: 'citizens.JPG' },
+		{ src: 'screwit.JPG' },
+		{ src: 'boltit.JPG' },
+		{ src: 'kumo.JPG' }
 	];
 
 	function handleExpand(event) {
@@ -75,13 +67,11 @@
 </style>
 
 <div class="container">
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Spider"/>
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" name="Head" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection3} id="{uid++}" name="Octopus" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robot" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection5} id="{uid++}" name="Cash Suitcase" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection6} id="{uid++}" name="Citizens of Science" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" name="Robo" />
-	<GalleryStack lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" name="Kumo" />
+	<GalleryStack name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
+	<GalleryStack name="Travelling" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" />
+	<GalleryStack name="Citizens of Science" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection3} id="{uid++}" />
+	<GalleryStack name="Splashes" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
+	<GalleryStack name="Angry at kids" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection5} id="{uid++}" />
+	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection6} id="{uid++}"  />
 </div>
 

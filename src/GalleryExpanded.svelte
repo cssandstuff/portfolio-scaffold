@@ -18,6 +18,7 @@
   let ready;
   let current;
   let y;
+  
   // count for loading
   let count = 0;
   const dispatch = createEventDispatcher();
@@ -25,7 +26,8 @@
   // Function for bringing everything together.
   function consolidateStuff(){
     let rect = originaltarget.getBoundingClientRect();
-    
+    secondLevel.classList.add('no-pointer-events');
+
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
       
@@ -62,6 +64,11 @@
         value.style.transform = `translateX(0px) translateY(0px)`
       });
     })();
+
+    (async () => {
+      await sleep(500);
+      secondLevel.classList.remove('no-pointer-events');
+    })();
   }
 
   onMount(() => {
@@ -71,6 +78,7 @@
     
   });
 
+  // Might be able to refactor this to not use AfterUpdate
   afterUpdate(() => {
     if($loadingSecondary && !ExpandedBefore){
       expandStuff();
@@ -147,7 +155,7 @@
   }
   .stack :global(.slowtransition) {
     /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
-    transition: all 0.6s cubic-bezier(0.68, 0.56, 0.24, 1.53) !important;
+    transition: all 0.5s cubic-bezier(0.38, 0.56, 0.24, 1.25) !important;
   }
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
@@ -169,13 +177,19 @@
     width: auto;
     margin: 1em;
   }
+  .gallery a{
+    position: relative;
+    margin: 1em 1.5em 3em 1.5em;
+  }
   .gallery :global(img) {
     width: calc(25em - 3em);
-    margin: 1em 1.5em 3em 1.5em;
+    margin: 0;
     height: 15em;
     min-width: 0 !important;
     min-height: 0 !important;
-    
+  }
+  .gallery a:hover .magnify{
+    opacity: 1;
   }
   /* Experimenting with grid. 
   .gallery{ 
@@ -197,7 +211,8 @@
     top: 0; left: 0;
     z-index: 99;
     height: 100vh; width: 100vw;
-    background: #222;
+    background: #fff;
+    /* background: var(--bgcolordarktint); */
   }
   .hires :global(img){
     object-fit: contain;
@@ -259,13 +274,13 @@
   }
   .close{
     color: #999;
-    right: 1em; top: 1em;
+    left: 1em; top: 1em;
     position: absolute;
     font-weight: 300;
     text-transform: uppercase;
     font-size: 0.8em;
     width: 40px; height: 40px;
-    padding-right: 20px;
+    padding-left: 20px;
     cursor: pointer;
   }
   .close:before, .close:after{
@@ -274,13 +289,40 @@
     width: 15px;
     height: 2px;
     background: #999;
-    right: 0; top: 7px;
+    left: 0; top: 7px;
   }
   .close:before{
     transform: rotate(-45deg);
   }
   .close:after{
     transform: rotate(45deg);
+  }
+  .magnify{
+    width: 100%;
+    background-color: var(--bgcolortint);
+    height: 100%;
+    position: absolute; bottom: 0; right: 0;
+    opacity: 0;
+    transition: 0.3s opacity;
+  }
+  .magnify:before{
+    content: '';
+    position: absolute;
+    right: calc(50% - 30px);
+    bottom: calc(50% - 6px);
+    width: 14px;
+    height: 4px;
+    background: #fff;
+    transform: rotate(45deg);
+  }
+  .magnify:after{
+    content: '';
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    position: absolute; left: calc(50% - 16px); top: calc(50% - 32px);
+    z-index: 9;
   }
 </style>
 
@@ -289,6 +331,7 @@
   {#each stack as image, index}
     <a href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
+      <span class="magnify"></span>
     </a>
   {/each}
 </div>

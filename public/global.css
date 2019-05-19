@@ -2,6 +2,7 @@ html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	
 }
 
 body {
@@ -11,6 +12,8 @@ body {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	overflow-x: hidden;
+	background-color: var(--bgcolor);
+	transition: 0.9s background-color;
 }
 
 .locked{
@@ -24,4 +27,10 @@ body {
 .notransition{
 	opacity: 0;
 	transition: 0s !important;
+}
+
+:root{
+	--bgcolor: #fff;
+	--bgcolortint: #fff;
+	--bgcolordarktint: #fff;
 }

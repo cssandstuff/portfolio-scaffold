@@ -5,7 +5,7 @@
 <script>
   import Image from './Image.svelte';
   import GalleryExpanded from './GalleryExpanded.svelte';
-  import { onMount, afterUpdate, createEventDispatcher } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import { fly, fade } from 'svelte/transition';
   import { activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
   
@@ -14,16 +14,17 @@
   export let hiresdir;
   export let id;
   export let name;
+  export let color;
 
   const dispatch = createEventDispatcher();
 
   // Local stuff
   let collection;
+  let originalbgcolor;
+  let galleryExpanded;
   let secondLevel;
-  let activeState = '';
   let fakeImages;
   let firstImage;
-  let current;
 
   // count for loading
   let count = 0;
@@ -62,7 +63,18 @@
   // Initiate the gallery and expand the stack
   function showContents(){
     attemptingtoLoad = true;
+    console.log(color);
+    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+    if(color){
+      
+      let hslcolor = color.split(",");
+      console.log(hslcolor[0])
+      document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+      document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
+      document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
+      
 
+    }
     // this sets the loading to true.
     loadingSecondary.update(n => true);
     
@@ -87,19 +99,20 @@
         element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
       }
     });
-    
-    // collection.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
 
   }
 
   // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
-    console.log('resetting');
+    console.log('resetting...');
     elements.forEach(element => {
       element.classList.remove('notransition');
     });
-
+    document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+      // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
+      // might be able to call the funtion directly instead of this??
+      console.log(galleryExpanded);
       destroyingExpandedGallery.update(n => true);
       (async () => {
         await sleep(200);
@@ -119,13 +132,6 @@
       })();
 
   }
-
-  // Lifecycle event. Calls whenever an update happens.
-  afterUpdate(() => {
-  //  if($destroyingExpandedGallery && $activeCollection==id){
-  //     resetStacks();
-  //   }
-  });
   
   // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
   function handleLoadingComplete(event) {
@@ -168,8 +174,6 @@
     position: relative;
     transition: 0.2s all ease-out;
   }
-
-
 
   .collection:hover{
     transition: 0.3s all ease-out;
@@ -228,7 +232,7 @@
     .breadcrumb p span{
       text-transform: none;
       font-weight: 300;
-      color: #a5a4a4;
+      color: rgba(255,255,255,0.5);
     }
     .breadcrumb p:after{
       top: 10px;
@@ -328,7 +332,7 @@
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
    <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
-    <GalleryExpanded lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
+    <GalleryExpanded bind:this={galleryExpanded} lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}
 
