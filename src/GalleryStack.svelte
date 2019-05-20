@@ -1,8 +1,14 @@
 <script context="module">
+  // for wizardry to keep tabs on the collections
 	const elements = new Set();
 </script>
 
 <script>
+  // This component shows a cover image with dummy images (spans) behind to 
+  // give an indication of gallery/stack quantity
+  // The stack also splays out slightly on-hover.
+
+  // We're also have a child component in here which loads & shows all images from the user-selected stack.
   import Image from './Image.svelte';
   import GalleryExpanded from './GalleryExpanded.svelte';
   import { onMount, createEventDispatcher } from 'svelte';
@@ -72,15 +78,14 @@
       document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
       document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
       document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
-      
-
     }
+
     // this sets the loading to true.
     loadingSecondary.update(n => true);
     
-    dispatch('expand', {
-        active: id
-    }); 
+    // sets which stack needs to be expanded.
+    activeCollection.update(n => id);
+
     blowStacks();
   }
 
@@ -116,9 +121,7 @@
       destroyingExpandedGallery.update(n => true);
       (async () => {
         await sleep(200);
-        dispatch('expand', {
-            active: 0
-        });
+        activeCollection.update(n => 0);
         attemptingtoLoad = false;
         elements.forEach(element => {
           element.style.transform = `translateX(0px) translateY(0px)`
@@ -130,15 +133,17 @@
           element.classList.remove('no-pointer-events');
         });
       })();
-
   }
   
-  // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
+  // Wanted to maybe have a loader, so the following will let us know when all
+  // Image components in an Expanded Gallery have loaded.
   function handleLoadingComplete(event) {
     count = count + event.detail.loadingComplete;
     if(count === imagecollection.length){
       
       console.log("Loading complete");
+
+      // Faking slow loading....
       const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
       (async () => {
         await sleep(3200);

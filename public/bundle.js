@@ -863,7 +863,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (327:2) {#each stack as image, index}
+	// (317:2) {#each stack as image, index}
 	function create_each_block_1(ctx) {
 		var a, t, span, a_href_value, current_1, dispose;
 
@@ -885,11 +885,11 @@ var app = (function () {
 				image.$$.fragment.c();
 				t = space();
 				span = element("span");
-				span.className = "magnify svelte-1uzd9m9";
-				add_location(span, file$1, 329, 6, 8005);
+				span.className = "magnify svelte-ar9ky0";
+				add_location(span, file$1, 319, 6, 7845);
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-				a.className = "svelte-1uzd9m9";
-				add_location(a, file$1, 327, 4, 7855);
+				a.className = "svelte-ar9ky0";
+				add_location(a, file$1, 317, 4, 7695);
 				dispose = listen(a, "click", click_handler);
 			},
 
@@ -936,7 +936,7 @@ var app = (function () {
 		};
 	}
 
-	// (335:0) {#if ready}
+	// (325:0) {#if ready}
 	function create_if_block$1(ctx) {
 		var div, t0, span0, t1, span1, t2, span2, current_1, dispose;
 
@@ -976,14 +976,14 @@ var app = (function () {
 				t2 = space();
 				span2 = element("span");
 				span2.textContent = "close";
-				span0.className = "previous svelte-1uzd9m9";
-				add_location(span0, file$1, 341, 4, 8324);
-				span1.className = "next svelte-1uzd9m9";
-				add_location(span1, file$1, 342, 4, 8383);
-				span2.className = "close svelte-1uzd9m9";
-				add_location(span2, file$1, 343, 4, 8434);
-				div.className = "hires svelte-1uzd9m9";
-				add_location(div, file$1, 335, 2, 8076);
+				span0.className = "previous svelte-ar9ky0";
+				add_location(span0, file$1, 331, 4, 8164);
+				span1.className = "next svelte-ar9ky0";
+				add_location(span1, file$1, 332, 4, 8223);
+				span2.className = "close svelte-ar9ky0";
+				add_location(span2, file$1, 333, 4, 8274);
+				div.className = "hires svelte-ar9ky0";
+				add_location(div, file$1, 325, 2, 7916);
 
 				dispose = [
 					listen(span0, "click", ctx.showPrevious),
@@ -1065,7 +1065,7 @@ var app = (function () {
 		};
 	}
 
-	// (337:4) {#each stack as image, index}
+	// (327:4) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var div, current_1;
 
@@ -1081,9 +1081,9 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				image.$$.fragment.c();
-				div.className = "svelte-1uzd9m9";
+				div.className = "svelte-ar9ky0";
 				toggle_class(div, "active", ctx.current === ctx.index);
-				add_location(div, file$1, 337, 6, 8160);
+				add_location(div, file$1, 327, 6, 8000);
 			},
 
 			m: function mount(target, anchor) {
@@ -1163,8 +1163,8 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = "stack gallery svelte-1uzd9m9";
-				add_location(div, file$1, 325, 0, 7766);
+				div.className = "stack gallery svelte-ar9ky0";
+				add_location(div, file$1, 315, 0, 7606);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1367,7 +1367,8 @@ var app = (function () {
 	    
 	  });
 
-	  // Might be able to refactor this to not use AfterUpdate
+	  // Might be able to refactor this to not use AfterUpdate, 
+	  // but for now it seems ok.
 	  afterUpdate(() => {
 	    if(!$loadingSecondary && !$destroyingExpandedGallery){
 	      expandStuff();
@@ -1408,6 +1409,7 @@ var app = (function () {
 	    }
 	    console.log(`current image is ${current}`);
 	  }
+	  
 	  function showNext(){
 	    
 	    if(current >= (stack.length - 1)) {
@@ -1587,7 +1589,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (295:0) {#if $activeCollection == id}
+	// (300:0) {#if $activeCollection == id}
 	function create_if_block_3(ctx) {
 		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current, dispose;
 
@@ -1602,11 +1604,11 @@ var app = (function () {
 				t3 = text(t3_value);
 				t4 = text(" images)");
 				span.className = "svelte-1bnkrap";
-				add_location(span, file$2, 296, 14, 7952);
+				add_location(span, file$2, 301, 14, 8346);
 				p.className = "svelte-1bnkrap";
-				add_location(p, file$2, 296, 4, 7942);
+				add_location(p, file$2, 301, 4, 8336);
 				div.className = "breadcrumb svelte-1bnkrap";
-				add_location(div, file$2, 295, 2, 7814);
+				add_location(div, file$2, 300, 2, 8208);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1664,7 +1666,7 @@ var app = (function () {
 		};
 	}
 
-	// (311:2) {#if $activeCollection == id}
+	// (316:2) {#if $activeCollection == id}
 	function create_if_block_2(ctx) {
 		var svg, circle;
 
@@ -1678,10 +1680,10 @@ var app = (function () {
 				attr(circle, "r", "20");
 				attr(circle, "fill", "none");
 				attr(circle, "stroke-width", "3");
-				add_location(circle, file$2, 312, 4, 8460);
+				add_location(circle, file$2, 317, 4, 8854);
 				attr(svg, "class", "spinner svelte-1bnkrap");
 				attr(svg, "viewBox", "0 0 50 50");
-				add_location(svg, file$2, 311, 4, 8414);
+				add_location(svg, file$2, 316, 4, 8808);
 			},
 
 			m: function mount(target, anchor) {
@@ -1697,7 +1699,7 @@ var app = (function () {
 		};
 	}
 
-	// (320:4) {:else}
+	// (325:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
@@ -1708,7 +1710,7 @@ var app = (function () {
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 320, 6, 8754);
+				add_location(span, file$2, 325, 6, 9148);
 			},
 
 			m: function mount(target, anchor) {
@@ -1732,7 +1734,7 @@ var app = (function () {
 		};
 	}
 
-	// (318:4) {#if index==0}
+	// (323:4) {#if index==0}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -1777,7 +1779,7 @@ var app = (function () {
 		};
 	}
 
-	// (317:2) {#each imagecollection as image, index}
+	// (322:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1853,7 +1855,7 @@ var app = (function () {
 		};
 	}
 
-	// (328:0) {#if attemptingtoLoad}
+	// (333:0) {#if attemptingtoLoad}
 	function create_if_block$2(ctx) {
 		var div, div_class_value, div_outro, current;
 
@@ -1876,7 +1878,7 @@ var app = (function () {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
 				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1bnkrap";
-				add_location(div, file$2, 328, 3, 9026);
+				add_location(div, file$2, 333, 3, 9420);
 			},
 
 			m: function mount(target, anchor) {
@@ -1982,7 +1984,7 @@ var app = (function () {
 				div.dataset.id = ctx.id;
 				toggle_class(div, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
 				toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-				add_location(div, file$2, 300, 0, 8021);
+				add_location(div, file$2, 305, 0, 8415);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -2156,7 +2158,8 @@ var app = (function () {
 		};
 	}
 
-	const elements = new Set();
+	// for wizardry to keep tabs on the collections
+		const elements = new Set();
 
 	function instance$2($$self, $$props, $$invalidate) {
 		let $activeCollection, $loadingSecondary;
@@ -2169,8 +2172,6 @@ var app = (function () {
 		
 	  
 	  let { imagecollection, lowresdir, hiresdir, id, name, color } = $$props;
-
-	  const dispatch = createEventDispatcher();
 
 	  // Local stuff
 	  let collection;
@@ -2225,15 +2226,14 @@ var app = (function () {
 	      document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
 	      document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
 	      document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
-	      
-
 	    }
+
 	    // this sets the loading to true.
 	    loadingSecondary.update(n => true);
 	    
-	    dispatch('expand', {
-	        active: id
-	    }); 
+	    // sets which stack needs to be expanded.
+	    activeCollection.update(n => id);
+
 	    blowStacks();
 	  }
 
@@ -2269,9 +2269,7 @@ var app = (function () {
 	      destroyingExpandedGallery.update(n => true);
 	      (async () => {
 	        await sleep(200);
-	        dispatch('expand', {
-	            active: 0
-	        });
+	        activeCollection.update(n => 0);
 	        $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
 	        elements.forEach(element => {
 	          element.style.transform = `translateX(0px) translateY(0px)`;
@@ -2283,15 +2281,17 @@ var app = (function () {
 	          element.classList.remove('no-pointer-events');
 	        });
 	      })();
-
 	  }
 	  
-	  // Wanted to maybe have a loader, so this tells me when all Image components in an Expanded Gallery have loaded.
+	  // Wanted to maybe have a loader, so the following will let us know when all
+	  // Image components in an Expanded Gallery have loaded.
 	  function handleLoadingComplete(event) {
 	    $$invalidate('count', count = count + event.detail.loadingComplete);
 	    if(count === imagecollection.length){
 	      
 	      console.log("Loading complete");
+
+	      // Faking slow loading....
 	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 	      (async () => {
 	        await sleep(3200);
@@ -2437,7 +2437,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack0.$on("expand", handleExpand);
 
 		var gallerystack1 = new GalleryStack({
 			props: {
@@ -2450,7 +2449,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack1.$on("expand", handleExpand);
 
 		var gallerystack2 = new GalleryStack({
 			props: {
@@ -2462,7 +2460,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack2.$on("expand", handleExpand);
 
 		var gallerystack3 = new GalleryStack({
 			props: {
@@ -2474,7 +2471,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack3.$on("expand", handleExpand);
 
 		var gallerystack4 = new GalleryStack({
 			props: {
@@ -2486,7 +2482,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack4.$on("expand", handleExpand);
 
 		var gallerystack5 = new GalleryStack({
 			props: {
@@ -2498,7 +2493,6 @@ var app = (function () {
 		},
 			$$inline: true
 		});
-		gallerystack5.$on("expand", handleExpand);
 
 		return {
 			c: function create() {
@@ -2515,7 +2509,7 @@ var app = (function () {
 				t4 = space();
 				gallerystack5.$$.fragment.c();
 				div.className = "container svelte-rby08";
-				add_location(div, file$3, 68, 0, 1341);
+				add_location(div, file$3, 68, 0, 1321);
 			},
 
 			l: function claim(nodes) {
@@ -2619,13 +2613,11 @@ var app = (function () {
 
 	let uid = 1;
 
-	function handleExpand(event) {
-		console.log(event.detail.active);
-		activeCollection.update(n => event.detail.active);
-	}
-
 	function instance$3($$self, $$props, $$invalidate) {
 		let { name } = $$props;
+
+		// Images, maybe I can make this easier somehow?
+		// Auto-generate from a directory structure maybe?
 		let collection1 = [
 			{ src: 'Noa.JPG' },
 			{ src: 'dog.JPG' },

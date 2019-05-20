@@ -1,4 +1,8 @@
 <script>
+  // This component expands the stack to show all images within the stack
+  // and then loads higher res images (if user clicks an image) and displays 
+  // them in a prev/next style carousel.
+
   import Image from './Image.svelte';
   import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingExpandedGallery, loadingSecondary } from './stores.js';
@@ -76,7 +80,8 @@
     
   });
 
-  // Might be able to refactor this to not use AfterUpdate
+  // Might be able to refactor this to not use AfterUpdate, 
+  // but for now it seems ok.
   afterUpdate(() => {
     if(!$loadingSecondary && !$destroyingExpandedGallery){
       expandStuff();
@@ -117,6 +122,7 @@
     }
     console.log(`current image is ${current}`)
   }
+  
   function showNext(){
     
     if(current >= (stack.length - 1)) {
@@ -187,28 +193,12 @@
   .gallery a:hover .magnify{
     opacity: 1;
   }
-  /* Experimenting with grid. 
-  .gallery{ 
-    display: grid;
-    position: absolute;
-    grid-template-columns: 4fr 1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 4em;
-    width: calc(100% - 8em);
-    height: 100%;
-    z-index: 2;
-  }
-  .gallery :global(img:first-child) {
-    grid-row-start: 1;
-    grid-row-end: -1;
-  } */
   .hires{
     position: fixed;
     top: 0; left: 0;
     z-index: 99;
     height: 100vh; width: 100vw;
     background: #fff;
-    /* background: var(--bgcolordarktint); */
   }
   .hires :global(img){
     object-fit: contain;

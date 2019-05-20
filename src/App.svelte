@@ -4,6 +4,9 @@
 	import { activeCollection } from './stores.js';
 
 	let uid = 1;
+
+	// Images, maybe I can make this easier somehow?
+	// Auto-generate from a directory structure maybe?
 	let collection1 = [
 		{ src: 'Noa.JPG' },
 		{ src: 'dog.JPG' },
@@ -41,10 +44,7 @@
 		{ src: 'kumo.JPG' }
 	];
 
-	function handleExpand(event) {
-		console.log(event.detail.active);
-		activeCollection.update(n => event.detail.active);
-	}
+
 </script>
 
 <style>
@@ -67,11 +67,11 @@
 </style>
 
 <div class="container">
-	<GalleryStack name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection1} id="{uid++}" />
-	<GalleryStack name="Travelling" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection2} id="{uid++}" />
-	<GalleryStack name="Citizens of Science" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection3} id="{uid++}" />
-	<GalleryStack name="Splashes" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection4} id="{uid++}" />
-	<GalleryStack name="Angry at kids" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection5} id="{uid++}" />
-	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" on:expand={handleExpand} imagecollection={collection6} id="{uid++}"  />
+	<GalleryStack name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
+	<GalleryStack name="Travelling" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
+	<GalleryStack name="Citizens of Science" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack name="Splashes" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack name="Angry at kids" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
+	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
 
