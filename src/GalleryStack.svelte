@@ -85,7 +85,6 @@
     
     // sets which stack needs to be expanded.
     activeCollection.update(n => id);
-
     blowStacks();
   }
 
@@ -142,13 +141,14 @@
     if(count === imagecollection.length){
       
       console.log("Loading complete");
-
-      // Faking slow loading....
-      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-      (async () => {
-        await sleep(3200);
-        loadingSecondary.update(n => false);
-      })();
+      loadingSecondary.update(n => false);
+      
+      // // Faking slow loading....
+      // const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+      // (async () => {
+      //   await sleep(3200);
+      //   loadingSecondary.update(n => false);
+      // })();
 
       count = 0;
     }

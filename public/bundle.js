@@ -1604,11 +1604,11 @@ var app = (function () {
 				t3 = text(t3_value);
 				t4 = text(" images)");
 				span.className = "svelte-1bnkrap";
-				add_location(span, file$2, 301, 14, 8346);
+				add_location(span, file$2, 301, 14, 8412);
 				p.className = "svelte-1bnkrap";
-				add_location(p, file$2, 301, 4, 8336);
+				add_location(p, file$2, 301, 4, 8402);
 				div.className = "breadcrumb svelte-1bnkrap";
-				add_location(div, file$2, 300, 2, 8208);
+				add_location(div, file$2, 300, 2, 8274);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1680,10 +1680,10 @@ var app = (function () {
 				attr(circle, "r", "20");
 				attr(circle, "fill", "none");
 				attr(circle, "stroke-width", "3");
-				add_location(circle, file$2, 317, 4, 8854);
+				add_location(circle, file$2, 317, 4, 8920);
 				attr(svg, "class", "spinner svelte-1bnkrap");
 				attr(svg, "viewBox", "0 0 50 50");
-				add_location(svg, file$2, 316, 4, 8808);
+				add_location(svg, file$2, 316, 4, 8874);
 			},
 
 			m: function mount(target, anchor) {
@@ -1710,7 +1710,7 @@ var app = (function () {
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 325, 6, 9148);
+				add_location(span, file$2, 325, 6, 9214);
 			},
 
 			m: function mount(target, anchor) {
@@ -1878,7 +1878,7 @@ var app = (function () {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
 				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1bnkrap";
-				add_location(div, file$2, 333, 3, 9420);
+				add_location(div, file$2, 333, 3, 9486);
 			},
 
 			m: function mount(target, anchor) {
@@ -1984,7 +1984,7 @@ var app = (function () {
 				div.dataset.id = ctx.id;
 				toggle_class(div, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
 				toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-				add_location(div, file$2, 305, 0, 8415);
+				add_location(div, file$2, 305, 0, 8481);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -2233,7 +2233,6 @@ var app = (function () {
 	    
 	    // sets which stack needs to be expanded.
 	    activeCollection.update(n => id);
-
 	    blowStacks();
 	  }
 
@@ -2290,13 +2289,14 @@ var app = (function () {
 	    if(count === imagecollection.length){
 	      
 	      console.log("Loading complete");
-
-	      // Faking slow loading....
-	      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-	      (async () => {
-	        await sleep(3200);
-	        loadingSecondary.update(n => false);
-	      })();
+	      loadingSecondary.update(n => false);
+	      
+	      // // Faking slow loading....
+	      // const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+	      // (async () => {
+	      //   await sleep(3200);
+	      //   loadingSecondary.update(n => false);
+	      // })();
 
 	      $$invalidate('count', count = 0);
 	    }
