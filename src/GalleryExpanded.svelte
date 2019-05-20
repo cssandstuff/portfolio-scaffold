@@ -173,7 +173,7 @@
     flex-flow: row wrap;
     align-content: flex-start;
     justify-content: center;
-    height: 100%;
+    /* height: 100%; */
     width: auto;
     margin: 1em;
   }

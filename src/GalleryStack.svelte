@@ -204,8 +204,6 @@
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 20px;
-    animation: hello 0s forwards;
-    pointer-events: none;
     z-index: 99;
     padding: 10px;
     cursor: pointer;
@@ -237,17 +235,6 @@
     .breadcrumb p:after{
       top: 10px;
       transform: rotate(-45deg);
-    }
-    
-    @keyframes hello{
-      0%{
-        opacity: 0;
-        pointer-events: none;
-      }
-      100%{
-        opacity: 1;
-        pointer-events: auto;
-      }
     }
 
   .loading--false{
