@@ -863,7 +863,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (317:2) {#each stack as image, index}
+	// (322:2) {#each stack as image, index}
 	function create_each_block_1(ctx) {
 		var a, t, span, a_href_value, current_1, dispose;
 
@@ -886,10 +886,10 @@ var app = (function () {
 				t = space();
 				span = element("span");
 				span.className = "magnify svelte-ar9ky0";
-				add_location(span, file$1, 319, 6, 7845);
+				add_location(span, file$1, 324, 6, 7939);
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
 				a.className = "svelte-ar9ky0";
-				add_location(a, file$1, 317, 4, 7695);
+				add_location(a, file$1, 322, 4, 7789);
 				dispose = listen(a, "click", click_handler);
 			},
 
@@ -936,7 +936,7 @@ var app = (function () {
 		};
 	}
 
-	// (325:0) {#if ready}
+	// (330:0) {#if ready}
 	function create_if_block$1(ctx) {
 		var div, t0, span0, t1, span1, t2, span2, current_1, dispose;
 
@@ -977,13 +977,13 @@ var app = (function () {
 				span2 = element("span");
 				span2.textContent = "close";
 				span0.className = "previous svelte-ar9ky0";
-				add_location(span0, file$1, 331, 4, 8164);
+				add_location(span0, file$1, 336, 4, 8258);
 				span1.className = "next svelte-ar9ky0";
-				add_location(span1, file$1, 332, 4, 8223);
+				add_location(span1, file$1, 337, 4, 8317);
 				span2.className = "close svelte-ar9ky0";
-				add_location(span2, file$1, 333, 4, 8274);
+				add_location(span2, file$1, 338, 4, 8368);
 				div.className = "hires svelte-ar9ky0";
-				add_location(div, file$1, 325, 2, 7916);
+				add_location(div, file$1, 330, 2, 8010);
 
 				dispose = [
 					listen(span0, "click", ctx.showPrevious),
@@ -1065,7 +1065,7 @@ var app = (function () {
 		};
 	}
 
-	// (327:4) {#each stack as image, index}
+	// (332:4) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var div, current_1;
 
@@ -1083,7 +1083,7 @@ var app = (function () {
 				image.$$.fragment.c();
 				div.className = "svelte-ar9ky0";
 				toggle_class(div, "active", ctx.current === ctx.index);
-				add_location(div, file$1, 327, 6, 8000);
+				add_location(div, file$1, 332, 6, 8094);
 			},
 
 			m: function mount(target, anchor) {
@@ -1164,7 +1164,7 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				div.className = "stack gallery svelte-ar9ky0";
-				add_location(div, file$1, 315, 0, 7606);
+				add_location(div, file$1, 320, 0, 7700);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1308,6 +1308,7 @@ var app = (function () {
 	  let ready;
 	  let current;
 	  let y;
+	  let expandedOnce = false;
 	  
 	  // count for loading
 	  let count = 0;
@@ -1341,7 +1342,7 @@ var app = (function () {
 
 	  // Function for Expanding things into place.
 	  function expandStuff(){
-	    //console.log('expandingh')
+	    
 	    secondLevel.style.transform = `translateY(${scrollY}px)`; $$invalidate('secondLevel', secondLevel);
 	    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -1371,10 +1372,14 @@ var app = (function () {
 	  // but for now it seems ok.
 	  afterUpdate(() => {
 	    if(!$loadingSecondary && !$destroyingExpandedGallery){
-	      expandStuff();
+	      if(!expandedOnce){
+	         expandStuff();
+	      }
+	      $$invalidate('expandedOnce', expandedOnce = true);
 	    }
 	    if($destroyingExpandedGallery){
 	      consolidateStuff();
+	      $$invalidate('expandedOnce', expandedOnce = false);
 	    }
 	  });
 

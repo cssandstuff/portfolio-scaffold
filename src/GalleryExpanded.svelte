@@ -20,6 +20,7 @@
   let ready;
   let current;
   let y;
+  let expandedOnce = false;
   
   // count for loading
   let count = 0;
@@ -54,8 +55,8 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
-    //console.log('expandingh')
-    secondLevel.style.transform = `translateY(${scrollY}px)`
+    
+    secondLevel.style.transform = `translateY(${scrollY}px)`;
     const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
     (async () => {
@@ -63,7 +64,7 @@
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
         value.classList.add('slowtransition');
-        value.style.transform = `translateX(0px) translateY(0px)`
+        value.style.transform = `translateX(0px) translateY(0px)`;
       });
     })();
 
@@ -84,10 +85,14 @@
   // but for now it seems ok.
   afterUpdate(() => {
     if(!$loadingSecondary && !$destroyingExpandedGallery){
-      expandStuff();
+      if(!expandedOnce){
+         expandStuff();
+      }
+      expandedOnce = true;
     }
     if($destroyingExpandedGallery){
       consolidateStuff();
+      expandedOnce = false;
     }
   });
 
