@@ -13,8 +13,6 @@
   let thirdLevel;
   let images;
   let imageCount;
-  let ExpandedBefore = false;
-  let ConsolidatedBefore = false;
   let ready;
   let current;
   let y;
@@ -80,13 +78,11 @@
 
   // Might be able to refactor this to not use AfterUpdate
   afterUpdate(() => {
-    if($loadingSecondary && !ExpandedBefore){
+    if(!$loadingSecondary && !$destroyingExpandedGallery){
       expandStuff();
-      ExpandedBefore = true;
     }
-    if($destroyingExpandedGallery && !ConsolidatedBefore){
+    if($destroyingExpandedGallery){
       consolidateStuff();
-      ConsolidatedBefore = true;
     }
   });
 

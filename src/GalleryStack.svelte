@@ -137,7 +137,14 @@
   function handleLoadingComplete(event) {
     count = count + event.detail.loadingComplete;
     if(count === imagecollection.length){
-      loadingSecondary.update(n => false);
+      
+      console.log("Loading complete");
+      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+      (async () => {
+        await sleep(3200);
+        loadingSecondary.update(n => false);
+      })();
+
       count = 0;
     }
 	}
@@ -148,7 +155,7 @@
   /* These refer to the darkness class, none or total */
   .collection.active{
     z-index: 2 !important;
-    opacity: 0;
+    opacity: 0.6;
   }
   .collection.nonactive{
     opacity: 0;
@@ -246,7 +253,7 @@
     pointer-events: none;
   }
 
-  /* .spinner {
+   .spinner {
     animation: rotate 2s linear infinite;
     z-index: 2;
     position: absolute;
@@ -282,7 +289,7 @@
       stroke-dashoffset: -124;
     }
   }
-  */
+  
 </style>
 
 {#if $activeCollection == id}
@@ -290,7 +297,8 @@
     <p>{name} <span>({imagecollection.length} images)</span></p>
   </div>
 {/if}
-<div class:active="{id === $activeCollection}" 
+  
+<div class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
      data-id={id} 
@@ -298,13 +306,13 @@
      on:mouseenter={rotate} 
      on:mouseleave={unRotate} 
      on:click={showContents}>
-  <!-- in case we want a spinner  
+ 
+  <!-- in case we want a spinner  -->
   {#if $activeCollection == id}
     <svg class="spinner" viewBox="0 0 50 50">
     <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
     </svg>
-  {/if} -->
-
+  {/if}
   <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}
