@@ -18,7 +18,7 @@
   export let imagecollection;
   export let lowresdir;
   export let hiresdir;
-  export let id;
+  export let id = 0;
   export let name;
   export let color;
 
@@ -69,12 +69,12 @@
   // Initiate the gallery and expand the stack
   function showContents(){
     attemptingtoLoad = true;
-    console.log(color);
+    //console.log(color);
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     if(color){
       
       let hslcolor = color.split(",");
-      console.log(hslcolor[0])
+      //console.log(hslcolor[0])
       document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
       document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
       document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
@@ -98,8 +98,8 @@
       var rect = element.getBoundingClientRect();
       element.classList.add('notransition');
       let myId = parseInt(element.dataset.id);
+      element.classList.add('no-pointer-events');
       if(myId!==$activeCollection){
-        element.classList.add('no-pointer-events');
         element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
       }
     });
@@ -127,7 +127,7 @@
         });
       })();
       (async () => {
-        await sleep(400);
+        await sleep(600);
         elements.forEach(element => {
           element.classList.remove('no-pointer-events');
         });
@@ -311,7 +311,7 @@
      on:mouseenter={rotate} 
      on:mouseleave={unRotate} 
      on:click={showContents}>
- 
+    
   <!-- in case we want a spinner  -->
   {#if $activeCollection == id}
     <svg class="spinner" viewBox="0 0 50 50">
@@ -331,7 +331,8 @@
 
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
-   <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
+  <!-- {@debug imagecollection} -->
+   <div out:fade={{duration: 500}} in:fade={{duration: 90}} class="loading--{$loadingSecondary}">
     <GalleryExpanded bind:this={galleryExpanded} lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}

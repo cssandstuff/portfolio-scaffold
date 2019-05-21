@@ -30,7 +30,7 @@
   function consolidateStuff(){
     let rect = originaltarget.getBoundingClientRect();
     secondLevel.classList.add('no-pointer-events');
-
+    
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
       
@@ -77,6 +77,9 @@
   onMount(() => {
     images = secondLevel.getElementsByTagName('img');
     imageCount = secondLevel.getElementsByTagName('img').length;
+    console.log('here are you images');
+    console.log(images);
+    
     consolidateStuff();
     
   });
