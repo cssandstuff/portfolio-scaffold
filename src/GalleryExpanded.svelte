@@ -30,26 +30,39 @@
   function consolidateStuff(){
     let rect = originaltarget.getBoundingClientRect();
     secondLevel.classList.add('no-pointer-events');
+
+    console.log("BOTCH");
+    console.log(images);
+
+    //sometimes the object is undefined I don't know why.
+    if(images !== undefined){
+      Object.entries(images).forEach(([key, value]) => {
+        let imageDivRect = value.getBoundingClientRect();
+        let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+        
+        if(key == 0){
+          transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+        }
+        
+        // if gallery is being closed/destroyed we want a quicker transition.
+        if($destroyingExpandedGallery){
+          value.classList.add('quicktransition');
+          transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+        }else{
+          value.parentNode.style.zIndex = imageCount - key;
+        }
+        // Set tranformed style.
+        value.style.transform = transformedStyle;
+      });
+    }else{
+      console.log('object was undefined, hard luck son.');
+      //component.$destroy()
+    }
     
-    Object.entries(images).forEach(([key, value]) => {
-      let imageDivRect = value.getBoundingClientRect();
-      
-      let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-      
-      if(key == 0){
-        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
-      }
-      
-      // if gallery is being closed/destroyed we want a quicker transition.
-      if($destroyingExpandedGallery){
-        value.classList.add('quicktransition');
-        transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
-      }else{
-        value.parentNode.style.zIndex = imageCount - key;
-      }
-      // Set tranformed style.
-      value.style.transform = transformedStyle;
-    });
+
+    
+    
+
 
   }
 
@@ -76,10 +89,7 @@
 
   onMount(() => {
     images = secondLevel.getElementsByTagName('img');
-    imageCount = secondLevel.getElementsByTagName('img').length;
-    console.log('here are you images');
-    console.log(images);
-    
+    imageCount = secondLevel.getElementsByTagName('img').length; 
     consolidateStuff();
     
   });
@@ -100,7 +110,7 @@
   });
 
   onDestroy(() => {
-    console.log('being destoryed');
+    console.log('being destroyed');
     destroyingExpandedGallery.update(n => false);
   });
 

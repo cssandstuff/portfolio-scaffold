@@ -880,7 +880,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (325:2) {#each stack as image, index}
+	// (335:2) {#each stack as image, index}
 	function create_each_block_1(ctx) {
 		var a, t, span, a_href_value, current_1, dispose;
 
@@ -903,10 +903,10 @@ var app = (function () {
 				t = space();
 				span = element("span");
 				span.className = "magnify svelte-ar9ky0";
-				add_location(span, file$1, 327, 6, 8013);
+				add_location(span, file$1, 337, 6, 8231);
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
 				a.className = "svelte-ar9ky0";
-				add_location(a, file$1, 325, 4, 7863);
+				add_location(a, file$1, 335, 4, 8081);
 				dispose = listen(a, "click", click_handler);
 			},
 
@@ -953,7 +953,7 @@ var app = (function () {
 		};
 	}
 
-	// (333:0) {#if ready}
+	// (343:0) {#if ready}
 	function create_if_block$1(ctx) {
 		var div, t0, span0, t1, span1, t2, span2, current_1, dispose;
 
@@ -994,13 +994,13 @@ var app = (function () {
 				span2 = element("span");
 				span2.textContent = "close";
 				span0.className = "previous svelte-ar9ky0";
-				add_location(span0, file$1, 339, 4, 8332);
+				add_location(span0, file$1, 349, 4, 8550);
 				span1.className = "next svelte-ar9ky0";
-				add_location(span1, file$1, 340, 4, 8391);
+				add_location(span1, file$1, 350, 4, 8609);
 				span2.className = "close svelte-ar9ky0";
-				add_location(span2, file$1, 341, 4, 8442);
+				add_location(span2, file$1, 351, 4, 8660);
 				div.className = "hires svelte-ar9ky0";
-				add_location(div, file$1, 333, 2, 8084);
+				add_location(div, file$1, 343, 2, 8302);
 
 				dispose = [
 					listen(span0, "click", ctx.showPrevious),
@@ -1082,7 +1082,7 @@ var app = (function () {
 		};
 	}
 
-	// (335:4) {#each stack as image, index}
+	// (345:4) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var div, current_1;
 
@@ -1100,7 +1100,7 @@ var app = (function () {
 				image.$$.fragment.c();
 				div.className = "svelte-ar9ky0";
 				toggle_class(div, "active", ctx.current === ctx.index);
-				add_location(div, file$1, 335, 6, 8168);
+				add_location(div, file$1, 345, 6, 8386);
 			},
 
 			m: function mount(target, anchor) {
@@ -1181,7 +1181,7 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				div.className = "stack gallery svelte-ar9ky0";
-				add_location(div, file$1, 323, 0, 7774);
+				add_location(div, file$1, 333, 0, 7992);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1334,26 +1334,39 @@ var app = (function () {
 	  function consolidateStuff(){
 	    let rect = originaltarget.getBoundingClientRect();
 	    secondLevel.classList.add('no-pointer-events');
+
+	    console.log("BOTCH");
+	    console.log(images);
+
+	    //sometimes the object is undefined I don't know why.
+	    if(images !== undefined){
+	      Object.entries(images).forEach(([key, value]) => {
+	        let imageDivRect = value.getBoundingClientRect();
+	        let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+	        
+	        if(key == 0){
+	          transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+	        }
+	        
+	        // if gallery is being closed/destroyed we want a quicker transition.
+	        if($destroyingExpandedGallery){
+	          value.classList.add('quicktransition');
+	          transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+	        }else{
+	          value.parentNode.style.zIndex = imageCount - key;
+	        }
+	        // Set tranformed style.
+	        value.style.transform = transformedStyle;
+	      });
+	    }else{
+	      console.log('object was undefined, hard luck son.');
+	      //component.$destroy()
+	    }
 	    
-	    Object.entries(images).forEach(([key, value]) => {
-	      let imageDivRect = value.getBoundingClientRect();
-	      
-	      let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-	      
-	      if(key == 0){
-	        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
-	      }
-	      
-	      // if gallery is being closed/destroyed we want a quicker transition.
-	      if($destroyingExpandedGallery){
-	        value.classList.add('quicktransition');
-	        transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
-	      }else{
-	        value.parentNode.style.zIndex = imageCount - key;
-	      }
-	      // Set tranformed style.
-	      value.style.transform = transformedStyle;
-	    });
+
+	    
+	    
+
 
 	  }
 
@@ -1380,10 +1393,7 @@ var app = (function () {
 
 	  onMount(() => {
 	    $$invalidate('images', images = secondLevel.getElementsByTagName('img'));
-	    $$invalidate('imageCount', imageCount = secondLevel.getElementsByTagName('img').length);
-	    console.log('here are you images');
-	    console.log(images);
-	    
+	    $$invalidate('imageCount', imageCount = secondLevel.getElementsByTagName('img').length); 
 	    consolidateStuff();
 	    
 	  });
@@ -1404,7 +1414,7 @@ var app = (function () {
 	  });
 
 	  onDestroy(() => {
-	    console.log('being destoryed');
+	    console.log('being destroyed');
 	    destroyingExpandedGallery.update(n => false);
 	  });
 
@@ -1614,7 +1624,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (300:0) {#if $activeCollection == id}
+	// (298:0) {#if $activeCollection == id}
 	function create_if_block_3(ctx) {
 		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current, dispose;
 
@@ -1629,11 +1639,11 @@ var app = (function () {
 				t3 = text(t3_value);
 				t4 = text(" images)");
 				span.className = "svelte-1bnkrap";
-				add_location(span, file$2, 301, 14, 8418);
+				add_location(span, file$2, 299, 14, 8267);
 				p.className = "svelte-1bnkrap";
-				add_location(p, file$2, 301, 4, 8408);
+				add_location(p, file$2, 299, 4, 8257);
 				div.className = "breadcrumb svelte-1bnkrap";
-				add_location(div, file$2, 300, 2, 8280);
+				add_location(div, file$2, 298, 2, 8129);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1691,7 +1701,7 @@ var app = (function () {
 		};
 	}
 
-	// (316:2) {#if $activeCollection == id}
+	// (314:2) {#if $activeCollection == id}
 	function create_if_block_2(ctx) {
 		var svg, circle;
 
@@ -1705,10 +1715,10 @@ var app = (function () {
 				attr(circle, "r", "20");
 				attr(circle, "fill", "none");
 				attr(circle, "stroke-width", "3");
-				add_location(circle, file$2, 317, 4, 8929);
+				add_location(circle, file$2, 315, 4, 8778);
 				attr(svg, "class", "spinner svelte-1bnkrap");
 				attr(svg, "viewBox", "0 0 50 50");
-				add_location(svg, file$2, 316, 4, 8883);
+				add_location(svg, file$2, 314, 4, 8732);
 			},
 
 			m: function mount(target, anchor) {
@@ -1724,7 +1734,7 @@ var app = (function () {
 		};
 	}
 
-	// (325:4) {:else}
+	// (323:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
@@ -1735,7 +1745,7 @@ var app = (function () {
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 325, 6, 9223);
+				add_location(span, file$2, 323, 6, 9072);
 			},
 
 			m: function mount(target, anchor) {
@@ -1759,7 +1769,7 @@ var app = (function () {
 		};
 	}
 
-	// (323:4) {#if index==0}
+	// (321:4) {#if index==0}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -1804,7 +1814,7 @@ var app = (function () {
 		};
 	}
 
-	// (322:2) {#each imagecollection as image, index}
+	// (320:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1880,7 +1890,7 @@ var app = (function () {
 		};
 	}
 
-	// (333:0) {#if attemptingtoLoad}
+	// (331:0) {#if attemptingtoLoad}
 	function create_if_block$2(ctx) {
 		var div, div_class_value, div_intro, div_outro, current;
 
@@ -1903,7 +1913,7 @@ var app = (function () {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
 				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1bnkrap";
-				add_location(div, file$2, 334, 3, 9531);
+				add_location(div, file$2, 332, 3, 9380);
 			},
 
 			m: function mount(target, anchor) {
@@ -2014,7 +2024,7 @@ var app = (function () {
 				div.dataset.id = ctx.id;
 				toggle_class(div, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
 				toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-				add_location(div, file$2, 305, 0, 8487);
+				add_location(div, file$2, 303, 0, 8336);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -2228,9 +2238,7 @@ var app = (function () {
 	  function rotate() {
 	    collection.style.transform = 'rotate(-1.5deg)'; $$invalidate('collection', collection);
 	    Object.entries(fakeImages).forEach(([key, value]) => {
-	      //value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
 	      value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
-	      //transform: rotate({index * 2}deg);
 	    });
 	    firstImage.style.transform = 'scale(1.08) translateY(10px)'; $$invalidate('firstImage', firstImage);
 	  }

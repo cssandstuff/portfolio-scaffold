@@ -50,9 +50,7 @@
   function rotate() {
     collection.style.transform = 'rotate(-1.5deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
-      //value.style.transform = 'rotate(' + (23/(imagecollection.length - 1) * (parseInt(key)+ 1))+ 'deg)';
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
-      //transform: rotate({index * 2}deg);
     })
     firstImage.style.transform = 'scale(1.08) translateY(10px)';
   }
