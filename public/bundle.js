@@ -902,10 +902,10 @@ var app = (function () {
 				image.$$.fragment.c();
 				t = space();
 				span = element("span");
-				span.className = "magnify svelte-w96v25";
+				span.className = "magnify svelte-1q157sg";
 				add_location(span, file$1, 346, 6, 8679);
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-				a.className = "svelte-w96v25";
+				a.className = "svelte-1q157sg";
 				add_location(a, file$1, 344, 4, 8529);
 				dispose = listen(a, "click", click_handler);
 			},
@@ -993,13 +993,13 @@ var app = (function () {
 				t2 = space();
 				span2 = element("span");
 				span2.textContent = "close";
-				span0.className = "previous svelte-w96v25";
+				span0.className = "previous svelte-1q157sg";
 				add_location(span0, file$1, 358, 4, 8998);
-				span1.className = "next svelte-w96v25";
+				span1.className = "next svelte-1q157sg";
 				add_location(span1, file$1, 359, 4, 9057);
-				span2.className = "close svelte-w96v25";
+				span2.className = "close svelte-1q157sg";
 				add_location(span2, file$1, 360, 4, 9108);
-				div.className = "hires svelte-w96v25";
+				div.className = "hires svelte-1q157sg";
 				add_location(div, file$1, 352, 2, 8750);
 
 				dispose = [
@@ -1098,7 +1098,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				image.$$.fragment.c();
-				div.className = "svelte-w96v25";
+				div.className = "svelte-1q157sg";
 				toggle_class(div, "active", ctx.current === ctx.index);
 				add_location(div, file$1, 354, 6, 8834);
 			},
@@ -1180,7 +1180,7 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = "stack gallery svelte-w96v25";
+				div.className = "stack gallery svelte-1q157sg";
 				add_location(div, file$1, 342, 0, 8440);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;

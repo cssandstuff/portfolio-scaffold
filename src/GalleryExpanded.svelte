@@ -211,7 +211,7 @@
     margin: 1em 1.5em 3em 1.5em;
   }
   .gallery :global(img) {
-    width: calc(20em - 3em);
+    width: calc(21em - 3em);
     margin: 0;
     height: 15em;
     min-width: 0 !important;
