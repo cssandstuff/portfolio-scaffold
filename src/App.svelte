@@ -76,3 +76,4 @@
 	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
 
+<p><a href="https://github.com/cssandstuff/portfolio-scaffold">See on Github</a></p>

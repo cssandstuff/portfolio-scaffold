@@ -1,5 +1,5 @@
 <script>
-
+  // This handles the lazy loading of images, or the best I could copy or come up with
   import { onMount } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   export let image;
@@ -9,10 +9,9 @@
 
   onMount(async () => {
     const res = await fetch(image);
-    //console.log(res);
     if(res.status === 200){
        image = res.url;
-       const loader = new Image(); //  the script equivalent to the html image element
+       const loader = new Image();
        loader.onload = () => {
          visible = true;
          dispatch('loadingComplete', {

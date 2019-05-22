@@ -660,7 +660,7 @@ var app = (function () {
 
 	const file = "src/Image.svelte";
 
-	// (82:0) {#if !visible}
+	// (81:0) {#if !visible}
 	function create_if_block(ctx) {
 		var div;
 
@@ -669,7 +669,7 @@ var app = (function () {
 				div = element("div");
 				div.className = "loader svelte-m5fr7l";
 				set_style(div, "background", "#ccc");
-				add_location(div, file, 82, 2, 1535);
+				add_location(div, file, 81, 2, 1545);
 			},
 
 			m: function mount(target, anchor) {
@@ -698,7 +698,7 @@ var app = (function () {
 				img.src = ctx.image;
 				img.alt = "";
 				img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-m5fr7l";
-				add_location(img, file, 80, 0, 1453);
+				add_location(img, file, 79, 0, 1463);
 			},
 
 			l: function claim(nodes) {
@@ -759,10 +759,9 @@ var app = (function () {
 
 	  onMount(async () => {
 	    const res = await fetch(image);
-	    //console.log(res);
 	    if(res.status === 200){
 	       $$invalidate('image', image = res.url);
-	       const loader = new Image(); //  the script equivalent to the html image element
+	       const loader = new Image();
 	       loader.onload = () => {
 	         $$invalidate('visible', visible = true);
 	         dispatch('loadingComplete', {
@@ -2455,7 +2454,7 @@ var app = (function () {
 	const file$3 = "src/App.svelte";
 
 	function create_fragment$3(ctx) {
-		var div, t0, t1, t2, t3, t4, current;
+		var div, t0, t1, t2, t3, t4, t5, p, a, current;
 
 		var gallerystack0 = new GalleryStack({
 			props: {
@@ -2539,8 +2538,15 @@ var app = (function () {
 				gallerystack4.$$.fragment.c();
 				t4 = space();
 				gallerystack5.$$.fragment.c();
+				t5 = space();
+				p = element("p");
+				a = element("a");
+				a.textContent = "See on Github";
 				div.className = "container svelte-tvpk2f";
 				add_location(div, file$3, 69, 0, 1347);
+				a.href = "https://github.com/cssandstuff/portfolio-scaffold";
+				add_location(a, file$3, 78, 3, 2186);
+				add_location(p, file$3, 78, 0, 2183);
 			},
 
 			l: function claim(nodes) {
@@ -2560,6 +2566,9 @@ var app = (function () {
 				mount_component(gallerystack4, div, null);
 				append(div, t4);
 				mount_component(gallerystack5, div, null);
+				insert(target, t5, anchor);
+				insert(target, p, anchor);
+				append(p, a);
 				current = true;
 			},
 
@@ -2638,6 +2647,11 @@ var app = (function () {
 				gallerystack4.$destroy();
 
 				gallerystack5.$destroy();
+
+				if (detaching) {
+					detach(t5);
+					detach(p);
+				}
 			}
 		};
 	}
