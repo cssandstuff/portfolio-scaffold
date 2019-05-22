@@ -56,9 +56,6 @@
     
     secondLevel.classList.add('no-pointer-events');
 
-    console.log("BOTCH");
-    console.log(images);
-
     //sometimes the object is undefined I don't know why.
     if(images !== undefined){
       console.log("weren't me guv");
@@ -139,15 +136,11 @@
   }
 
   function showPrevious(){
-    console.log(`current image is ${current}`)
-    console.log("go prev");
-    
     if(current <= 0) {
       current = stack.length - 1;
     }else{
       current--;
     }
-    console.log(`current image is ${current}`)
   }
   
   function showNext(){
@@ -157,7 +150,6 @@
     }else{
       current++;
     }
-    console.log(`current image is ${current}`)
   }
 
   function closeGallery(){

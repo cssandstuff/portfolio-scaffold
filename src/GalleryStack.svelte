@@ -115,7 +115,6 @@
     
       // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
       // might be able to call the funtion directly instead of this??
-      console.log(galleryExpanded);
       destroyingExpandedGallery.update(n => true);
       (async () => {
         await sleep(200);
@@ -197,7 +196,7 @@
     transition: 0.15s all ease-out;
     border-radius: 4px;
   } 
-  
+
   .collection:hover :global(img){
     transition: 0.3s all ease-out;
   }
