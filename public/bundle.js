@@ -2480,7 +2480,7 @@ var app = (function () {
 
 		var gallerystack1 = new GalleryStack({
 			props: {
-			name: "Travelling",
+			name: "Splashes",
 			color: "206, 69, 88",
 			lowresdir: "images",
 			hiresdir: "images/originals",
@@ -2503,7 +2503,7 @@ var app = (function () {
 
 		var gallerystack3 = new GalleryStack({
 			props: {
-			name: "Splashes",
+			name: "Travelling",
 			lowresdir: "images",
 			hiresdir: "images/originals",
 			imagecollection: ctx.collection4,

@@ -68,9 +68,9 @@
 
 <div class="container">
 	<GalleryStack name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
-	<GalleryStack name="Travelling" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
+	<GalleryStack name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
 	<GalleryStack name="Citizens of Science" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
-	<GalleryStack name="Splashes" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack name="Travelling" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
 	<GalleryStack name="Angry at kids" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
