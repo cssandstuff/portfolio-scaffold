@@ -21,14 +21,39 @@
   let current;
   let y;
   let expandedOnce = false;
-  
+  const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+
   // count for loading
   let count = 0;
   const dispatch = createEventDispatcher();
 
-  // Function for bringing everything together.
-  function consolidateStuff(){
+  // sometimes the object is empty, so we want a function that only runs when the object is there.
+  // This is only called by the attemptToCOnsolidate function.
+  function performConsolidation(){
     let rect = originaltarget.getBoundingClientRect();
+
+    Object.entries(images).forEach(([key, value]) => {
+      let imageDivRect = value.getBoundingClientRect();
+      let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+      
+      if(key == 0){
+        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+      }
+      
+      // if gallery is being closed/destroyed we want a quicker transition.
+      if($destroyingExpandedGallery){
+        value.classList.add('quicktransition');
+        transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+      }else{
+        value.parentNode.style.zIndex = imageCount - key;
+      }
+      // Set tranformed style.
+      value.style.transform = transformedStyle;
+    });
+  }
+  // Function for bringing everything together.
+  function attemptToConsolidate(){
+    
     secondLevel.classList.add('no-pointer-events');
 
     console.log("BOTCH");
@@ -36,41 +61,27 @@
 
     //sometimes the object is undefined I don't know why.
     if(images !== undefined){
-      Object.entries(images).forEach(([key, value]) => {
-        let imageDivRect = value.getBoundingClientRect();
-        let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-        
-        if(key == 0){
-          transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
-        }
-        
-        // if gallery is being closed/destroyed we want a quicker transition.
-        if($destroyingExpandedGallery){
-          value.classList.add('quicktransition');
-          transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
-        }else{
-          value.parentNode.style.zIndex = imageCount - key;
-        }
-        // Set tranformed style.
-        value.style.transform = transformedStyle;
-      });
+      console.log("weren't me guv");
+      performConsolidation();
     }else{
       console.log('object was undefined, hard luck son.');
-      //component.$destroy()
+      
+      (async () => {
+        
+        await sleep(180);
+        Object.entries(images).forEach(([key, value]) => {
+          console.log('trying again');
+          performConsolidation();
+        });
+      })();
     }
-    
-
-    
-    
-
-
   }
 
   // Function for Expanding things into place.
   function expandStuff(){
     
     secondLevel.style.transform = `translateY(${scrollY}px)`;
-    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+    
 
     (async () => {
       await sleep(80);
@@ -82,6 +93,7 @@
     })();
 
     (async () => {
+      // sleep for half a second
       await sleep(500);
       secondLevel.classList.remove('no-pointer-events');
     })();
@@ -90,21 +102,18 @@
   onMount(() => {
     images = secondLevel.getElementsByTagName('img');
     imageCount = secondLevel.getElementsByTagName('img').length; 
-    consolidateStuff();
-    
+    attemptToConsolidate();
   });
 
   // Might be able to refactor this to not use AfterUpdate, 
   // but for now it seems ok.
   afterUpdate(() => {
-    if(!$loadingSecondary && !$destroyingExpandedGallery){
-      if(!expandedOnce){
-         expandStuff();
-      }
+    if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
+      expandStuff();
       expandedOnce = true;
     }
-    if($destroyingExpandedGallery){
-      consolidateStuff();
+    if($destroyingExpandedGallery && expandedOnce){
+      attemptToConsolidate();
       expandedOnce = false;
     }
   });
@@ -175,7 +184,7 @@
   }
   .stack :global(.slowtransition) {
     /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
-    transition: all 0.5s cubic-bezier(0.38, 0.56, 0.24, 1.25) !important;
+    transition: all 0.5s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;
   }
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;

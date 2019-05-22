@@ -23,6 +23,7 @@
   export let color;
 
   const dispatch = createEventDispatcher();
+  const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
   // Local stuff
   let collection;
@@ -111,7 +112,7 @@
       element.classList.remove('notransition');
     });
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
-    const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+    
       // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
       // might be able to call the funtion directly instead of this??
       console.log(galleryExpanded);
@@ -142,7 +143,7 @@
       loadingSecondary.update(n => false);
       
       // // Faking slow loading....
-      // const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+      // 
       // (async () => {
       //   await sleep(3200);
       //   loadingSecondary.update(n => false);
