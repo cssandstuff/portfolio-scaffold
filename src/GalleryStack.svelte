@@ -197,6 +197,7 @@
     transition: 0.15s all ease-out;
     border-radius: 4px;
   } 
+  
   .collection:hover :global(img){
     transition: 0.3s all ease-out;
   }

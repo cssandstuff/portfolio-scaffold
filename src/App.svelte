@@ -60,7 +60,7 @@
 		margin: 40px 1em 1em;
 	}
 	.container :global(.collection) {
-		width: calc(21em - 3em);
+		width: calc(22em - 3em);
 		/* min-width: 220px; */
 		margin: 1em 1.5em 3em 1.5em;
 		height: 15em;

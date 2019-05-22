@@ -902,10 +902,10 @@ var app = (function () {
 				image.$$.fragment.c();
 				t = space();
 				span = element("span");
-				span.className = "magnify svelte-1q157sg";
+				span.className = "magnify svelte-1nom5pn";
 				add_location(span, file$1, 346, 6, 8679);
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-				a.className = "svelte-1q157sg";
+				a.className = "svelte-1nom5pn";
 				add_location(a, file$1, 344, 4, 8529);
 				dispose = listen(a, "click", click_handler);
 			},
@@ -993,13 +993,13 @@ var app = (function () {
 				t2 = space();
 				span2 = element("span");
 				span2.textContent = "close";
-				span0.className = "previous svelte-1q157sg";
+				span0.className = "previous svelte-1nom5pn";
 				add_location(span0, file$1, 358, 4, 8998);
-				span1.className = "next svelte-1q157sg";
+				span1.className = "next svelte-1nom5pn";
 				add_location(span1, file$1, 359, 4, 9057);
-				span2.className = "close svelte-1q157sg";
+				span2.className = "close svelte-1nom5pn";
 				add_location(span2, file$1, 360, 4, 9108);
-				div.className = "hires svelte-1q157sg";
+				div.className = "hires svelte-1nom5pn";
 				add_location(div, file$1, 352, 2, 8750);
 
 				dispose = [
@@ -1098,7 +1098,7 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				image.$$.fragment.c();
-				div.className = "svelte-1q157sg";
+				div.className = "svelte-1nom5pn";
 				toggle_class(div, "active", ctx.current === ctx.index);
 				add_location(div, file$1, 354, 6, 8834);
 			},
@@ -1180,7 +1180,7 @@ var app = (function () {
 				t = space();
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
-				div.className = "stack gallery svelte-1q157sg";
+				div.className = "stack gallery svelte-1nom5pn";
 				add_location(div, file$1, 342, 0, 8440);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
@@ -1633,7 +1633,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (299:0) {#if $activeCollection == id}
+	// (300:0) {#if $activeCollection == id}
 	function create_if_block_3(ctx) {
 		var div, p, t0, t1, span, t2, t3_value = ctx.imagecollection.length, t3, t4, div_intro, div_outro, current, dispose;
 
@@ -1647,12 +1647,12 @@ var app = (function () {
 				t2 = text("(");
 				t3 = text(t3_value);
 				t4 = text(" images)");
-				span.className = "svelte-1bnkrap";
-				add_location(span, file$2, 300, 14, 8198);
-				p.className = "svelte-1bnkrap";
-				add_location(p, file$2, 300, 4, 8188);
-				div.className = "breadcrumb svelte-1bnkrap";
-				add_location(div, file$2, 299, 2, 8060);
+				span.className = "svelte-hkbqid";
+				add_location(span, file$2, 301, 14, 8201);
+				p.className = "svelte-hkbqid";
+				add_location(p, file$2, 301, 4, 8191);
+				div.className = "breadcrumb svelte-hkbqid";
+				add_location(div, file$2, 300, 2, 8063);
 				dispose = listen(div, "click", ctx.resetStacks);
 			},
 
@@ -1710,7 +1710,7 @@ var app = (function () {
 		};
 	}
 
-	// (315:2) {#if $activeCollection == id}
+	// (316:2) {#if $activeCollection == id}
 	function create_if_block_2(ctx) {
 		var svg, circle;
 
@@ -1718,16 +1718,16 @@ var app = (function () {
 			c: function create() {
 				svg = svg_element("svg");
 				circle = svg_element("circle");
-				attr(circle, "class", "path svelte-1bnkrap");
+				attr(circle, "class", "path svelte-hkbqid");
 				attr(circle, "cx", "25");
 				attr(circle, "cy", "25");
 				attr(circle, "r", "20");
 				attr(circle, "fill", "none");
 				attr(circle, "stroke-width", "3");
-				add_location(circle, file$2, 316, 4, 8709);
-				attr(svg, "class", "spinner svelte-1bnkrap");
+				add_location(circle, file$2, 317, 4, 8712);
+				attr(svg, "class", "spinner svelte-hkbqid");
 				attr(svg, "viewBox", "0 0 50 50");
-				add_location(svg, file$2, 315, 4, 8663);
+				add_location(svg, file$2, 316, 4, 8666);
 			},
 
 			m: function mount(target, anchor) {
@@ -1743,18 +1743,18 @@ var app = (function () {
 		};
 	}
 
-	// (324:4) {:else}
+	// (325:4) {:else}
 	function create_else_block(ctx) {
 		var span;
 
 		return {
 			c: function create() {
 				span = element("span");
-				span.className = "dummyimage svelte-1bnkrap";
+				span.className = "dummyimage svelte-hkbqid";
 				set_style(span, "transform", "rotate(" + ctx.index * 2 + "deg)");
 				set_style(span, "z-index", "-" + ctx.index);
 				set_style(span, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-				add_location(span, file$2, 324, 6, 9003);
+				add_location(span, file$2, 325, 6, 9006);
 			},
 
 			m: function mount(target, anchor) {
@@ -1778,7 +1778,7 @@ var app = (function () {
 		};
 	}
 
-	// (322:4) {#if index==0}
+	// (323:4) {#if index==0}
 	function create_if_block_1(ctx) {
 		var current;
 
@@ -1823,7 +1823,7 @@ var app = (function () {
 		};
 	}
 
-	// (321:2) {#each imagecollection as image, index}
+	// (322:2) {#each imagecollection as image, index}
 	function create_each_block$1(ctx) {
 		var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -1899,7 +1899,7 @@ var app = (function () {
 		};
 	}
 
-	// (332:0) {#if attemptingtoLoad}
+	// (333:0) {#if attemptingtoLoad}
 	function create_if_block$2(ctx) {
 		var div, div_class_value, div_outro, current;
 
@@ -1921,8 +1921,8 @@ var app = (function () {
 			c: function create() {
 				div = element("div");
 				galleryexpanded.$$.fragment.c();
-				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1bnkrap";
-				add_location(div, file$2, 333, 3, 9311);
+				div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-hkbqid";
+				add_location(div, file$2, 334, 3, 9314);
 			},
 
 			m: function mount(target, anchor) {
@@ -1939,7 +1939,7 @@ var app = (function () {
 				if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
 				galleryexpanded.$set(galleryexpanded_changes);
 
-				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1bnkrap")) {
+				if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-hkbqid")) {
 					div.className = div_class_value;
 				}
 			},
@@ -2024,11 +2024,11 @@ var app = (function () {
 				t2 = space();
 				if (if_block2) if_block2.c();
 				if_block2_anchor = empty();
-				div.className = "collection svelte-1bnkrap";
+				div.className = "collection svelte-hkbqid";
 				div.dataset.id = ctx.id;
 				toggle_class(div, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
 				toggle_class(div, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-				add_location(div, file$2, 304, 0, 8267);
+				add_location(div, file$2, 305, 0, 8270);
 
 				dispose = [
 					listen(div, "mouseenter", ctx.rotate),
@@ -2548,7 +2548,7 @@ var app = (function () {
 				gallerystack4.$$.fragment.c();
 				t4 = space();
 				gallerystack5.$$.fragment.c();
-				div.className = "container svelte-tiz88e";
+				div.className = "container svelte-tvpk2f";
 				add_location(div, file$3, 69, 0, 1347);
 			},
 
