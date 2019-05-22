@@ -331,7 +331,7 @@
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
   <!-- {@debug imagecollection} -->
-   <div out:fade={{duration: 500}} in:fade={{duration: 90}} class="loading--{$loadingSecondary}">
+   <div out:fade={{duration: 500}} class="loading--{$loadingSecondary}">
     <GalleryExpanded bind:this={galleryExpanded} lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}

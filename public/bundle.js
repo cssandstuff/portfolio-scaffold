@@ -1901,7 +1901,7 @@ var app = (function () {
 
 	// (332:0) {#if attemptingtoLoad}
 	function create_if_block$2(ctx) {
-		var div, div_class_value, div_intro, div_outro, current;
+		var div, div_class_value, div_outro, current;
 
 		let galleryexpanded_props = {
 			lowresdir: ctx.lowresdir,
@@ -1948,18 +1948,13 @@ var app = (function () {
 				if (current) return;
 				galleryexpanded.$$.fragment.i(local);
 
-				add_render_callback(() => {
-					if (div_outro) div_outro.end(1);
-					if (!div_intro) div_intro = create_in_transition(div, fade, {duration: 90});
-					div_intro.start();
-				});
+				if (div_outro) div_outro.end(1);
 
 				current = true;
 			},
 
 			o: function outro(local) {
 				galleryexpanded.$$.fragment.o(local);
-				if (div_intro) div_intro.invalidate();
 
 				if (local) {
 					div_outro = create_out_transition(div, fade, {duration: 500});
