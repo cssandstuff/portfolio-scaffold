@@ -47,7 +47,7 @@
 		return () => elements.delete(collection);
 	});
   
-  // Rotate image stack on hover
+  // Rotate image stack on hover over
   function rotate() {
     collection.style.transform = 'rotate(-1.5deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
@@ -73,7 +73,8 @@
     if(color){
       
       let hslcolor = color.split(",");
-      //console.log(hslcolor[0])
+
+      // Can I do this automatically to find the primary color of the image?
       document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
       document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
       document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
@@ -140,13 +141,6 @@
       
       console.log("Loading complete");
       loadingSecondary.update(n => false);
-      
-      // // Faking slow loading....
-      // 
-      // (async () => {
-      //   await sleep(3200);
-      //   loadingSecondary.update(n => false);
-      // })();
 
       count = 0;
     }
@@ -209,8 +203,6 @@
   }
 
   .breadcrumb{
-    /*TODO need this to be a sticky menu */
-    /* background: #efefef; */
     opacity: 1;
     position: fixed;
     top: 0; left: 0;
@@ -273,6 +265,7 @@
       stroke-linecap: round;
       animation: dash 1.5s ease-in-out infinite;
   } 
+  
   @keyframes rotate {
     100% {
       transform: rotate(360deg);

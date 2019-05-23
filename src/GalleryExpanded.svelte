@@ -36,6 +36,7 @@
       let imageDivRect = value.getBoundingClientRect();
       let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
       
+      // If first image
       if(key == 0){
         transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
       }
@@ -51,6 +52,7 @@
       value.style.transform = transformedStyle;
     });
   }
+
   // Function for bringing everything together.
   function attemptToConsolidate(){
     
@@ -63,8 +65,8 @@
     }else{
       console.log('object was undefined, hard luck son.');
       
+      // Try again?
       (async () => {
-        
         await sleep(180);
         Object.entries(images).forEach(([key, value]) => {
           console.log('trying again');
@@ -78,7 +80,6 @@
   function expandStuff(){
     
     secondLevel.style.transform = `translateY(${scrollY}px)`;
-    
 
     (async () => {
       await sleep(80);
@@ -144,7 +145,6 @@
   }
   
   function showNext(){
-    
     if(current >= (stack.length - 1)) {
       current = 0;
     }else{
@@ -345,7 +345,7 @@
   <div class="hires" bind:this={thirdLevel} >
     {#each stack as image, index}
       <div class:active="{current === index}">
-      <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
+        <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}
     <span class="previous" on:click={showPrevious}></span>
