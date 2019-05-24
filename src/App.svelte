@@ -55,25 +55,24 @@
 		flex-flow: row wrap;
 		align-content: flex-start;
 		justify-content: center;
-		height: 100%;
 		width: auto;
 		margin: 40px 1em 1em;
 	}
-	.container :global(.collection) {
-		width: calc(22em - 3em);
-		/* min-width: 220px; */
+	.container :global(.collection, .galleryitem) {
+		width: calc(18.5em - 3em);
 		margin: 1em 1.5em 3em 1.5em;
 		height: 15em;
 	}
+	p{text-align: center}
 </style>
 
 <div class="container">
-	<GalleryStack name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
-	<GalleryStack name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
-	<GalleryStack name="Citizens of Science" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
-	<GalleryStack name="Travelling" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
-	<GalleryStack name="Angry at kids" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
-	<GalleryStack name="Sketches" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
+	<GalleryStack width="" name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
+	<GalleryStack width="" name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
+	<GalleryStack width="" name="Citizens of Science" color="182, 37, 73" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack width="" name="Travelling" color="209, 25, 24" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack width="" name="Angry at kids" color="13, 92, 87" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
+	<GalleryStack width="" name="Sketches" color="109, 0, 76" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
 
 <p><a href="https://github.com/cssandstuff/portfolio-scaffold">See on Github</a></p>

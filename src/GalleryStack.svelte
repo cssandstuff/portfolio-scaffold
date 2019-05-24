@@ -233,7 +233,8 @@
     .breadcrumb p span{
       text-transform: none;
       font-weight: 300;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.9em;
     }
     .breadcrumb p:after{
       top: 10px;
@@ -249,7 +250,7 @@
     pointer-events: none;
   }
 
-   .spinner {
+  .spinner {
     animation: rotate 2s linear infinite;
     z-index: 2;
     position: absolute;

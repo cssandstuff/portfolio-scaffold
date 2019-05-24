@@ -202,13 +202,13 @@
     position: relative;
     margin: 1em 1.5em 3em 1.5em;
   }
-  .gallery :global(img) {
+  /* .gallery :global(img) {
     width: calc(22em - 3em);
     margin: 0;
     height: 15em;
     min-width: 0 !important;
     min-height: 0 !important;
-  }
+  } */
   .gallery a:hover .magnify{
     opacity: 1;
   }
@@ -334,7 +334,7 @@
 <svelte:window bind:scrollY={y}/>
 <div class="stack gallery" bind:this={secondLevel} >
   {#each stack as image, index}
-    <a href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
+    <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
     </a>

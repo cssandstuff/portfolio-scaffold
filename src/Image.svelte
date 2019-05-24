@@ -5,6 +5,8 @@
   export let image;
   export let visible = 0;
 
+  let height;
+  let width;
   const dispatch = createEventDispatcher();
 
   onMount(async () => {
@@ -14,6 +16,8 @@
        const loader = new Image();
        loader.onload = () => {
          visible = true;
+         height = loader.height;
+         width = loader.width;
          dispatch('loadingComplete', {
           loadingComplete: 1
          });
