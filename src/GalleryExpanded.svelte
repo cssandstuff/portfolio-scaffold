@@ -6,6 +6,7 @@
   import Image from './Image.svelte';
   import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingExpandedGallery, loadingSecondary } from './stores.js';
+  import { fade } from 'svelte/transition';
 
   export let stack;
   export let lowresdir;
@@ -17,7 +18,7 @@
   let thirdLevel;
   let images;
   let imageCount;
-  let ready;
+  let ready = false;
   let current;
   let y;
   let expandedOnce = false;
@@ -98,8 +99,8 @@
   }
 
   onMount(() => {
-    images = secondLevel.getElementsByTagName('img');
-    imageCount = secondLevel.getElementsByTagName('img').length; 
+    images = secondLevel.getElementsByClassName('galleryitem');
+    imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
     attemptToConsolidate();
   });
 
@@ -121,11 +122,34 @@
     destroyingExpandedGallery.update(n => false);
   });
 
+  function animateClicked(current){
+    console.log(images[current]);
+    let currentImage = images[current].getElementsByTagName('img')[0];
+
+    console.log(currentImage);
+    let rect = images[current].getBoundingClientRect();
+    let centerX = document.documentElement.clientWidth/2;
+    let centerY = document.documentElement.clientHeight/2;
+    console.log(images[current].getBoundingClientRect());
+    console.log('asshole')
+    images[current].style.zIndex = '99';
+    console.log(rect.width, rect.height, centerX , centerY);
+    console.log((centerX * centerY * 2),(rect.width * rect.height));
+    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
+  }
+
   function loadLargeImages(event, index){
     current = index;
     event.preventDefault();
-    // after loading 
+    animateClicked(current);
     ready = true;
+    // (async () => {
+    //   // sleep for half a second
+    //   await sleep(100);
+    //   ready = true;
+    // })(); 
+    
+    
   }
 
   function handleLoadingHiResComplete(event){
@@ -155,10 +179,37 @@
   function closeGallery(){
     ready = false;
     document.documentElement.classList.remove('locked');
+    // currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+    // images[current].style.zIndex = '1';
   }
 </script>
 
 <style>
+  h2{
+    position: absolute; bottom: -50px; left: -10px;
+    font-weight: 200;
+    padding: 0.5em 0;
+    margin-left: 0.8em;
+    font-size: 0.9em;
+    color: #222;
+    opacity: 0;
+    animation: 0.4s 0.6s bringitIn forwards;
+    border-bottom: 1px solid #0000002a;
+    width: 99%;
+  }
+  @keyframes bringitIn{
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
+  /* h2 span{
+    display: block;
+    color: #a9a9a9;
+    font-size: 0.8em
+  } */
   .stack{
     position: absolute !important;
     top: 2em; right: 2em;
@@ -197,6 +248,9 @@
     /* height: 100%; */
     width: auto;
     margin: 1em;
+  }
+  .gallery :global(img){
+    transition: 0.5s all ease-out !important;
   }
   .gallery a{
     position: relative;
@@ -337,12 +391,15 @@
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
+      <h2>
+        {image.name}
+      </h2>
     </a>
   {/each}
 </div>
 
 {#if ready}
-  <div class="hires" bind:this={thirdLevel} >
+  <div class="hires" bind:this={thirdLevel} in:fade={{duration: 300}}>
     {#each stack as image, index}
       <div class:active="{current === index}">
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>

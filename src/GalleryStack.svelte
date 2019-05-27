@@ -39,7 +39,7 @@
   let attemptingtoLoad = false;
 
   onMount(() => {
-		fakeImages = collection.getElementsByTagName('span');
+		fakeImages = collection.getElementsByTagName('div');
     firstImage = collection.getElementsByTagName('img')[0];
     
     // some wizardry for keeping tabs on the collections
@@ -49,20 +49,20 @@
   
   // Rotate image stack on hover over
   function rotate() {
-    collection.style.transform = 'rotate(-1.5deg)';
+    //collection.style.transform = 'rotate(-1.5deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
-    firstImage.style.transform = 'scale(1.08) translateY(10px)';
+    firstImage.style.transform = 'scale(1.03) translateY(5px) rotate(-1deg)';
   }
 
   // Un-Rotate image stack on hover out
   function unRotate() {
-    collection.style.transform = 'rotate(0deg)';
+    //collection.style.transform = 'rotate(0deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     })
-    firstImage.style.transform = 'scale(1)';
+    firstImage.style.transform = 'scale(1) rotate(0deg)';
   }
 
   // Initiate the gallery and expand the stack
@@ -146,10 +146,29 @@
     }
 	}
   
+  function handleKeydown(event){
+    console.log("key is down"); 
+  }
 </script>
 
 <style>
   /* These refer to the darkness class, none or total */
+  h2{
+    position: absolute; bottom: -60px; left: -10px;
+    font-weight: 200;
+    padding: 0.5em 0 0.5em 0.5em;
+    margin-left: 0.8em;
+    font-size: 0.9em;
+    color: #222;
+    border-bottom: 1px solid #cecece7c;
+    display: block;
+    width: 99%;
+  }
+  h2 span{
+    display: block;
+    color: #a9a9a9;
+    font-size: 0.8em
+  }
   .collection.active{
     z-index: 2 !important;
     opacity: 0.6;
@@ -289,14 +308,15 @@
   }
   
 </style>
+<svelte:window on:keydown={handleKeydown}/>
 
 {#if $activeCollection == id}
   <div class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
     <p>{name} <span>({imagecollection.length} images)</span></p>
   </div>
 {/if}
-  
-<div class:active="{id === $activeCollection && $loadingSecondary == true}" 
+
+<a href="#" class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
      data-id={id} 
@@ -316,11 +336,14 @@
     {#if index==0}
       <Image image="{lowresdir}/{image.src}" />
     {:else}
-      <span class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></span>
+      <div class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></div>
     {/if}
   {/each}
-
-</div>
+  <h2>
+    {name}
+    <span>({imagecollection.length} Images)</span>
+  </h2>
+</a>
 
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}

@@ -8,40 +8,40 @@
 	// Images, maybe I can make this easier somehow?
 	// Auto-generate from a directory structure maybe?
 	let collection1 = [
-		{ src: 'Noa.JPG' },
-		{ src: 'dog.JPG' },
-		{ src: 'glass.JPG' }
+		{ src: 'Noa.JPG', name: 'Noa' },
+		{ src: 'dog.JPG', name: 'Dog' },
+		{ src: 'glass.JPG', name: 'Glass' }
 	];
 	
 	let collection4 = [
-		{ src: 'atami.JPG' },
-		{ src: 'kenodo.JPG' },
-		{ src: 'kenodo2.JPG' }
+		{ src: 'atami.JPG', name: 'Atami at night' },
+		{ src: 'kenodo.JPG', name: 'Konodo Highway' },
+		{ src: 'kenodo2.JPG', name: 'Tunnels' }
 	];
 	let collection6 = [
-		{ src: 'boring.JPG' },
-		{ src: 'hownotto.JPG' },
-		{ src: 'isometric.JPG' },
-		{ src: 'notes.JPG' },
-		{ src: 'glass-b+w.JPG' }
+		{ src: 'boring.JPG', name: 'Everything is boring' },
+		{ src: 'hownotto.JPG', name: 'How not to draw' },
+		{ src: 'isometric.JPG', name: 'Isometric' },
+		{ src: 'notes.JPG', name: 'Notes' },
+		{ src: 'glass-b+w.JPG', name: 'Glass' }
 	];
 	let collection2 = [
-		{ src: 'cash.JPG' },
-		{ src: 'robo.JPG' },
-		{ src: 'tako.JPG' }
+		{ src: 'cash.JPG', name: 'Cash Suitcase' },
+		{ src: 'robo.JPG', name: 'Robot' },
+		{ src: 'tako.JPG', name: 'Octopus' }
 	];
 	let collection5 = [
-		{ src: 'angrykid2.JPG' },
-		{ src: 'angrykid1.JPG' },
-		{ src: 'angrykid3.JPG' },
-		{ src: 'angrykid4.JPG' },
-		{ src: 'angrykid5.JPG' }
+		{ src: 'angrykid2.JPG', name: 'Angry 1' },
+		{ src: 'angrykid1.JPG', name: 'Angry 2' },
+		{ src: 'angrykid3.JPG', name: 'Angry 3' },
+		{ src: 'angrykid4.JPG', name: 'Angry 4' },
+		{ src: 'angrykid5.JPG', name: 'Angry 5' }
 	];
 	let collection3 = [
-		{ src: 'citizens.JPG' },
-		{ src: 'screwit.JPG' },
-		{ src: 'boltit.JPG' },
-		{ src: 'kumo.JPG' }
+		{ src: 'citizens.JPG', name: 'Citizens of Science' },
+		{ src: 'screwit.JPG', name: 'Screw It' },
+		{ src: 'boltit.JPG', name: 'Boltman' },
+		{ src: 'kumo.JPG', name: 'Spiderdeath' }
 	];
 
 
@@ -59,11 +59,14 @@
 		margin: 40px 1em 1em;
 	}
 	.container :global(.collection, .galleryitem) {
-		width: calc(18.5em - 3em);
-		margin: 1em 1.5em 3em 1.5em;
+		width: calc(19em - 3em);
+		margin: 0em 1.5em 6em 1.5em;
 		height: 15em;
 	}
-	p{text-align: center}
+	p{text-align: center; margin-bottom: 7em;}
+	p a{
+		color: #2781b4
+	}
 </style>
 
 <div class="container">
