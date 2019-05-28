@@ -96,7 +96,7 @@
     
     elements.forEach(element => {
       var rect = element.getBoundingClientRect();
-      element.classList.add('notransition');
+      element.classList.add('neardeath');
       let myId = parseInt(element.dataset.id);
       element.classList.add('no-pointer-events');
       if(myId!==$activeCollection){
@@ -110,7 +110,7 @@
   function resetStacks(){
     console.log('resetting...');
     elements.forEach(element => {
-      element.classList.remove('notransition');
+      element.classList.remove('neardeath');
     });
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
     

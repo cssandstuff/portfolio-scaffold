@@ -126,15 +126,17 @@
   });
 
   function animateClicked(current){
-    //console.log(images[current]);
-    let currentImage = images[current].getElementsByTagName('img')[0];
 
-    //console.log(currentImage);
+    let currentImage = images[current].getElementsByTagName('img')[0];
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
-    //console.log(images[current].getBoundingClientRect());
-    //console.log('asshole')
+
+    Object.entries(images).forEach(([key, value]) => {
+      value.style.zIndex = '1';
+    });
+
+    currentImage.classList.remove('notransition');
     images[current].style.zIndex = '99';
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
   }
@@ -189,14 +191,21 @@
     //openedImage.src = closedImage.src;
     
     Object.entries(imageTags).forEach(([key, value]) => {
-      //value.classList.add('notransition');
+      value.classList.add('notransition');
       value.style.transform = `translateX(0) translateY(0) scale(1)`;
-      value.style.zIndex = '1';
     });
 
-    // currentImage.style.zIndex = '99';
-    // currentImage.classList.remove('notransition')
-    // currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
+    images[current].style.zIndex = '99';
+    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
+    
+
+    
+    (async () => {
+      // sleep for half a second
+      await sleep(5);
+      currentImage.classList.remove('notransition');
+      currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+    })();
 
     document.documentElement.classList.remove('locked');
     ready = false;
@@ -241,7 +250,7 @@
   .stack :global(img) {
     box-shadow: 0 0 2px #ccc;
     border-radius: 4px;
-    transition: 0s all !important;
+    /* transition: 0s all !important; */
     background: #ccc;
   }
   .stack :global(.slowtransition) {
@@ -268,9 +277,9 @@
     width: auto;
     margin: 1em;
   }
-  .gallery :global(img){
-    transition: 0.5s all ease-out !important;
-  }
+  /* .gallery :global(img){
+    transition: 0.4s all ease-out;
+  } */
   .gallery a{
     position: relative;
     margin: 1em 1.5em 3em 1.5em;

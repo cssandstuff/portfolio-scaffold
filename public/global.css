@@ -24,8 +24,11 @@ body {
 	pointer-events: none !important;
 }
 
-.notransition{
+.neardeath{
 	opacity: 0;
+	transition: 0s !important;
+}
+.notransition{
 	transition: 0s !important;
 }
 
