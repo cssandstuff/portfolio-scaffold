@@ -138,7 +138,7 @@
 
     currentImage.classList.remove('notransition');
     currentImage.classList.remove('quicktransition');
-    
+
     images[current].style.zIndex = '99';
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
   }
@@ -226,8 +226,17 @@
     color: #222;
     opacity: 0;
     animation: 0.4s 0.6s bringitIn forwards;
-    border-bottom: 1px solid #0000002a;
+    /* border-bottom: 1px solid #0000002a; */
     width: 99%;
+  }
+  h2:after{
+    position: relative;
+    display: block;
+    content: '';
+    height: 1px;
+    width: 100%;
+    bottom: -8px;
+    background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
   }
   @keyframes bringitIn{
     0%{
