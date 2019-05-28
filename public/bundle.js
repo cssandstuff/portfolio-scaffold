@@ -930,7 +930,7 @@ var app = (function () {
 		return child_ctx;
 	}
 
-	// (418:2) {#each stack as image, index}
+	// (422:2) {#each stack as image, index}
 	function create_each_block_1(ctx) {
 		var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
 
@@ -956,12 +956,12 @@ var app = (function () {
 				h2 = element("h2");
 				t2 = text(t2_value);
 				span.className = "magnify svelte-u3rt46";
-				add_location(span, file$1, 420, 6, 11107);
+				add_location(span, file$1, 424, 6, 11226);
 				h2.className = "svelte-u3rt46";
-				add_location(h2, file$1, 421, 6, 11143);
+				add_location(h2, file$1, 425, 6, 11262);
 				a.className = "galleryitem svelte-u3rt46";
 				a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-				add_location(a, file$1, 418, 4, 10937);
+				add_location(a, file$1, 422, 4, 11056);
 				dispose = listen(a, "click", click_handler);
 			},
 
@@ -1015,7 +1015,7 @@ var app = (function () {
 		};
 	}
 
-	// (429:0) {#if ready}
+	// (433:0) {#if ready}
 	function create_if_block$1(ctx) {
 		var div, t0, span0, t1, span1, t2, span2, div_intro, current_1, dispose;
 
@@ -1056,13 +1056,13 @@ var app = (function () {
 				span2 = element("span");
 				span2.textContent = "close";
 				span0.className = "previous svelte-u3rt46";
-				add_location(span0, file$1, 435, 4, 11498);
+				add_location(span0, file$1, 439, 4, 11617);
 				span1.className = "next svelte-u3rt46";
-				add_location(span1, file$1, 436, 4, 11557);
+				add_location(span1, file$1, 440, 4, 11676);
 				span2.className = "close svelte-u3rt46";
-				add_location(span2, file$1, 437, 4, 11608);
+				add_location(span2, file$1, 441, 4, 11727);
 				div.className = "hires svelte-u3rt46";
-				add_location(div, file$1, 429, 2, 11222);
+				add_location(div, file$1, 433, 2, 11341);
 
 				dispose = [
 					listen(span0, "click", ctx.showPrevious),
@@ -1151,7 +1151,7 @@ var app = (function () {
 		};
 	}
 
-	// (431:4) {#each stack as image, index}
+	// (435:4) {#each stack as image, index}
 	function create_each_block(ctx) {
 		var div, current_1;
 
@@ -1169,7 +1169,7 @@ var app = (function () {
 				image.$$.fragment.c();
 				div.className = "svelte-u3rt46";
 				toggle_class(div, "active", ctx.current === ctx.index);
-				add_location(div, file$1, 431, 6, 11331);
+				add_location(div, file$1, 435, 6, 11450);
 			},
 
 			m: function mount(target, anchor) {
@@ -1250,7 +1250,7 @@ var app = (function () {
 				if (if_block) if_block.c();
 				if_block_anchor = empty();
 				div.className = "stack gallery svelte-u3rt46";
-				add_location(div, file$1, 416, 0, 10848);
+				add_location(div, file$1, 420, 0, 10967);
 				dispose = listen(window, "scroll", () => {
 					scrolling = true;
 					clearTimeout(scrolling_timeout);
@@ -1509,6 +1509,8 @@ var app = (function () {
 	    });
 
 	    currentImage.classList.remove('notransition');
+	    currentImage.classList.remove('quicktransition');
+	    
 	    images[current].style.zIndex = '99'; $$invalidate('images', images);
 	    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
 	  }
@@ -1576,6 +1578,8 @@ var app = (function () {
 	      // sleep for half a second
 	      await sleep(5);
 	      currentImage.classList.remove('notransition');
+	      currentImage.classList.add('quicktransition');
+	      
 	      currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
 	    })();
 

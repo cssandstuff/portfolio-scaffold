@@ -137,6 +137,8 @@
     });
 
     currentImage.classList.remove('notransition');
+    currentImage.classList.remove('quicktransition');
+    
     images[current].style.zIndex = '99';
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
   }
@@ -204,6 +206,8 @@
       // sleep for half a second
       await sleep(5);
       currentImage.classList.remove('notransition');
+      currentImage.classList.add('quicktransition');
+      
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
     })();
 
