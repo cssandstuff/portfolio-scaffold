@@ -17,9 +17,11 @@
   let secondLevel;
   let thirdLevel;
   let images;
+  let imageTags;
   let imageCount;
   let ready = false;
   let current;
+  let clicked;
   let y;
   let expandedOnce = false;
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
@@ -100,6 +102,7 @@
 
   onMount(() => {
     images = secondLevel.getElementsByClassName('galleryitem');
+    imageTags = secondLevel.getElementsByTagName('img');
     imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
     attemptToConsolidate();
   });
@@ -123,23 +126,22 @@
   });
 
   function animateClicked(current){
-    console.log(images[current]);
+    //console.log(images[current]);
     let currentImage = images[current].getElementsByTagName('img')[0];
 
-    console.log(currentImage);
+    //console.log(currentImage);
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
-    console.log(images[current].getBoundingClientRect());
-    console.log('asshole')
+    //console.log(images[current].getBoundingClientRect());
+    //console.log('asshole')
     images[current].style.zIndex = '99';
-    console.log(rect.width, rect.height, centerX , centerY);
-    console.log((centerX * centerY * 2),(rect.width * rect.height));
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
   }
 
   function loadLargeImages(event, index){
     current = index;
+    clicked = index;
     event.preventDefault();
     animateClicked(current);
     ready = true;
@@ -177,10 +179,27 @@
   }
 
   function closeGallery(){
-    ready = false;
+    console.log(`current is ${clicked}`);
+    let openedImage = images[clicked].getElementsByTagName('img')[0];
+    let currentImage = images[current].getElementsByTagName('img')[0];
+    let rect = images[current].getBoundingClientRect();
+    let centerX = document.documentElement.clientWidth/2;
+    let centerY = document.documentElement.clientHeight/2;
+
+    //openedImage.src = closedImage.src;
+    
+    Object.entries(imageTags).forEach(([key, value]) => {
+      //value.classList.add('notransition');
+      value.style.transform = `translateX(0) translateY(0) scale(1)`;
+      value.style.zIndex = '1';
+    });
+
+    // currentImage.style.zIndex = '99';
+    // currentImage.classList.remove('notransition')
+    // currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
+
     document.documentElement.classList.remove('locked');
-    // currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-    // images[current].style.zIndex = '1';
+    ready = false;
   }
 </script>
 
@@ -401,7 +420,7 @@
 {#if ready}
   <div class="hires" bind:this={thirdLevel} in:fade={{duration: 300}}>
     {#each stack as image, index}
-      <div class:active="{current === index}">
+      <div class:active="{current === index}" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}

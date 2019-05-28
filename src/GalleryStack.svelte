@@ -160,9 +160,18 @@
     margin-left: 0.8em;
     font-size: 0.9em;
     color: #222;
-    border-bottom: 1px solid #cecece7c;
+    
     display: block;
     width: 99%;
+  }
+  h2:after{
+    position: relative;
+    display: block;
+    content: '';
+    height: 1px;
+    width: 100%;
+    bottom: -8px;
+    background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
   }
   h2 span{
     display: block;
