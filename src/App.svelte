@@ -7,6 +7,11 @@
 
 	// Images, maybe I can make this easier somehow?
 	// Auto-generate from a directory structure maybe?
+	let collection0 = [
+		{ src: '01_front_cover.jpg', name: 'Noa' },
+		{ src: '02_back_cover.jpg', name: 'Dog' },
+		{ src: 'racoon_together.jpg', name: 'Glass' }
+	];
 	let collection1 = [
 		{ src: 'Noa.JPG', name: 'Noa' },
 		{ src: 'dog.JPG', name: 'Dog' },
@@ -70,6 +75,7 @@
 </style>
 
 <div class="container">
+	<GalleryStack width="" name="Ongakukai" color="44, 47, 90" lowresdir="images/16_ongakukai" hiresdir="images/16_ongakukai/originals" imagecollection={collection0} id="{uid++}" />
 	<GalleryStack width="" name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
 	<GalleryStack width="" name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
 	<GalleryStack width="" name="Citizens of Science" color="182, 37, 73" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />

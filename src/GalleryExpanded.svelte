@@ -15,7 +15,6 @@
 
   // Local stuff
   let secondLevel;
-  let thirdLevel;
   let images;
   let imageTags;
   let imageCount;
@@ -29,6 +28,78 @@
   // count for loading
   let count = 0;
   const dispatch = createEventDispatcher();
+
+  onMount(() => {
+    images = secondLevel.getElementsByClassName('galleryitem');
+    imageTags = secondLevel.getElementsByTagName('img');
+    imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
+    attemptToConsolidate();
+  });
+
+  // Might be able to refactor this to not use AfterUpdate, 
+  // but for now it seems ok.
+  afterUpdate(() => {
+    if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
+      expandStuff();
+      expandedOnce = true;
+    }
+    if($destroyingExpandedGallery && expandedOnce){
+      attemptToConsolidate();
+      expandedOnce = false;
+    }
+  });
+
+  onDestroy(() => {
+    console.log('being destroyed');
+    destroyingExpandedGallery.update(n => false);
+  });
+
+
+  function loadLargeImages(event, index){
+    current = index;
+    clicked = index;
+    event.preventDefault();
+    animateClicked(current);
+    ready = true;
+    // (async () => {
+    //   // sleep for half a second
+    //   await sleep(100);
+    //   ready = true;
+    // })(); 
+    
+    
+  }
+
+  function handleLoadingHiResComplete(event){
+    count = count + event.detail.loadingComplete;
+    if(count === stack.length){
+      count = 0;
+      document.documentElement.classList.add('locked');
+    }
+  }
+  
+  // Function for bringing everything together.
+  function attemptToConsolidate(){
+    
+    secondLevel.classList.add('no-pointer-events');
+
+    //sometimes the object is undefined I don't know why.
+    if(images !== undefined){
+      console.log("weren't me guv");
+      performConsolidation();
+    }else{
+      console.log('object was undefined, hard luck son.');
+      
+      // Try again?
+      (async () => {
+        await sleep(180);
+        Object.entries(images).forEach(([key, value]) => {
+          console.log('trying again');
+          performConsolidation();
+        });
+      })();
+    }
+  }
 
   // sometimes the object is empty, so we want a function that only runs when the object is there.
   // This is only called by the attemptToCOnsolidate function.
@@ -56,29 +127,6 @@
     });
   }
 
-  // Function for bringing everything together.
-  function attemptToConsolidate(){
-    
-    secondLevel.classList.add('no-pointer-events');
-
-    //sometimes the object is undefined I don't know why.
-    if(images !== undefined){
-      console.log("weren't me guv");
-      performConsolidation();
-    }else{
-      console.log('object was undefined, hard luck son.');
-      
-      // Try again?
-      (async () => {
-        await sleep(180);
-        Object.entries(images).forEach(([key, value]) => {
-          console.log('trying again');
-          performConsolidation();
-        });
-      })();
-    }
-  }
-
   // Function for Expanding things into place.
   function expandStuff(){
     
@@ -100,31 +148,6 @@
     })();
   }
 
-  onMount(() => {
-    images = secondLevel.getElementsByClassName('galleryitem');
-    imageTags = secondLevel.getElementsByTagName('img');
-    imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
-    attemptToConsolidate();
-  });
-
-  // Might be able to refactor this to not use AfterUpdate, 
-  // but for now it seems ok.
-  afterUpdate(() => {
-    if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
-      expandStuff();
-      expandedOnce = true;
-    }
-    if($destroyingExpandedGallery && expandedOnce){
-      attemptToConsolidate();
-      expandedOnce = false;
-    }
-  });
-
-  onDestroy(() => {
-    console.log('being destroyed');
-    destroyingExpandedGallery.update(n => false);
-  });
-
   function animateClicked(current){
 
     let currentImage = images[current].getElementsByTagName('img')[0];
@@ -140,30 +163,7 @@
     currentImage.classList.remove('quicktransition');
 
     images[current].style.zIndex = '99';
-    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
-  }
-
-  function loadLargeImages(event, index){
-    current = index;
-    clicked = index;
-    event.preventDefault();
-    animateClicked(current);
-    ready = true;
-    // (async () => {
-    //   // sleep for half a second
-    //   await sleep(100);
-    //   ready = true;
-    // })(); 
-    
-    
-  }
-
-  function handleLoadingHiResComplete(event){
-    count = count + event.detail.loadingComplete;
-    if(count === stack.length){
-      count = 0;
-      document.documentElement.classList.add('locked');
-    }
+    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/3})`;
   }
 
   function showPrevious(){
@@ -213,6 +213,20 @@
 
     document.documentElement.classList.remove('locked');
     ready = false;
+  }
+
+  function handleKeydown(event){
+    console.log("key is downz"); 
+    console.log(event);
+    if(event.code == "ArrowRight"){
+      showNext();
+    }
+    if(event.code == "ArrowLeft"){
+      showPrevious();
+    }
+    if(event.code == "Escape"){
+      closeGallery();
+    }
   }
 </script>
 
@@ -426,7 +440,7 @@
   }
 </style>
 
-<svelte:window bind:scrollY={y}/>
+<svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
 <div class="stack gallery" bind:this={secondLevel} >
   {#each stack as image, index}
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
@@ -440,7 +454,7 @@
 </div>
 
 {#if ready}
-  <div class="hires" bind:this={thirdLevel} in:fade={{duration: 300}}>
+  <div class="hires" in:fade={{duration: 300}}>
     {#each stack as image, index}
       <div class:active="{current === index}" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>

@@ -66,8 +66,9 @@
   }
 
   // Initiate the gallery and expand the stack
-  function showContents(){
+  function showContents(event){
     attemptingtoLoad = true;
+    event.preventDefault();
     //console.log(color);
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     if(color){
@@ -146,9 +147,6 @@
     }
 	}
   
-  function handleKeydown(event){
-    console.log("key is down"); 
-  }
 </script>
 
 <style>
@@ -317,7 +315,7 @@
   }
   
 </style>
-<svelte:window on:keydown={handleKeydown}/>
+
 
 {#if $activeCollection == id}
   <div class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
@@ -325,7 +323,7 @@
   </div>
 {/if}
 
-<a href="#" class:active="{id === $activeCollection && $loadingSecondary == true}" 
+<a href="{hiresdir}/{imagecollection[0].src}" class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
      data-id={id} 
