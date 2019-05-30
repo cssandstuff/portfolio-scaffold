@@ -22,6 +22,7 @@
   let current;
   let clicked;
   let y;
+  let originalScrollPos;
   let expandedOnce = false;
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -105,6 +106,7 @@
   // This is only called by the attemptToCOnsolidate function.
   function performConsolidation(){
     let rect = originaltarget.getBoundingClientRect();
+    
 
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
@@ -117,6 +119,8 @@
       
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingExpandedGallery){
+        document.documentElement.scrollTop = originalScrollPos; //rect.top;
+        //secondLevel.style.transform = `translateY(${scrollY}px)`;
         value.classList.add('quicktransition');
         transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
       }else{
@@ -129,15 +133,16 @@
 
   // Function for Expanding things into place.
   function expandStuff(){
+    originalScrollPos = scrollY;
+    secondLevel.style.transform = `translateY(-${scrollY}px)`;
+    document.documentElement.scrollTop = 0;
     
-    secondLevel.style.transform = `translateY(${scrollY}px)`;
-
     (async () => {
       await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
         value.classList.add('slowtransition');
-        value.style.transform = `translateX(0px) translateY(0px)`;
+        value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`;
       });
     })();
 
@@ -149,7 +154,7 @@
   }
 
   function animateClicked(current){
-
+    
     let currentImage = images[current].getElementsByTagName('img')[0];
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
@@ -194,7 +199,7 @@
     
     Object.entries(imageTags).forEach(([key, value]) => {
       value.classList.add('notransition');
-      value.style.transform = `translateX(0) translateY(0) scale(1)`;
+      value.style.transform = `translateX(0) translateY(${originalScrollPos}) scale(1)`;
     });
 
     images[current].style.zIndex = '99';
