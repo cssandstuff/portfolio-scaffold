@@ -493,7 +493,7 @@
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
-      <h2 class:out="{$destroyingExpandedGallery === true}" class:in="{loadingSecondary !== true}">
+      <h2 class:out="{$destroyingExpandedGallery === true}" class:in="{$loadingSecondary === false}">
         {image.name}
       </h2>
     </a>
