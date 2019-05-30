@@ -21,6 +21,7 @@
   let ready = false;
   let current;
   let clicked;
+  let loadedSuccessfully = false;
   let y;
   let originalScrollPos;
   let expandedOnce = false;
@@ -71,6 +72,14 @@
     // })(); 
     
     
+  }
+
+  function handleLoadingComplete(event){
+    count = count + event.detail.loadingComplete;
+    if(count === stack.length){
+      count = 0;
+      loadedSuccessfully = true;
+    }
   }
 
   function handleLoadingHiResComplete(event){
@@ -271,9 +280,11 @@
     font-size: 0.9em;
     color: #222;
     opacity: 0;
-    animation: 0.4s 0.6s bringitIn forwards;
     /* border-bottom: 1px solid #0000002a; */
     width: 99%;
+  }
+  .in{
+    animation: 0.4s 0.6s bringitIn forwards;
   }
   .out{
     animation: 0.4s 0.6s bringitIn reverse;
@@ -482,7 +493,7 @@
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
-      <h2 class:out="{$destroyingExpandedGallery === true}">
+      <h2 class:out="{$destroyingExpandedGallery === true}" class:in="{loadingSecondary !== true}">
         {image.name}
       </h2>
     </a>
