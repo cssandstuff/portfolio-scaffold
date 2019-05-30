@@ -195,6 +195,7 @@
     (async () => {
       await sleep(400);
       document.documentElement.classList.add('locked');
+     
     })();
     
   }
@@ -238,18 +239,18 @@
     });
 
     images[current].style.zIndex = '99';
-    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
+    currentImage.classList.remove('notransition');
+    currentImage.classList.add('hitransition');
+    //currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
     
 
     document.documentElement.classList.remove('locked');
-
+    window.scrollTo(0, originalScrollPos);
     (async () => {
       // sleep for half a second
-      await sleep(5);
-      currentImage.classList.remove('notransition');
-      currentImage.classList.add('quicktransition');
+      await sleep(10);
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-      window.scrollTo(0, originalScrollPos);
+      
     })();
 
     
@@ -333,6 +334,10 @@
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
     opacity: 0.5;
+  }
+  .stack :global(.hitransition) {
+    transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
+    opacity: 1;
   }
   .stack :global(a:first-child.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.06) !important;
