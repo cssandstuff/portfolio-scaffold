@@ -86,7 +86,7 @@
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
       count = 0;
-      originalScrollPos = scrollY;
+      //originalScrollPos = scrollY;
     }
   }
   
@@ -188,13 +188,13 @@
 
     currentImage.classList.remove('notransition');
     currentImage.classList.remove('quicktransition');
-
     images[current].style.zIndex = '99';
-    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+    
 
     (async () => {
-      await sleep(400);
-      document.documentElement.classList.add('locked');
+      await sleep(10);
+      currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+      //document.documentElement.classList.add('locked');
      
     })();
     
@@ -206,6 +206,7 @@
     }else{
       current--;
     }
+    setImagePos(current);
   }
   
   function showNext(){
@@ -214,47 +215,45 @@
     }else{
       current++;
     }
+    setImagePos(current);
   }
 
-  function closeGallery(){
-    
-    console.log(`current is ${clicked}`);
-    let openedImage = images[clicked].getElementsByTagName('img')[0];
-    let currentImage = images[current].getElementsByTagName('img')[0];
+  function setImagePos(current){
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
+    let centerArea = centerX + centerY * 2;
+    let imageArea = rect.width + rect.height;
+    let currentImage = images[current].getElementsByTagName('img')[0];
+    let openedImage = images[clicked].getElementsByTagName('img')[0];
 
-    console.log(`scrollOffset = ${scrollY}`);
-
-    //openedImage.src = closedImage.src;
-    console.log(`rect top is ${rect.top}`);
-    //
-
-    console.log(`scrollOffset = ${scrollY}`);
     
-    Object.entries(imageTags).forEach(([key, value]) => {
-      value.classList.add('notransition');
-      value.style.transform = `translateX(0) translateY(${originalScrollPos}) scale(1)`;
-    });
+    Object.entries(images).forEach(([key, value]) => {
+        value.style.zIndex = '1';
+        value.firstChild.classList.add('notransition');
+        value.firstChild.classList.remove('hitransition');
+        value.firstChild.style.transform = `translateX(0) translateY(${originalScrollPos}px) scale(1)`;
 
+      });
     images[current].style.zIndex = '99';
-    currentImage.classList.remove('notransition');
-    currentImage.classList.add('hitransition');
-    //currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
-    
+    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+  }
 
-    document.documentElement.classList.remove('locked');
-    window.scrollTo(0, originalScrollPos);
-    (async () => {
-      // sleep for half a second
-      await sleep(10);
+  function closeGallery(){
+      let currentImage = images[current].getElementsByTagName('img')[0];
+      let currentOffset = images[current].getBoundingClientRect().top;
+      document.documentElement.classList.remove('locked');
+      //window.scrollTo(0, currentOffset);
+
+      currentImage.classList.remove('notransition');
+      currentImage.classList.add('hitransition');
+
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-      
-    })();
+      ready = false;
+
 
     
-    ready = false;
+    
   }
 
   function handleKeydown(event){
@@ -336,7 +335,7 @@
     opacity: 0.5;
   }
   .stack :global(.hitransition) {
-    transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
+    transition: transform 0.33s cubic-bezier(0,0,.13,1.1);
     opacity: 1;
   }
   .stack :global(a:first-child.quicktransition) {
