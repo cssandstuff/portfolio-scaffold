@@ -43,6 +43,7 @@
     if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
       expandStuff();
       expandedOnce = true;
+      console.log('wtf');
     }
     if($destroyingExpandedGallery && expandedOnce){
       attemptToConsolidate();
@@ -119,7 +120,7 @@
       
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingExpandedGallery){
-        document.documentElement.scrollTop = originalScrollPos; //rect.top;
+        document.body.scrollTop = originalScrollPos; //rect.top;
         //secondLevel.style.transform = `translateY(${scrollY}px)`;
         value.classList.add('quicktransition');
         transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
@@ -135,7 +136,7 @@
   function expandStuff(){
     originalScrollPos = scrollY;
     secondLevel.style.transform = `translateY(-${scrollY}px)`;
-    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     
     (async () => {
       await sleep(80);
