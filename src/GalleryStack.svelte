@@ -110,9 +110,7 @@
   // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
     console.log('resetting...');
-    elements.forEach(element => {
-      element.classList.remove('neardeath');
-    });
+    
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
     
       // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
@@ -124,7 +122,9 @@
         attemptingtoLoad = false;
         elements.forEach(element => {
           element.style.transform = `translateX(0px) translateY(0px)`
+          element.classList.remove('neardeath');
         });
+
       })();
       (async () => {
         await sleep(600);

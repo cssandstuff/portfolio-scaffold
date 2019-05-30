@@ -46,6 +46,7 @@
       console.log('wtf');
     }
     if($destroyingExpandedGallery && expandedOnce){
+      console.log('boom')
       attemptToConsolidate();
       expandedOnce = false;
     }
@@ -76,13 +77,12 @@
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
       count = 0;
-      document.documentElement.classList.add('locked');
+      originalScrollPos = scrollY;
     }
   }
   
   // Function for bringing everything together.
   function attemptToConsolidate(){
-    
     secondLevel.classList.add('no-pointer-events');
 
     //sometimes the object is undefined I don't know why.
@@ -108,7 +108,6 @@
   function performConsolidation(){
     let rect = originaltarget.getBoundingClientRect();
     
-
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
       let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
@@ -118,32 +117,42 @@
         transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
       }
       
+      value.style.zIndex = imageCount - key;
+
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingExpandedGallery){
-        document.body.scrollTop = originalScrollPos; //rect.top;
-        //secondLevel.style.transform = `translateY(${scrollY}px)`;
-        value.classList.add('quicktransition');
+        console.log(`destroying originalScrollPos = ${originalScrollPos}`);
+
+        window.scrollTo(0, originalScrollPos);
+        secondLevel.style.transform = `translateY(0px)`;
         transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
-      }else{
-        value.parentNode.style.zIndex = imageCount - key;
+        value.classList.add('quicktransition');
+        // Set tranformed style.
+        value.style.transform = transformedStyle;
+
+        }else{
+        // Set tranformed style.
+        value.style.transform = transformedStyle;
       }
-      // Set tranformed style.
-      value.style.transform = transformedStyle;
+      
     });
   }
 
-  // Function for Expanding things into place.
+  // Function for Expanding things into place.  
   function expandStuff(){
+    console.log(`scrollOffset = ${scrollY}`);
+    
     originalScrollPos = scrollY;
-    secondLevel.style.transform = `translateY(-${scrollY}px)`;
-    document.body.scrollTop = 0;
+    window.scrollTo(0,0);
+    secondLevel.style.transform = `translateY(-${originalScrollPos}px)`;
+    
     
     (async () => {
       await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
         value.classList.add('slowtransition');
-        value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`;
+        value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
       });
     })();
 
@@ -161,6 +170,9 @@
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
 
+    let centerArea = centerX + centerY * 2;
+    let imageArea = rect.width + rect.height;
+
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
     });
@@ -169,7 +181,13 @@
     currentImage.classList.remove('quicktransition');
 
     images[current].style.zIndex = '99';
-    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/3})`;
+    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+
+    (async () => {
+      await sleep(400);
+      document.documentElement.classList.add('locked');
+    })();
+    
   }
 
   function showPrevious(){
@@ -189,6 +207,7 @@
   }
 
   function closeGallery(){
+    
     console.log(`current is ${clicked}`);
     let openedImage = images[clicked].getElementsByTagName('img')[0];
     let currentImage = images[current].getElementsByTagName('img')[0];
@@ -196,7 +215,13 @@
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
 
+    console.log(`scrollOffset = ${scrollY}`);
+
     //openedImage.src = closedImage.src;
+    console.log(`rect top is ${rect.top}`);
+    //
+
+    console.log(`scrollOffset = ${scrollY}`);
     
     Object.entries(imageTags).forEach(([key, value]) => {
       value.classList.add('notransition');
@@ -207,17 +232,18 @@
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${(centerX * centerY * 2)/(rect.width * rect.height)/2})`;
     
 
-    
+    document.documentElement.classList.remove('locked');
+
     (async () => {
       // sleep for half a second
       await sleep(5);
       currentImage.classList.remove('notransition');
       currentImage.classList.add('quicktransition');
-      
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+      window.scrollTo(0, originalScrollPos);
     })();
 
-    document.documentElement.classList.remove('locked');
+    
     ready = false;
   }
 
@@ -248,6 +274,9 @@
     animation: 0.4s 0.6s bringitIn forwards;
     /* border-bottom: 1px solid #0000002a; */
     width: 99%;
+  }
+  .out{
+    animation: 0.4s 0.6s bringitIn reverse;
   }
   h2:after{
     position: relative;
@@ -292,9 +321,9 @@
   }
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
-    opacity: 0;
+    opacity: 0.5;
   }
-  .stack :global(img:first-child.quicktransition) {
+  .stack :global(a:first-child.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1.06) !important;
     opacity: 1;
   }
@@ -333,6 +362,7 @@
     z-index: 99;
     height: 100vh; width: 100vw;
     background: #fff;
+    opacity: 1;
   }
   .hires :global(img){
     object-fit: contain;
@@ -452,7 +482,7 @@
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
-      <h2>
+      <h2 class:out="{$destroyingExpandedGallery === true}">
         {image.name}
       </h2>
     </a>
