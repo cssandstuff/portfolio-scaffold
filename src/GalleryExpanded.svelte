@@ -154,8 +154,7 @@
     originalScrollPos = scrollY;
     window.scrollTo(0,0);
     secondLevel.style.transform = `translateY(-${originalScrollPos}px)`;
-    
-    
+  
     (async () => {
       await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
@@ -226,15 +225,14 @@
     let imageArea = rect.width + rect.height;
     let currentImage = images[current].getElementsByTagName('img')[0];
     let openedImage = images[clicked].getElementsByTagName('img')[0];
-
     
     Object.entries(images).forEach(([key, value]) => {
-        value.style.zIndex = '1';
-        value.firstChild.classList.add('notransition');
-        value.firstChild.classList.remove('hitransition');
-        value.firstChild.style.transform = `translateX(0) translateY(${originalScrollPos}px) scale(1)`;
+      value.style.zIndex = '1';
+      value.firstChild.classList.add('notransition');
+      value.firstChild.classList.remove('hitransition');
+      value.firstChild.style.transform = `translateX(0) translateY(0px) scale(1)`;
+    });
 
-      });
     images[current].style.zIndex = '99';
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
   }
@@ -242,6 +240,7 @@
   function closeGallery(){
       let currentImage = images[current].getElementsByTagName('img')[0];
       let currentOffset = images[current].getBoundingClientRect().top;
+      let currentTransformPos = currentImage.style;
       document.documentElement.classList.remove('locked');
       //window.scrollTo(0, currentOffset);
 
@@ -250,15 +249,9 @@
 
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
       ready = false;
-
-
-    
-    
   }
 
   function handleKeydown(event){
-    console.log("key is downz"); 
-    console.log(event);
     if(event.code == "ArrowRight"){
       showNext();
     }
@@ -268,6 +261,22 @@
     if(event.code == "Escape"){
       closeGallery();
     }
+  }
+
+  function dropout(node) {
+    console.log(node);
+    let nodeImg = node.getElementsByTagName('img')[current];
+    nodeImg.style.transition = "0.1s opacity";
+    return {
+      tick: t => {
+        //const i = ~~(text.length * t);
+        //console.log(node);
+        let factionofT = Math.sin(t + 0.5) ;
+        nodeImg.style.transform = `scale(${factionofT})`;
+        nodeImg.style.opacity = t;
+        node.style.opacity = t;
+      }
+    };
   }
 </script>
 
@@ -390,6 +399,20 @@
   .hires div.active{
     opacity: 1;
   }
+  .aninatetoleft{
+    animation: 0.6s animatetoleft forwards;
+  }
+  .aninatetoright{
+    animation: 0.6s animatetoright forwards;
+  }
+  @keyframes animatetoleft{
+    0%{
+      transform: translateX(10px);
+    }
+    100%{
+      transform: translateX(0);
+    }
+  }
   .previous, .next{
     position: absolute;
     top: calc(50vh - 60px);
@@ -505,7 +528,7 @@
 </div>
 
 {#if ready}
-  <div class="hires" in:fade={{duration: 300}}>
+  <div class="hires" in:fade={{duration: 300}} out:dropout>
     {#each stack as image, index}
       <div class:active="{current === index}" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
