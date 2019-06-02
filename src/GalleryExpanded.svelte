@@ -15,8 +15,9 @@
 
   // Local stuff
   let secondLevel;
+  let thirdLevel;
   let images;
-  let imageTags;
+  let hiresImages;
   let imageCount;
   let ready = false;
   let current;
@@ -27,6 +28,7 @@
   let hiresScrollPos;
   let expandedOnce = false;
   let transitionHandler;
+  let animateDirection = 0;
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
   // count for loading
@@ -35,7 +37,6 @@
 
   onMount(() => {
     images = secondLevel.getElementsByClassName('galleryitem');
-    imageTags = secondLevel.getElementsByTagName('img');
     imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
     attemptToConsolidate();
   });
@@ -67,13 +68,6 @@
     event.preventDefault();
     animateClicked(current);
     ready = true;
-    // (async () => {
-    //   // sleep for half a second
-    //   await sleep(100);
-    //   ready = true;
-    // })(); 
-    
-    
   }
 
   function handleLoadingComplete(event){
@@ -85,11 +79,15 @@
   }
 
   function handleLoadingHiResComplete(event){
+    console.log('loading of hi res complete innit');
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
       count = 0;
 
     }
+    hiresImages = thirdLevel.getElementsByClassName('hi-image');
+    console.log(hiresImages);
+    console.log('loading of hi res complete innit');
   }
   
   // Function for bringing everything together.
@@ -208,21 +206,52 @@
   }
 
   function showPrevious(){
+    let offset = 50;
     if(current <= 0) {
-      current = stack.length - 1;
+      hiresImages[0].style.transform = `translateX(${offset}px)`;
+      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;
+      (async () => {
+        // sleep for half a second
+        await sleep(200);
+        current = stack.length - 1;
+        setImagePos(current);
+      })();
     }else{
-      current--;
+      hiresImages[current].style.transform = `translateX(${offset}px)`;
+      hiresImages[current - 1].style.transform = `translateX(-${offset}px)`;
+      (async () => {
+        // sleep for half a second
+        await sleep(200);
+        current--;
+        setImagePos(current);
+      })();
     }
-    setImagePos(current);
+    
+
   }
   
   function showNext(){
+    let offset = 50;
+    
     if(current >= (stack.length - 1)) {
-      current = 0;
+      hiresImages[0].style.transform = `translateX(${offset}px)`;
+      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;
+      (async () => {
+        // sleep for half a second
+        await sleep(200);
+        current = 0;
+        setImagePos(current);
+      })();
     }else{
-      current++;
+      hiresImages[current].style.transform = `translateX(-${offset}px)`;
+      hiresImages[current + 1].style.transform = `translateX(${offset}px)`;
+      (async () => {
+        // sleep for half a second
+        await sleep(200);
+        current++;
+        setImagePos(current);
+      })();
     }
-    setImagePos(current);
   }
 
   function setImagePos(current){
@@ -258,8 +287,13 @@
       currentImage.classList.remove('notransition');
       currentImage.classList.add('hitransition');
 
-      currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-      ready = false;
+      (async () => {
+        // sleep for half a second
+        await sleep(200);
+        currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+        ready = false;
+      })();
+      
   
   }
 
@@ -274,24 +308,6 @@
       closeGallery();
     }
   }
-
-  // function dropout(node) {
-  //   let rect = originaltarget.getBoundingClientRect();
-  //   console.log(node);
-  //   let nodeImg = node.getElementsByTagName('img')[current];
-  //   console.log(rect.top);
-  //   console.log(rect.left);
-  //   nodeImg.style.transition = "0.1s opacity";
-  //   return {
-  //     tick: t => {
-  //       //const i = ~~(text.length * t);
-  //       let factionofT = Math.sin(t + 0.9) ;
-  //       nodeImg.style.transform = `scale(${factionofT})`; //translateX(${rect.left * t}px) translateY(${rect.top * t}px)
-  //       nodeImg.style.opacity = t;
-  //       node.style.opacity = t;
-  //     }
-  //   };
-  // }
 </script>
 
 <style>
@@ -303,7 +319,6 @@
     font-size: 0.9em;
     color: #222;
     opacity: 0;
-    /* border-bottom: 1px solid #0000002a; */
     width: 99%;
   }
   .in{
@@ -329,11 +344,6 @@
       opacity: 1;
     }
   }
-  /* h2 span{
-    display: block;
-    color: #a9a9a9;
-    font-size: 0.8em
-  } */
   .stack{
     position: absolute !important;
     top: 2em; right: 2em;
@@ -346,7 +356,6 @@
   .stack :global(img) {
     box-shadow: 0 0 2px #ccc;
     border-radius: 4px;
-    /* transition: 0s all !important; */
     background: #ccc;
   }
   .stack :global(.slowtransition) {
@@ -377,20 +386,12 @@
     width: auto;
     margin: 1em;
   }
-  /* .gallery :global(img){
-    transition: 0.4s all ease-out;
-  } */
+
   .gallery a{
     position: relative;
     margin: 1em 1.5em 3em 1.5em;
   }
-  /* .gallery :global(img) {
-    width: calc(22em - 3em);
-    margin: 0;
-    height: 15em;
-    min-width: 0 !important;
-    min-height: 0 !important;
-  } */
+  
   .gallery a:hover .magnify{
     opacity: 1;
   }
@@ -409,24 +410,15 @@
   .hires div{
     opacity: 0;
     transition: 0.3s all;
+    width: 100vw; height: 100vh;
+    position: absolute;
   }
+  
   .hires div.active{
     opacity: 1;
+    transform: translateX(0) !important;
   }
-  .aninatetoleft{
-    animation: 0.6s animatetoleft forwards;
-  }
-  .aninatetoright{
-    animation: 0.6s animatetoright forwards;
-  }
-  @keyframes animatetoleft{
-    0%{
-      transform: translateX(10px);
-    }
-    100%{
-      transform: translateX(0);
-    }
-  }
+
   .previous, .next{
     position: absolute;
     top: calc(50vh - 60px);
@@ -542,9 +534,9 @@
 </div>
 
 {#if ready}
-  <div class="hires" in:fade={{duration: 300}} out:fade="{{duration: 100}}">
+  <div class="hires" in:fade={{duration: 300}} out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
-      <div class:active="{current === index}" >
+      <div class:active="{current === index}" class="hi-image" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}

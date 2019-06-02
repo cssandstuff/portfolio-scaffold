@@ -794,7 +794,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (533:2) {#each stack as image, index}
+    // (525:2) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
 
@@ -819,15 +819,15 @@ var app = (function () {
     			t1 = space();
     			h2 = element("h2");
     			t2 = text(t2_value);
-    			span.className = "magnify svelte-13n4kgg";
-    			add_location(span, file$1, 535, 6, 14502);
-    			h2.className = "svelte-13n4kgg";
+    			span.className = "magnify svelte-1se6sd0";
+    			add_location(span, file$1, 527, 6, 14568);
+    			h2.className = "svelte-1se6sd0";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false);
-    			add_location(h2, file$1, 536, 6, 14538);
-    			a.className = "galleryitem svelte-13n4kgg";
+    			add_location(h2, file$1, 528, 6, 14604);
+    			a.className = "galleryitem svelte-1se6sd0";
     			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-    			add_location(a, file$1, 533, 4, 14332);
+    			add_location(a, file$1, 525, 4, 14398);
     			dispose = listen(a, "click", click_handler);
     		},
 
@@ -889,7 +889,7 @@ var app = (function () {
     	};
     }
 
-    // (544:0) {#if ready}
+    // (536:0) {#if ready}
     function create_if_block$1(ctx) {
     	var div, t0, span0, t1, span1, t2, span2, div_intro, div_outro, current_1, dispose;
 
@@ -929,14 +929,14 @@ var app = (function () {
     			t2 = space();
     			span2 = element("span");
     			span2.textContent = "close";
-    			span0.className = "previous svelte-13n4kgg";
-    			add_location(span0, file$1, 550, 4, 14990);
-    			span1.className = "next svelte-13n4kgg";
-    			add_location(span1, file$1, 551, 4, 15049);
-    			span2.className = "close svelte-13n4kgg";
-    			add_location(span2, file$1, 552, 4, 15100);
-    			div.className = "hires svelte-13n4kgg";
-    			add_location(div, file$1, 544, 2, 14708);
+    			span0.className = "previous svelte-1se6sd0";
+    			add_location(span0, file$1, 542, 4, 15096);
+    			span1.className = "next svelte-1se6sd0";
+    			add_location(span1, file$1, 543, 4, 15155);
+    			span2.className = "close svelte-1se6sd0";
+    			add_location(span2, file$1, 544, 4, 15206);
+    			div.className = "hires svelte-1se6sd0";
+    			add_location(div, file$1, 536, 2, 14774);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -958,6 +958,7 @@ var app = (function () {
     			append(div, span1);
     			append(div, t2);
     			append(div, span2);
+    			add_binding_callback(() => ctx.div_binding_1(div, null));
     			current_1 = true;
     		},
 
@@ -982,6 +983,11 @@ var app = (function () {
     				group_outros();
     				for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
     				check_outros();
+    			}
+
+    			if (changed.items) {
+    				ctx.div_binding_1(null, div);
+    				ctx.div_binding_1(div, null);
     			}
     		},
 
@@ -1018,6 +1024,8 @@ var app = (function () {
 
     			destroy_each(each_blocks, detaching);
 
+    			ctx.div_binding_1(null, div);
+
     			if (detaching) {
     				if (div_outro) div_outro.end();
     			}
@@ -1027,7 +1035,7 @@ var app = (function () {
     	};
     }
 
-    // (546:4) {#each stack as image, index}
+    // (538:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1043,9 +1051,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "svelte-13n4kgg";
+    			div.className = "hi-image svelte-1se6sd0";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$1, 546, 6, 14823);
+    			add_location(div, file$1, 538, 6, 14912);
     		},
 
     		m: function mount(target, anchor) {
@@ -1125,8 +1133,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-13n4kgg";
-    			add_location(div, file$1, 531, 0, 14243);
+    			div.className = "stack gallery svelte-1se6sd0";
+    			add_location(div, file$1, 523, 0, 14309);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1268,8 +1276,9 @@ var app = (function () {
 
       // Local stuff
       let secondLevel;
+      let thirdLevel;
       let images;
-      let imageTags;
+      let hiresImages;
       let imageCount;
       let ready = false;
       let current;
@@ -1286,7 +1295,6 @@ var app = (function () {
 
       onMount(() => {
         images = secondLevel.getElementsByClassName('galleryitem');
-        imageTags = secondLevel.getElementsByTagName('img');
         imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
         attemptToConsolidate();
       });
@@ -1318,21 +1326,18 @@ var app = (function () {
         event.preventDefault();
         animateClicked(current);
         $$invalidate('ready', ready = true);
-        // (async () => {
-        //   // sleep for half a second
-        //   await sleep(100);
-        //   ready = true;
-        // })(); 
-        
-        
       }
 
       function handleLoadingHiResComplete(event){
+        console.log('loading of hi res complete innit');
         count = count + event.detail.loadingComplete;
         if(count === stack.length){
           count = 0;
 
         }
+        hiresImages = thirdLevel.getElementsByClassName('hi-image');
+        console.log(hiresImages);
+        console.log('loading of hi res complete innit');
       }
       
       // Function for bringing everything together.
@@ -1449,21 +1454,44 @@ var app = (function () {
       }
 
       function showPrevious(){
+        let offset = 50;
         if(current <= 0) {
-          $$invalidate('current', current = stack.length - 1);
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            $$invalidate('current', current = stack.length - 1);
+            setImagePos(current);
+          })();
         }else{
-          current--; $$invalidate('current', current);
+          hiresImages[current].style.transform = `translateX(${offset}px)`;      hiresImages[current - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            current--; $$invalidate('current', current);
+            setImagePos(current);
+          })();
         }
-        setImagePos(current);
+        
+
       }
       
       function showNext(){
+        let offset = 50;
+        
         if(current >= (stack.length - 1)) {
-          $$invalidate('current', current = 0);
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            $$invalidate('current', current = 0);
+            setImagePos(current);
+          })();
         }else{
-          current++; $$invalidate('current', current);
+          hiresImages[current].style.transform = `translateX(-${offset}px)`;      hiresImages[current + 1].style.transform = `translateX(${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            current++; $$invalidate('current', current);
+            setImagePos(current);
+          })();
         }
-        setImagePos(current);
       }
 
       function setImagePos(current){
@@ -1498,8 +1526,13 @@ var app = (function () {
           currentImage.classList.remove('notransition');
           currentImage.classList.add('hitransition');
 
-          currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-          $$invalidate('ready', ready = false);
+          (async () => {
+            // sleep for half a second
+            await sleep(200);
+            currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+            $$invalidate('ready', ready = false);
+          })();
+          
       
       }
 
@@ -1514,24 +1547,6 @@ var app = (function () {
           closeGallery();
         }
       }
-
-      // function dropout(node) {
-      //   let rect = originaltarget.getBoundingClientRect();
-      //   console.log(node);
-      //   let nodeImg = node.getElementsByTagName('img')[current];
-      //   console.log(rect.top);
-      //   console.log(rect.left);
-      //   nodeImg.style.transition = "0.1s opacity";
-      //   return {
-      //     tick: t => {
-      //       //const i = ~~(text.length * t);
-      //       let factionofT = Math.sin(t + 0.9) ;
-      //       nodeImg.style.transform = `scale(${factionofT})`; //translateX(${rect.left * t}px) translateY(${rect.top * t}px)
-      //       nodeImg.style.opacity = t;
-      //       node.style.opacity = t;
-      //     }
-      //   };
-      // }
 
     	const writable_props = ['stack', 'lowresdir', 'hiresdir', 'originaltarget'];
     	Object.keys($$props).forEach(key => {
@@ -1555,6 +1570,11 @@ var app = (function () {
     		$$invalidate('secondLevel', secondLevel);
     	}
 
+    	function div_binding_1($$node, check) {
+    		thirdLevel = $$node;
+    		$$invalidate('thirdLevel', thirdLevel);
+    	}
+
     	$$self.$set = $$props => {
     		if ('stack' in $$props) $$invalidate('stack', stack = $$props.stack);
     		if ('lowresdir' in $$props) $$invalidate('lowresdir', lowresdir = $$props.lowresdir);
@@ -1568,6 +1588,7 @@ var app = (function () {
     		hiresdir,
     		originaltarget,
     		secondLevel,
+    		thirdLevel,
     		ready,
     		current,
     		y,
@@ -1582,7 +1603,8 @@ var app = (function () {
     		loadingComplete_handler,
     		onwindowscroll,
     		click_handler,
-    		div_binding
+    		div_binding,
+    		div_binding_1
     	};
     }
 
