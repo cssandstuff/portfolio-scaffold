@@ -24,7 +24,9 @@
   let loadedSuccessfully = false;
   let y;
   let originalScrollPos;
+  let hiresScrollPos;
   let expandedOnce = false;
+  let transitionHandler;
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
   // count for loading
@@ -86,7 +88,7 @@
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
       count = 0;
-      //originalScrollPos = scrollY;
+
     }
   }
   
@@ -188,14 +190,20 @@
     currentImage.classList.remove('notransition');
     currentImage.classList.remove('quicktransition');
     images[current].style.zIndex = '99';
-    
+    hiresScrollPos = scrollY;
+    console.log(`hiresScrollPos is ${hiresScrollPos}`);
 
     (async () => {
       await sleep(10);
       currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
       //document.documentElement.classList.add('locked');
-     
+      
+      currentImage.addEventListener('transitionend', transitionHandler = () => {
+        console.log('Transition ended');
+        document.getElementsByTagName("body")[0].classList.add('locked');
+      });
     })();
+
     
   }
 
@@ -239,16 +247,20 @@
 
   function closeGallery(){
       let currentImage = images[current].getElementsByTagName('img')[0];
-      let currentOffset = images[current].getBoundingClientRect().top;
       let currentTransformPos = currentImage.style;
-      document.documentElement.classList.remove('locked');
-      //window.scrollTo(0, currentOffset);
+      currentImage.removeEventListener('transitionend', transitionHandler ,false);
+      console.log(originalScrollPos);
+      // this is tricky because we might need two offset values
+      window.scrollTo(0, hiresScrollPos);
+      document.getElementsByTagName("body")[0].classList.remove('locked');
+      console.log(scrollY);
 
       currentImage.classList.remove('notransition');
       currentImage.classList.add('hitransition');
 
       currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
       ready = false;
+  
   }
 
   function handleKeydown(event){
@@ -263,21 +275,23 @@
     }
   }
 
-  function dropout(node) {
-    console.log(node);
-    let nodeImg = node.getElementsByTagName('img')[current];
-    nodeImg.style.transition = "0.1s opacity";
-    return {
-      tick: t => {
-        //const i = ~~(text.length * t);
-        //console.log(node);
-        let factionofT = Math.sin(t + 0.5) ;
-        nodeImg.style.transform = `scale(${factionofT})`;
-        nodeImg.style.opacity = t;
-        node.style.opacity = t;
-      }
-    };
-  }
+  // function dropout(node) {
+  //   let rect = originaltarget.getBoundingClientRect();
+  //   console.log(node);
+  //   let nodeImg = node.getElementsByTagName('img')[current];
+  //   console.log(rect.top);
+  //   console.log(rect.left);
+  //   nodeImg.style.transition = "0.1s opacity";
+  //   return {
+  //     tick: t => {
+  //       //const i = ~~(text.length * t);
+  //       let factionofT = Math.sin(t + 0.9) ;
+  //       nodeImg.style.transform = `scale(${factionofT})`; //translateX(${rect.left * t}px) translateY(${rect.top * t}px)
+  //       nodeImg.style.opacity = t;
+  //       node.style.opacity = t;
+  //     }
+  //   };
+  // }
 </script>
 
 <style>
@@ -528,7 +542,7 @@
 </div>
 
 {#if ready}
-  <div class="hires" in:fade={{duration: 300}} out:dropout>
+  <div class="hires" in:fade={{duration: 300}} out:fade="{{duration: 100}}">
     {#each stack as image, index}
       <div class:active="{current === index}" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>

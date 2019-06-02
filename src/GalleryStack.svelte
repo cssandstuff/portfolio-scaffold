@@ -116,13 +116,17 @@
       // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
       // might be able to call the funtion directly instead of this??
       destroyingExpandedGallery.update(n => true);
+      elements.forEach(element => {
+        element.classList.remove('neardeath'); 
+      });
+     
       (async () => {
         await sleep(200);
         activeCollection.update(n => 0);
         attemptingtoLoad = false;
         elements.forEach(element => {
           element.style.transform = `translateX(0px) translateY(0px)`
-          element.classList.remove('neardeath');
+          
         });
 
       })();
