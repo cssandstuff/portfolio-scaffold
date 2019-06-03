@@ -206,7 +206,7 @@
   }
 
   function showPrevious(){
-    let offset = 50;
+    let offset = 25;
     if(current <= 0) {
       hiresImages[0].style.transform = `translateX(${offset}px)`;
       hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;
@@ -231,7 +231,7 @@
   }
   
   function showNext(){
-    let offset = 50;
+    let offset = 25;
     
     if(current >= (stack.length - 1)) {
       hiresImages[0].style.transform = `translateX(${offset}px)`;
