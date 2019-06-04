@@ -4,6 +4,7 @@
   // them in a prev/next style carousel.
 
   import Image from './Image.svelte';
+  import Spinner from './Spinner.svelte';
   import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingExpandedGallery, loadingSecondary } from './stores.js';
   import { fade } from 'svelte/transition';
@@ -18,6 +19,7 @@
   let thirdLevel;
   let images;
   let hiresImages;
+  let hiresLoaded = false;
   let imageCount;
   let ready = false;
   let current;
@@ -79,15 +81,12 @@
   }
 
   function handleLoadingHiResComplete(event){
-    console.log('loading of hi res complete innit');
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
       count = 0;
-
+      hiresLoaded = true;
     }
     hiresImages = thirdLevel.getElementsByClassName('hi-image');
-    console.log(hiresImages);
-    console.log('loading of hi res complete innit');
   }
   
   // Function for bringing everything together.
@@ -518,6 +517,7 @@
     position: absolute; left: calc(50% - 16px); top: calc(50% - 32px);
     z-index: 9;
   }
+  
 </style>
 
 <svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
@@ -534,6 +534,9 @@
 </div>
 
 {#if ready}
+  {#if !hiresLoaded}
+  <Spinner />
+  {/if}
   <div class="hires" in:fade={{duration: 300}} out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
       <div class:active="{current === index}" class="hi-image" >
