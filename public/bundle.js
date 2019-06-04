@@ -714,16 +714,16 @@ var app = (function () {
     		c: function create() {
     			svg = svg_element("svg");
     			circle = svg_element("circle");
-    			attr(circle, "class", "path svelte-3aviwa");
+    			attr(circle, "class", "path svelte-73x908");
     			attr(circle, "cx", "25");
     			attr(circle, "cy", "25");
     			attr(circle, "r", "20");
     			attr(circle, "fill", "none");
     			attr(circle, "stroke-width", "3");
-    			add_location(circle, file$1, 41, 0, 725);
-    			attr(svg, "class", "spinner svelte-3aviwa");
+    			add_location(circle, file$1, 41, 0, 727);
+    			attr(svg, "class", "spinner svelte-73x908");
     			attr(svg, "viewBox", "0 0 50 50");
-    			add_location(svg, file$1, 40, 0, 683);
+    			add_location(svg, file$1, 40, 0, 685);
     		},
 
     		l: function claim(nodes) {
