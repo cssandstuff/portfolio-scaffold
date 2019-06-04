@@ -69,6 +69,10 @@
     clicked = index;
     event.preventDefault();
     animateClicked(current);
+    (async () => {
+      await sleep(400);
+      hiresLoaded = false;
+    });
     ready = true;
   }
 
@@ -188,10 +192,11 @@
     currentImage.classList.remove('quicktransition');
     images[current].style.zIndex = '99';
     hiresScrollPos = scrollY;
-    console.log(`hiresScrollPos is ${hiresScrollPos}`);
+    //console.log(`hiresScrollPos is ${hiresScrollPos}`);
 
     (async () => {
       await sleep(10);
+      //currentImage.style.transition = "0.4s all cubic-bezier(1, 0.22, 0.93, 1.04)";
       currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
       //document.documentElement.classList.add('locked');
       
@@ -400,6 +405,10 @@
     z-index: 99;
     height: 100vh; width: 100vw;
     background: #fff;
+    opacity: 0;
+    transition: 0.8s opacity;
+  }
+  .hires.ready{
     opacity: 1;
   }
   .hires :global(img){
@@ -501,8 +510,8 @@
   .magnify:before{
     content: '';
     position: absolute;
-    right: calc(50% - 30px);
-    bottom: calc(50% - 6px);
+    right: calc(50% - 22px);
+    bottom: calc(50% - 16px);
     width: 14px;
     height: 4px;
     background: #fff;
@@ -514,7 +523,7 @@
     height: 32px;
     border-radius: 50%;
     border: 4px solid #fff;
-    position: absolute; left: calc(50% - 16px); top: calc(50% - 32px);
+    position: absolute; left: calc(50% - 24px); top: calc(50% - 22px);
     z-index: 9;
   }
   
@@ -537,7 +546,7 @@
   {#if !hiresLoaded}
   <Spinner />
   {/if}
-  <div class="hires" in:fade={{duration: 300}} out:fade="{{duration: 100}}" bind:this={thirdLevel}>
+  <div class="hires" class:ready="{hiresLoaded === true}" out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
       <div class:active="{current === index}" class="hi-image" >
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>

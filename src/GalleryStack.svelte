@@ -301,7 +301,6 @@
      on:mouseenter={rotate} 
      on:mouseleave={unRotate} 
      on:click={showContents}>
-    
   <!-- in case we want a spinner  -->
   {#if $activeCollection == id}
     <Spinner />
