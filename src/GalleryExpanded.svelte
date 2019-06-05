@@ -69,10 +69,10 @@
     clicked = index;
     event.preventDefault();
     animateClicked(current);
-    (async () => {
-      await sleep(400);
-      hiresLoaded = false;
-    });
+    // (async () => {
+    //   await sleep(400);
+    //   hiresLoaded = false;
+    // });
     ready = true;
   }
 
@@ -296,6 +296,7 @@
         await sleep(200);
         currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
         ready = false;
+        hiresLoaded = false;
       })();
       
   
@@ -539,16 +540,19 @@
         {image.name}
       </h2>
     </a>
+
   {/each}
+  
 </div>
 
 {#if ready}
   {#if !hiresLoaded}
-  <Spinner />
+    <Spinner />
   {/if}
   <div class="hires" class:ready="{hiresLoaded === true}" out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
       <div class:active="{current === index}" class="hi-image" >
+        
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}

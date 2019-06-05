@@ -219,7 +219,7 @@
     position: absolute;
     top: 0; left: 0;
     box-shadow: 0 0 2px #ccc;
-    transition: 0.15s all ease-out;
+    /* transition: 0.15s all ease-out; */
     border-radius: 4px;
   } 
 
@@ -301,6 +301,7 @@
      on:mouseenter={rotate} 
      on:mouseleave={unRotate} 
      on:click={showContents}>
+
   <!-- in case we want a spinner  -->
   {#if $activeCollection == id}
     <Spinner />

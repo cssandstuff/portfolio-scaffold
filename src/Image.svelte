@@ -36,6 +36,7 @@
   }
   .loader{
     width: 100%;
+    height: 100%;
     position: absolute;
     background: rgba(0,0,0,0.04);
     z-index: 11;
@@ -44,7 +45,17 @@
     transition: 0.2s all;
     /* animation: loading 4s infinite linear; */
     pointer-events: none;
+    overflow: hidden;
   }
+
+  .inner{
+    width: 300%;
+    height: 300%;
+    top: 0 ; left: 0;
+    animation: shimmer 3s linear infinite;
+    background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 90%,rgba(0,0,0,0.1) 95%, rgba(0,0,0,0) 100%);
+  }
+
   img{
     display: block;
     object-fit: cover;
@@ -56,7 +67,14 @@
     width: 100%;
     height: 100%;
   }
-
+  @keyframes shimmer {
+    0%{
+      transform: rotate(-15deg) translateX(-100%) translateY(-50%);
+    }
+    100%{
+      transform: rotate(-15deg) translateX(100%) translateY(-50%);
+    }
+  }
   @keyframes loading{
     0%{
       height: 0%;
@@ -83,7 +101,9 @@
 
 <img src="{image}" alt="" class="{visible ? '' : 'opacity--0'}">
 {#if !visible}
-  <div class="loader" style="background: #ccc"></div>
+  <div class="loader">
+    <div class="inner"></div>
+  </div>
 {/if}
 
 
