@@ -31,6 +31,8 @@
   let expandedOnce = false;
   let transitionHandler;
   let animateDirection = 0;
+  let showtitles;
+
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
   // count for loading
@@ -177,6 +179,7 @@
   function animateClicked(current){
     
     let currentImage = images[current].getElementsByTagName('img')[0];
+    
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
@@ -184,6 +187,7 @@
     let centerArea = centerX + centerY * 2;
     let imageArea = rect.width + rect.height;
 
+    showtitles = false;
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
     });
@@ -297,6 +301,7 @@
         currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
         ready = false;
         hiresLoaded = false;
+        showtitles = true;
       })();
       
   
@@ -325,12 +330,15 @@
     color: #222;
     opacity: 0;
     width: 99%;
+    transition: 0.2s 0s opacity;
   }
   .in{
-    animation: 0.4s 0.6s bringitIn forwards;
+    opacity: 1;
+    transition: 0.4s 0.6s opacity;
   }
   .out{
-    animation: 0.4s 0.6s bringitIn reverse;
+    opacity: 0;
+    
   }
   h2:after{
     position: relative;
@@ -341,14 +349,7 @@
     bottom: -8px;
     background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
   }
-  @keyframes bringitIn{
-    0%{
-      opacity: 0;
-    }
-    100%{
-      opacity: 1;
-    }
-  }
+
   .stack{
     position: absolute !important;
     top: 2em; right: 2em;
@@ -536,7 +537,7 @@
     <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
       <span class="magnify"></span>
-      <h2 class:out="{$destroyingExpandedGallery === true}" class:in="{$loadingSecondary === false}">
+      <h2 class:out="{$destroyingExpandedGallery === true || showtitles === false}" class:in="{$loadingSecondary === false && showtitles !== false}">
         {image.name}
       </h2>
     </a>

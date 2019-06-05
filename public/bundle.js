@@ -833,7 +833,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (535:2) {#each stack as image, index}
+    // (536:2) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
 
@@ -858,15 +858,15 @@ var app = (function () {
     			t1 = space();
     			h2 = element("h2");
     			t2 = text(t2_value);
-    			span.className = "magnify svelte-2gbk8m";
-    			add_location(span, file$2, 537, 6, 14803);
-    			h2.className = "svelte-2gbk8m";
-    			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true);
-    			toggle_class(h2, "in", ctx.$loadingSecondary === false);
-    			add_location(h2, file$2, 538, 6, 14839);
-    			a.className = "galleryitem svelte-2gbk8m";
+    			span.className = "magnify svelte-1t1p0wo";
+    			add_location(span, file$2, 538, 6, 14801);
+    			h2.className = "svelte-1t1p0wo";
+    			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showtitles === false);
+    			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showtitles !== false);
+    			add_location(h2, file$2, 539, 6, 14837);
+    			a.className = "galleryitem svelte-1t1p0wo";
     			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
-    			add_location(a, file$2, 535, 4, 14633);
+    			add_location(a, file$2, 536, 4, 14631);
     			dispose = listen(a, "click", click_handler);
     		},
 
@@ -891,12 +891,12 @@ var app = (function () {
     				set_data(t2, t2_value);
     			}
 
-    			if (changed.$destroyingExpandedGallery) {
-    				toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true);
+    			if ((changed.$destroyingExpandedGallery || changed.showtitles)) {
+    				toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showtitles === false);
     			}
 
-    			if (changed.$loadingSecondary) {
-    				toggle_class(h2, "in", ctx.$loadingSecondary === false);
+    			if ((changed.$loadingSecondary || changed.showtitles)) {
+    				toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showtitles !== false);
     			}
 
     			if ((!current_1 || changed.hiresdir || changed.stack) && a_href_value !== (a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src)) {
@@ -928,7 +928,7 @@ var app = (function () {
     	};
     }
 
-    // (548:0) {#if ready}
+    // (549:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, div_outro, current_1, dispose;
 
@@ -972,15 +972,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			span2.textContent = "close";
-    			span0.className = "previous svelte-2gbk8m";
-    			add_location(span0, file$2, 558, 4, 15400);
-    			span1.className = "next svelte-2gbk8m";
-    			add_location(span1, file$2, 559, 4, 15459);
-    			span2.className = "close svelte-2gbk8m";
-    			add_location(span2, file$2, 560, 4, 15510);
-    			div.className = "hires svelte-2gbk8m";
+    			span0.className = "previous svelte-1t1p0wo";
+    			add_location(span0, file$2, 559, 4, 15446);
+    			span1.className = "next svelte-1t1p0wo";
+    			add_location(span1, file$2, 560, 4, 15505);
+    			span2.className = "close svelte-1t1p0wo";
+    			add_location(span2, file$2, 561, 4, 15556);
+    			div.className = "hires svelte-1t1p0wo";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$2, 551, 2, 15058);
+    			add_location(div, file$2, 552, 2, 15104);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1106,7 +1106,7 @@ var app = (function () {
     	};
     }
 
-    // (549:2) {#if !hiresLoaded}
+    // (550:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1140,7 +1140,7 @@ var app = (function () {
     	};
     }
 
-    // (553:4) {#each stack as image, index}
+    // (554:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1156,9 +1156,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-2gbk8m";
+    			div.className = "hi-image svelte-1t1p0wo";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$2, 553, 6, 15207);
+    			add_location(div, file$2, 554, 6, 15253);
     		},
 
     		m: function mount(target, anchor) {
@@ -1238,8 +1238,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-2gbk8m";
-    			add_location(div, file$2, 533, 0, 14544);
+    			div.className = "stack gallery svelte-1t1p0wo";
+    			add_location(div, file$2, 534, 0, 14542);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1278,7 +1278,7 @@ var app = (function () {
     				scrolling_timeout = setTimeout(clear_scrolling, 100);
     			}
 
-    			if (changed.hiresdir || changed.stack || changed.$destroyingExpandedGallery || changed.$loadingSecondary || changed.lowresdir) {
+    			if (changed.hiresdir || changed.stack || changed.$destroyingExpandedGallery || changed.showtitles || changed.$loadingSecondary || changed.lowresdir) {
     				each_value_1 = ctx.stack;
 
     				for (var i = 0; i < each_value_1.length; i += 1) {
@@ -1394,6 +1394,8 @@ var app = (function () {
       let hiresScrollPos;
       let expandedOnce = false;
       let transitionHandler;
+      let showtitles;
+
       const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
       // count for loading
@@ -1531,6 +1533,7 @@ var app = (function () {
       function animateClicked(current){
         
         let currentImage = images[current].getElementsByTagName('img')[0];
+        
         let rect = images[current].getBoundingClientRect();
         let centerX = document.documentElement.clientWidth/2;
         let centerY = document.documentElement.clientHeight/2;
@@ -1538,6 +1541,7 @@ var app = (function () {
         let centerArea = centerX + centerY * 2;
         let imageArea = rect.width + rect.height;
 
+        $$invalidate('showtitles', showtitles = false);
         Object.entries(images).forEach(([key, value]) => {
           value.style.zIndex = '1';
         });
@@ -1640,6 +1644,7 @@ var app = (function () {
             currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
             $$invalidate('ready', ready = false);
             $$invalidate('hiresLoaded', hiresLoaded = false);
+            $$invalidate('showtitles', showtitles = true);
           })();
           
       
@@ -1702,6 +1707,7 @@ var app = (function () {
     		ready,
     		current,
     		y,
+    		showtitles,
     		loadLargeImages,
     		handleLoadingHiResComplete,
     		showPrevious,
