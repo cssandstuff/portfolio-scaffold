@@ -1,7 +1,7 @@
 <script>
   // This component expands the stack to show all images within the stack
   // and then loads higher res images (if user clicks an image) and displays 
-  // them in a prev/next style carousel.
+  // them in a prev/next style lightbox.
 
   import Image from './Image.svelte';
   import Spinner from './Spinner.svelte';

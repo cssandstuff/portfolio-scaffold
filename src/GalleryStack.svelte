@@ -1,5 +1,5 @@
 <script context="module">
-  //TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
+  // TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
   // add dark mode.
   // for wizardry to keep tabs on the collections
   const elements = new Set();
@@ -158,8 +158,6 @@
       count = 0;
     }
   }
-  
-  
 </script>
 
 <style>
@@ -292,7 +290,6 @@
   
 </style>
 
-
 {#if $activeCollection == id}
   <div id="breadcrumb" class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
     <p>{name} <span>({imagecollection.length} images)</span></p>
@@ -333,5 +330,3 @@
     <GalleryExpanded bind:this={galleryExpanded} lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}
-
-
