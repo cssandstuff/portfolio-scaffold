@@ -7,11 +7,11 @@
 
 	// Images, maybe I can make this easier somehow?
 	// Auto-generate from a directory structure maybe?
-	let collection0 = [
-		{ src: '01_front_cover.jpg', name: 'Noa' },
-		{ src: '02_back_cover.jpg', name: 'Dog' },
-		{ src: 'racoon_together.jpg', name: 'Glass' }
-	];
+	// let collection0 = [
+	// 	{ src: '01_front_cover.jpg', name: 'Noa' },
+	// 	{ src: '02_back_cover.jpg', name: 'Dog' },
+	// 	{ src: 'racoon_together.jpg', name: 'Glass' }
+	// ];
 	let collection1 = [
 		{ src: 'Noa.JPG', name: 'Noa' },
 		{ src: 'dog.JPG', name: 'Dog' },
@@ -31,7 +31,7 @@
 		{ src: 'glass-b+w.JPG', name: 'Glass' }
 	];
 	let collection2 = [
-		{ src: 'cash.JPG', name: 'Cash Suitcase' },
+		{ src: 'cash.JPG', name: 'Cash suitcase' },
 		{ src: 'robo.JPG', name: 'Robot' },
 		{ src: 'tako.JPG', name: 'Octopus' }
 	];
@@ -43,7 +43,7 @@
 		{ src: 'angrykid5.JPG', name: 'Angry 5' }
 	];
 	let collection3 = [
-		{ src: 'citizens.JPG', name: 'Citizens of Science' },
+		{ src: 'citizens.JPG', name: 'Citizens of science' },
 		{ src: 'screwit.JPG', name: 'Screw It' },
 		{ src: 'boltit.JPG', name: 'Boltman' },
 		{ src: 'kumo.JPG', name: 'Spiderdeath' }
@@ -109,10 +109,10 @@
 </style>
 
 <div class="container">
-	<GalleryStack width="" name="Ongakukai" color="44, 47, 90" lowresdir="images/16_ongakukai" hiresdir="images/16_ongakukai/originals" imagecollection={collection0} id="{uid++}" />
+	<!-- <GalleryStack width="" name="Ongakukai" color="44, 47, 90" lowresdir="images/16_ongakukai" hiresdir="images/16_ongakukai/originals" imagecollection={collection0} id="{uid++}" /> -->
 	<GalleryStack width="" name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
 	<GalleryStack width="" name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
-	<GalleryStack width="" name="Citizens of Science" color="182, 37, 73" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack width="" name="Citizens of science" color="182, 37, 73" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
 	<GalleryStack width="" name="Travelling" color="209, 25, 24" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
 	<GalleryStack width="" name="Angry at kids" color="13, 92, 87" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack width="" name="Sketches" color="109, 0, 76" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />

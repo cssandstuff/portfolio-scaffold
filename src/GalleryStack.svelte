@@ -254,17 +254,18 @@
       position: relative;
       display: block;
       color: #333;
-      padding-left: 14px;
-      text-transform: lowercase;
+      padding-left: 16px;
+      text-transform: none;
     }
     .breadcrumb p:before, .breadcrumb p:after{
       content: '';
       display: block;
       position: absolute;
-      left: 4px; top: 8px;
+      left: 6px; top: 9px;
       height: 6px; width: 2px;
       background: currentColor;
       transform: rotate(45deg);
+      transition: 0.3s all;
     }
     .breadcrumb p span{
       text-transform: none;
@@ -272,8 +273,14 @@
       color: rgba(255,255,255,0.9);
       font-size: 0.9em;
     }
+    .breadcrumb p:hover:before{
+      transform: translateX(-2px) rotate(45deg);
+    }
+    .breadcrumb p:hover:after{
+      transform: translateX(-2px) rotate(-45deg);
+    }
     .breadcrumb p:after{
-      top: 10px;
+      top: 12px;
       transform: rotate(-45deg);
     }
 

@@ -33,6 +33,13 @@
   let y;
   let originalScrollPos;
   let hiresScrollPos;
+
+  // x + y for center of document
+  let centerX = document.documentElement.clientWidth/2;
+  let centerY = document.documentElement.clientHeight/2;
+
+  // Offset transition distance for hi-res lightbox 
+  let offset = 25;
   
   // Handles transition of single gallery image when it transitions to hi-res.
   let transitionHandler;
@@ -54,8 +61,7 @@
 
   // want a reference to each gallery items within the active Collection.
   onMount(() => {
-    images = activeCollection.getElementsByClassName('galleryitem');
-    
+    images = activeCollection.getElementsByClassName('galleryitem');  
     // want the item in a stack on first mount
     attemptToConsolidate();
     
@@ -79,6 +85,7 @@
     destroyingExpandedGallery.update(n => false);
   });
 
+  // could the following two function be consolidated into one?
   function handleLoadingComplete(event){
     count = count + event.detail.loadingComplete;
     if(count === stack.length){
@@ -113,6 +120,7 @@
     }
   }
 
+  // This is called on click of gallery item, to init the lightbox.
   function loadLargeImages(event, index){
     current = index;
     event.preventDefault();
@@ -124,7 +132,8 @@
     ready = true;
   }
   
-  // Function for bringing everything together.
+  // Function for bringing everything together. called onMount
+  // and when gallery is being destroyed.
   function attemptToConsolidate(){
     activeCollection.classList.add('no-pointer-events');
 
@@ -162,6 +171,7 @@
         transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
       }
       
+      // stacks the zindex's of images so first is always on top.
       value.style.zIndex = images.length - key;
 
       // if gallery is being closed/destroyed we want a quicker transition.
@@ -171,14 +181,12 @@
         window.scrollTo(0, originalScrollPos);
         activeCollection.style.transform = `translateY(0px)`;
         transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
-        
         // Quick transition please.
         value.classList.add('quicktransition');
-
-        // Set tranformed style.
+        // Set tranformed style (different if destroying)
         value.style.transform = transformedStyle;
 
-        }else{
+      }else{
         // Set tranformed style.
         value.style.transform = transformedStyle;
       }
@@ -189,11 +197,13 @@
   // Function for Expanding things into place.  
   function expandStuff(){
     
+    // Want items that are expanded to always be at the top of the viewport
     originalScrollPos = scrollY;
     window.scrollTo(0,0);
     activeCollection.style.transform = `translateY(-${originalScrollPos}px)`;
   
     (async () => {
+      // Need to wait a little bit after scrollTo.
       await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
@@ -204,7 +214,7 @@
     })();
 
     (async () => {
-      // sleep for half a second
+      // sleep to wait for transition to end, maybe better to use transitionend ?
       await sleep(500);
       activeCollection.classList.remove('no-pointer-events');
       transitioning = false;
@@ -213,15 +223,16 @@
 
   // animate clicked image to the center.
   function animateClicked(current){
+    // This could probably be done more accurately, but it works ok for now.
     let currentImage = images[current].getElementsByTagName('img')[0];
     let rect = images[current].getBoundingClientRect();
-    let centerX = document.documentElement.clientWidth/2;
-    let centerY = document.documentElement.clientHeight/2;
-
     let centerArea = centerX + centerY * 2;
     let imageArea = rect.width + rect.height;
 
+    // Hide thumbnail titles, else they jump in front of transitioned image.
     showTitles = false;
+
+    // Set active breadcrumb title
     currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
@@ -233,6 +244,7 @@
     hiresScrollPos = scrollY;
 
     (async () => {
+      // Need to wait a bit after classes are removed.
       await sleep(10);
       currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
       currentImage.addEventListener('transitionend', transitionHandler = () => {
@@ -244,12 +256,11 @@
   }
 
   function showPrevious(){
-    let offset = 25;
     if(current <= 0) {
       hiresImages[0].style.transform = `translateX(${offset}px)`;
       hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;
       (async () => {
-        // sleep for half a second
+        // sleep while animation happens
         await sleep(200);
         current = stack.length - 1;
         setImagePos(current);
@@ -259,7 +270,7 @@
       hiresImages[current].style.transform = `translateX(${offset}px)`;
       hiresImages[current - 1].style.transform = `translateX(-${offset}px)`;
       (async () => {
-        // sleep for half a second
+        // sleep while animation happens
         await sleep(200);
         current--;
         setImagePos(current);
@@ -269,27 +280,23 @@
   }
   
   function showNext(){
-    let offset = 25;
-    
     if(current >= (stack.length - 1)) {
       hiresImages[0].style.transform = `translateX(${offset}px)`;
       hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;
       (async () => {
-        // sleep for half a second
+        // sleep while animation happens
         await sleep(200);
         current = 0;
         setImagePos(current);
-        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }else{
       hiresImages[current].style.transform = `translateX(-${offset}px)`;
       hiresImages[current + 1].style.transform = `translateX(${offset}px)`;
       (async () => {
-        // sleep for half a second
+        // sleep while animation happens
         await sleep(200);
         current++;
         setImagePos(current);
-        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }
     
@@ -298,8 +305,7 @@
   // Sets non-active gallery items to a position where they can shrink from when the hi-res gallery is closed.
   function setImagePos(current){
     let rect = images[current].getBoundingClientRect();
-    let centerX = document.documentElement.clientWidth/2;
-    let centerY = document.documentElement.clientHeight/2;
+    
     let centerArea = centerX + centerY * 2;
     let imageArea = rect.width + rect.height;
     let currentImage = images[current].getElementsByTagName('img')[0];
@@ -314,6 +320,7 @@
 
     images[current].style.zIndex = '99';
     currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+    currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
   }
 
   function closeGallery(){
@@ -511,11 +518,11 @@
     left: 0.4em; top: 0.5em;
     position: absolute;
     font-weight: 300;
-    text-transform: lowercase;
+    text-transform: none;
     font-weight: bold;
     font-size: 1.2em;
     width: 25%; height: 40px;
-    padding-left: 16px;
+    padding-left: 18px;
     cursor: pointer;
   }
   .close:before, .close:after{
@@ -524,14 +531,20 @@
     width: 2px;
     height: 6px;
     background: #333;
-    left: 6px; top: 8px;
+    left: 8px; top: 9px;
+  }
+  .close:hover:before{
+    transform: translateX(-2px); transform: rotate(45deg);
+  }
+  .close:hover:after{
+    transform: translateX(-2px); transform: rotate(-45deg);
   }
   .close:before{
     transform: rotate(45deg);
   }
   .close:after{
     transform: rotate(-45deg);
-    top: 10px;
+    top: 12px;
   }
   .magnify{
     width: 100%;
