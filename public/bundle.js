@@ -1,2 +1,3028 @@
-var app=function(){"use strict";function e(){}const t=e=>e;function n(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(n)}function r(e){return"function"==typeof e}function a(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function l(e,t,n){const i=t.subscribe(n);e.$$.on_destroy.push(i.unsubscribe?()=>i.unsubscribe():i)}const s="undefined"!=typeof window;let c=s?()=>window.performance.now():()=>Date.now(),d=s?requestAnimationFrame:e;const m=new Set;let g,u=!1;function f(){m.forEach(e=>{e[0](c())||(m.delete(e),e[1]())}),(u=m.size>0)&&d(f)}function $(e){let t;return u||(u=!0,d(f)),{promise:new Promise(n=>{m.add(t=[e,n])}),abort(){m.delete(t)}}}function h(e,t){e.appendChild(t)}function p(e,t,n){e.insertBefore(t,n||null)}function y(e){e.parentNode.removeChild(e)}function v(e,t){for(let n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function w(e){return document.createElement(e)}function x(e){return document.createTextNode(e)}function b(){return x(" ")}function k(){return x("")}function E(e,t,n,i){return e.addEventListener(t,n,i),()=>e.removeEventListener(t,n,i)}function C(e,t){t=""+t,e.data!==t&&(e.data=t)}function _(e,t,n){e.style.setProperty(t,n)}function L(e,t,n){e.classList[n?"add":"remove"](t)}let N,G=0,P={};function T(e,t,n,i,o,r,a,l=0){const s=16.666/i;let c="{\n";for(let e=0;e<=1;e+=s){const i=t+(n-t)*r(e);c+=100*e+`%{${a(i,1-i)}}\n`}const d=c+`100% {${a(n,1-n)}}\n}`,m=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(d)}_${l}`;if(!P[m]){if(!g){const e=w("style");document.head.appendChild(e),g=e.sheet}P[m]=!0,g.insertRule(`@keyframes ${m} ${d}`,g.cssRules.length)}const u=e.style.animation||"";return e.style.animation=`${u?`${u}, `:""}${m} ${i}ms linear ${o}ms 1 both`,G+=1,m}function S(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--G&&d(()=>{if(G)return;let e=g.cssRules.length;for(;e--;)g.deleteRule(e);P={}})}function J(e){N=e}function B(){if(!N)throw new Error("Function called outside component initialization");return N}function z(e){B().$$.on_mount.push(e)}function O(){const e=N;return(t,n)=>{const i=e.$$.callbacks[t];if(i){const o=function(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}(t,n);i.slice().forEach(t=>{t.call(e,o)})}}}const X=[],j=Promise.resolve();let R=!1;const Y=[],I=[],A=[];function H(e){Y.push(e)}function q(e){I.push(e)}function D(){const e=new Set;do{for(;X.length;){const e=X.shift();J(e),M(e.$$)}for(;Y.length;)Y.shift()();for(;I.length;){const t=I.pop();e.has(t)||(t(),e.add(t))}}while(X.length);for(;A.length;)A.pop()();R=!1}function M(e){e.fragment&&(e.update(e.dirty),o(e.before_render),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_render.forEach(q))}let K,W;function F(){return K||(K=Promise.resolve()).then(()=>{K=null}),K}function V(){W={remaining:0,callbacks:[]}}function Q(){W.remaining||o(W.callbacks)}function U(e){W.callbacks.push(e)}function Z(n,i,r){let a,l=i(n,r),s=!0;const d=W;function m(){const{delay:i=0,duration:r=300,easing:m=t,tick:g=e,css:u}=l;u&&(a=T(n,1,0,r,i,m,u));const f=c()+i,h=f+r;$(e=>{if(s){if(e>=h)return g(0,1),--d.remaining||o(d.callbacks),!1;if(e>=f){const t=m((e-f)/r);g(1-t,t)}}return s})}return d.remaining+=1,"function"==typeof l?F().then(()=>{l=l(),m()}):m(),{end(e){e&&l.tick&&l.tick(1,0),s&&(a&&S(n,a),s=!1)}}}function ee(e,t,i){const{fragment:a,on_mount:l,on_destroy:s,after_render:c}=e.$$;a.m(t,i),q(()=>{const t=l.map(n).filter(r);s?s.push(...t):o(t),e.$$.on_mount=[]}),c.forEach(q)}function te(e,t){e.$$.dirty||(X.push(e),R||(R=!0,j.then(D)),e.$$.dirty=i()),e.$$.dirty[t]=!0}function ne(t,n,r,a,l,s){const c=N;J(t);const d=n.props||{},m=t.$$={fragment:null,ctx:null,props:s,update:e,not_equal:l,bound:i(),on_mount:[],on_destroy:[],before_render:[],after_render:[],context:new Map(c?c.$$.context:[]),callbacks:i(),dirty:null};let g=!1;var u;m.ctx=r?r(t,d,(e,n)=>{m.ctx&&l(m.ctx[e],m.ctx[e]=n)&&(m.bound[e]&&m.bound[e](n),g&&te(t,e))}):d,m.update(),g=!0,o(m.before_render),m.fragment=a(m.ctx),n.target&&(n.hydrate?m.fragment.l((u=n.target,Array.from(u.childNodes))):m.fragment.c(),n.intro&&t.$$.fragment.i&&t.$$.fragment.i(),ee(t,n.target,n.anchor),D()),J(c)}class ie{$destroy(){var t,n;n=!0,(t=this).$$&&(o(t.$$.on_destroy),t.$$.fragment.d(n),t.$$.on_destroy=t.$$.fragment=null,t.$$.ctx={}),this.$destroy=e}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1)}}$set(){}}function oe(e){var t;return{c(){(t=w("div")).innerHTML='<div class="inner svelte-vtevxo"></div>',t.className="loader svelte-vtevxo"},m(e,n){p(e,t,n)},d(e){e&&y(t)}}}function re(t){var n,i,o,r,a=!t.visible&&oe();return{c(){n=w("img"),o=b(),a&&a.c(),r=k(),n.src=t.image,n.alt="",n.className=i=(t.visible?"":"opacity--0")+" svelte-vtevxo"},m(e,t){p(e,n,t),p(e,o,t),a&&a.m(e,t),p(e,r,t)},p(e,t){e.image&&(n.src=t.image),e.visible&&i!==(i=(t.visible?"":"opacity--0")+" svelte-vtevxo")&&(n.className=i),t.visible?a&&(a.d(1),a=null):a||((a=oe()).c(),a.m(r.parentNode,r))},i:e,o:e,d(e){e&&(y(n),y(o)),a&&a.d(e),e&&y(r)}}}function ae(e,t,n){let{image:i,visible:o=0}=t;const r=O();return z(async()=>{const e=await fetch(i);if(200===e.status){n("image",i=e.url);const t=new Image;t.onload=(()=>{n("visible",o=!0),r("loadingComplete",{loadingComplete:1})}),t.src=i}else n("visible",o=!1)}),e.$set=(e=>{"image"in e&&n("image",i=e.image),"visible"in e&&n("visible",o=e.visible)}),{image:i,visible:o}}class le extends ie{constructor(e){super(),ne(this,e,ae,re,a,["image","visible"])}}function se(t){var n;return{c(){(n=w("div")).innerHTML='<div class="inner svelte-148bgtc"></div>',n.className="spinner svelte-148bgtc"},m(e,t){p(e,n,t)},p:e,i:e,o:e,d(e){e&&y(n)}}}class ce extends ie{constructor(e){super(),ne(this,e,null,se,a,[])}}function de(t,n=e){let i;const o=[];function r(e){if(a(t,e)){if(t=e,!i)return;o.forEach(e=>e[1]()),o.forEach(e=>e[0](t))}}return{set:r,update:function(e){r(e(t))},subscribe:function(a,l=e){const s=[a,l];return o.push(s),1===o.length&&(i=n(r)||e),a(t),()=>{const e=o.indexOf(s);-1!==e&&o.splice(e,1),0===o.length&&i()}}}}const me=de(!1),ge=de(0),ue=de(!1);function fe(e){const t=e-1;return t*t*t+1}function $e(e,{delay:t=0,duration:n=400}){const i=+getComputedStyle(e).opacity;return{delay:t,duration:n,css:e=>`opacity: ${e*i}`}}function he(e,{delay:t=0,duration:n=400,easing:i=fe,x:o=0,y:r=0,opacity:a=0}){const l=getComputedStyle(e),s=+l.opacity,c="none"===l.transform?"":l.transform,d=s*(1-a);return{delay:t,duration:n,easing:i,css:(e,t)=>`\n\t\t\ttransform: ${c} translate(${(1-e)*o}px, ${(1-e)*r}px);\n\t\t\topacity: ${s-d*t}`}}function pe(e,t,n){const i=Object.create(e);return i.image=t[n],i.index=n,i}function ye(e,t,n){const i=Object.create(e);return i.image=t[n],i.index=n,i}function ve(e){var t,n,i,o,r,a,l,s,c,d=e.image.name,m=new le({props:{image:e.lowresdir+"/"+e.image.src}});function g(...t){return e.click_handler(e,...t)}return m.$on("loadingComplete",e.loadingComplete_handler),{c(){t=w("a"),m.$$.fragment.c(),n=b(),i=w("span"),o=b(),r=w("h2"),a=x(d),i.className="magnify svelte-1y9szdk",L(i,"out",!1===e.showTitles),r.className="svelte-1y9szdk",L(r,"out",!0===e.$destroyingExpandedGallery||!1===e.showTitles),L(r,"in",!1===e.$loadingSecondary&&!1!==e.showTitles&&!e.$destroyingExpandedGallery),t.className="galleryitem svelte-1y9szdk",t.href=l=e.hiresdir+"/"+e.image.src,L(t,"transitioning",!0===e.transitioning),c=E(t,"click",g)},m(e,l){p(e,t,l),ee(m,t,null),h(t,n),h(t,i),h(t,o),h(t,r),h(r,a),s=!0},p(n,o){e=o;var c={};(n.lowresdir||n.stack)&&(c.image=e.lowresdir+"/"+e.image.src),m.$set(c),n.showTitles&&L(i,"out",!1===e.showTitles),s&&!n.stack||d===(d=e.image.name)||C(a,d),(n.$destroyingExpandedGallery||n.showTitles)&&L(r,"out",!0===e.$destroyingExpandedGallery||!1===e.showTitles),(n.$loadingSecondary||n.showTitles||n.$destroyingExpandedGallery)&&L(r,"in",!1===e.$loadingSecondary&&!1!==e.showTitles&&!e.$destroyingExpandedGallery),s&&!n.hiresdir&&!n.stack||l===(l=e.hiresdir+"/"+e.image.src)||(t.href=l),n.transitioning&&L(t,"transitioning",!0===e.transitioning)},i(e){s||(m.$$.fragment.i(e),s=!0)},o(e){m.$$.fragment.o(e),s=!1},d(e){e&&y(t),m.$destroy(),c()}}}function we(e){for(var t,n,i,r,a,l,s,c,d,m,g,u=!e.hiresLoaded&&xe(e),f=e.stack,$=[],x=0;x<f.length;x+=1)$[x]=be(pe(e,f,x));function k(e,t,n){$[e]&&(t&&U(()=>{$[e].d(t),$[e]=null}),$[e].o(n))}return{c(){u&&u.c(),t=b(),n=w("div");for(var o=0;o<$.length;o+=1)$[o].c();i=b(),r=w("span"),a=b(),l=w("span"),s=b(),(c=w("span")).textContent="close",r.className="previous svelte-1y9szdk",l.className="next svelte-1y9szdk",c.className="close svelte-1y9szdk",n.className="hires svelte-1y9szdk",L(n,"ready",!0===e.hiresLoaded),g=[E(r,"click",e.showPrevious),E(l,"click",e.showNext),E(c,"click",e.closeGallery)]},m(o,d){u&&u.m(o,d),p(o,t,d),p(o,n,d);for(var g=0;g<$.length;g+=1)$[g].m(n,null);h(n,i),h(n,r),h(n,a),h(n,l),h(n,s),h(n,c),H(()=>e.div_binding_1(n,null)),m=!0},p(e,o){if(o.hiresLoaded?u&&(V(),U(()=>{u.d(1),u=null}),u.o(1),Q()):u?u.i(1):((u=xe(o)).c(),u.i(1),u.m(t.parentNode,t)),e.current||e.hiresdir||e.stack||e.handleLoadingHiResComplete){f=o.stack;for(var r=0;r<f.length;r+=1){const t=pe(o,f,r);$[r]?($[r].p(e,t),$[r].i(1)):($[r]=be(t),$[r].c(),$[r].i(1),$[r].m(n,i))}for(V();r<$.length;r+=1)k(r,1,1);Q()}e.items&&(o.div_binding_1(null,n),o.div_binding_1(n,null)),e.hiresLoaded&&L(n,"ready",!0===o.hiresLoaded)},i(e){if(!m){u&&u.i();for(var t=0;t<f.length;t+=1)$[t].i();d&&d.end(1),m=!0}},o(e){u&&u.o(),$=$.filter(Boolean);for(let e=0;e<$.length;e+=1)k(e,0);e&&(d=Z(n,$e,{duration:100})),m=!1},d(i){u&&u.d(i),i&&(y(t),y(n)),v($,i),e.div_binding_1(null,n),i&&d&&d.end(),o(g)}}}function xe(e){var t,n=new ce({});return{c(){n.$$.fragment.c()},m(e,i){ee(n,e,i),t=!0},i(e){t||(n.$$.fragment.i(e),t=!0)},o(e){n.$$.fragment.o(e),t=!1},d(e){n.$destroy(e)}}}function be(e){var t,n,i=new le({props:{image:e.hiresdir+"/"+e.image.src}});return i.$on("loadingComplete",e.handleLoadingHiResComplete),{c(){t=w("div"),i.$$.fragment.c(),t.className="hi-image svelte-1y9szdk",L(t,"active",e.current===e.index)},m(e,o){p(e,t,o),ee(i,t,null),n=!0},p(e,n){var o={};(e.hiresdir||e.stack)&&(o.image=n.hiresdir+"/"+n.image.src),i.$set(o),e.current&&L(t,"active",n.current===n.index)},i(e){n||(i.$$.fragment.i(e),n=!0)},o(e){i.$$.fragment.o(e),n=!1},d(e){e&&y(t),i.$destroy()}}}function ke(e){var t,n,i,r,a,l,s=!1,c=()=>{s=!1};q(e.onwindowscroll);for(var d=e.stack,m=[],g=0;g<d.length;g+=1)m[g]=ve(ye(e,d,g));function u(e,t,n){m[e]&&(t&&U(()=>{m[e].d(t),m[e]=null}),m[e].o(n))}var f=e.ready&&we(e);return{c(){n=w("div");for(var o=0;o<m.length;o+=1)m[o].c();i=b(),f&&f.c(),r=k(),n.className="stack gallery svelte-1y9szdk",l=[E(window,"keydown",e.handleKeydown),E(window,"scroll",()=>{s=!0,clearTimeout(t),t=setTimeout(c,100),e.onwindowscroll()})]},m(t,o){p(t,n,o);for(var l=0;l<m.length;l+=1)m[l].m(n,null);H(()=>e.div_binding(n,null)),p(t,i,o),f&&f.m(t,o),p(t,r,o),a=!0},p(e,i){if(e.y&&!s&&(s=!0,clearTimeout(t),window.scrollTo(window.pageXOffset,i.y),t=setTimeout(c,100)),e.hiresdir||e.stack||e.transitioning||e.$destroyingExpandedGallery||e.showTitles||e.$loadingSecondary||e.lowresdir){d=i.stack;for(var o=0;o<d.length;o+=1){const t=ye(i,d,o);m[o]?(m[o].p(e,t),m[o].i(1)):(m[o]=ve(t),m[o].c(),m[o].i(1),m[o].m(n,null))}for(V();o<m.length;o+=1)u(o,1,1);Q()}e.items&&(i.div_binding(null,n),i.div_binding(n,null)),i.ready?f?(f.p(e,i),f.i(1)):((f=we(i)).c(),f.i(1),f.m(r.parentNode,r)):f&&(V(),U(()=>{f.d(1),f=null}),f.o(1),Q())},i(e){if(!a){for(var t=0;t<d.length;t+=1)m[t].i();f&&f.i(),a=!0}},o(e){m=m.filter(Boolean);for(let e=0;e<m.length;e+=1)u(e,0);f&&f.o(),a=!1},d(t){t&&y(n),v(m,t),e.div_binding(null,n),t&&y(i),f&&f.d(t),t&&y(r),o(l)}}}function Ee(e,t,n){let i,o;l(e,ue,e=>{n("$loadingSecondary",i=e)}),l(e,me,e=>{n("$destroyingExpandedGallery",o=e)});let r,a,s,c,d,m,g,u,f,{stack:$,lowresdir:h,hiresdir:p,originaltarget:y}=t,v=0,w=!0,x=!1,b=!1,k=!1,E=!1,C=!1;const _=e=>new Promise(t=>setTimeout(t,e));var L;function N(e,t){n("current",d=t),e.preventDefault(),function(e){let t=s[e].getElementsByTagName("img")[0],i=s[e].getBoundingClientRect(),o=document.documentElement.clientWidth/2,r=document.documentElement.clientHeight/2,a=o+2*r,l=i.width+i.height;n("showTitles",w=!1),Object.entries(s).forEach(([e,t])=>{t.style.zIndex="1"}),t.classList.remove("notransition"),t.classList.remove("quicktransition"),s[e].style.zIndex="99",u=scrollY,(async()=>{await _(10),t.style.transform=`translateX(${o-i.left-i.width/2}px) translateY(${r-i.top-i.height/2}px) scale(${a/l})`,t.addEventListener("transitionend",f=(()=>{console.log("Transition ended"),document.getElementsByTagName("body")[0].classList.add("locked")}))})(),C=!1}(d),n("ready",b=!0)}function G(){r.classList.add("no-pointer-events"),void 0!==s?(console.log("weren't me guv, everything normal..."),P()):(console.log("object was undefined, hard luck son."),(async()=>{await _(180),Object.entries(s).forEach(([e,t])=>{console.log("trying again..."),P()})})())}function P(){let e=y.getBoundingClientRect();Object.entries(s).forEach(([t,i])=>{let a=i.getBoundingClientRect(),l=`translateX(${e.x+4-a.x}px) translateY(${e.y+4-a.y}px) rotate(${4*t}deg)`;0==t&&(l=`translateX(${e.x+4-a.x}px) translateY(${e.y+6-a.y}px) scale(1.08) translateY(5px) rotate(-2deg)`),i.style.zIndex=s.length-t,o?(window.scrollTo(0,g),r.style.transform="translateY(0px)",n("activeCollection",r),l=`translateX(${e.x-a.x}px) translateY(${e.y-a.y}px) rotate(${2*t}deg)`,i.classList.add("quicktransition"),i.style.transform=l):i.style.transform=l})}function T(){d<=0?(c[0].style.transform="translateX(25px)",c[$.length-1].style.transform="translateX(-25px)",(async()=>{await _(200),n("current",d=$.length-1),J(d)})()):(c[d].style.transform="translateX(25px)",c[d-1].style.transform="translateX(-25px)",(async()=>{await _(200),n("current",--d),J(d)})())}function S(){d>=$.length-1?(c[0].style.transform="translateX(25px)",c[$.length-1].style.transform="translateX(-25px)",(async()=>{await _(200),n("current",d=0),J(d)})()):(c[d].style.transform="translateX(-25px)",c[d+1].style.transform="translateX(25px)",(async()=>{await _(200),n("current",++d),J(d)})())}function J(e){let t=s[e].getBoundingClientRect(),n=document.documentElement.clientWidth/2,i=document.documentElement.clientHeight/2,o=n+2*i,r=t.width+t.height,a=s[e].getElementsByTagName("img")[0];Object.entries(s).forEach(([e,t])=>{t.style.zIndex="1",t.firstChild.classList.add("notransition"),t.firstChild.classList.remove("hitransition"),t.firstChild.style.transform="translateX(0) translateY(0px) scale(1)"}),s[e].style.zIndex="99",a.style.transform=`translateX(${n-t.left-t.width/2}px) translateY(${i-t.top-t.height/2}px) scale(${o/r})`}function O(){let e=s[d].getElementsByTagName("img")[0];e.style;e.removeEventListener("transitionend",f,!1),window.scrollTo(0,u),document.getElementsByTagName("body")[0].classList.remove("locked"),e.classList.remove("notransition"),e.classList.add("hitransition"),(async()=>{await _(200),e.style.transform="translateX(0) translateY(0) scale(1)",n("ready",b=!1),n("hiresLoaded",x=!1),n("showTitles",w=!0)})(),C=!0}return z(()=>{s=r.getElementsByClassName("galleryitem"),G()}),L=(()=>{i||o||k||(g=scrollY,window.scrollTo(0,0),r.style.transform=`translateY(-${g}px)`,n("activeCollection",r),(async()=>{await _(80),Object.entries(s).forEach(([e,t])=>{t.getBoundingClientRect(),n("transitioning",E=!0),t.classList.add("slowtransition"),t.style.transform=`translateX(0px) translateY(${g}px)`})})(),(async()=>{await _(500),r.classList.remove("no-pointer-events"),n("transitioning",E=!1)})(),k=!0),o&&k&&(G(),k=!1)}),B().$$.after_render.push(L),function(e){B().$$.on_destroy.push(e)}(()=>{console.log("being destroyed... laters"),me.update(e=>!1)}),e.$set=(e=>{"stack"in e&&n("stack",$=e.stack),"lowresdir"in e&&n("lowresdir",h=e.lowresdir),"hiresdir"in e&&n("hiresdir",p=e.hiresdir),"originaltarget"in e&&n("originaltarget",y=e.originaltarget)}),{stack:$,lowresdir:h,hiresdir:p,originaltarget:y,activeCollection:r,thirdLevel:a,current:d,y:m,showTitles:w,hiresLoaded:x,ready:b,transitioning:E,handleLoadingHiResComplete:function(e){(v+=e.detail.loadingComplete)===$.length&&(v=0,n("hiresLoaded",x=!0)),c=a.getElementsByClassName("hi-image")},handleKeydown:function(e){"ArrowRight"==e.code&&S(),"ArrowLeft"==e.code&&T(),"Escape"==e.code&&(C?document.getElementById("breadcrumb").click():O())},loadLargeImages:N,showPrevious:T,showNext:S,closeGallery:O,$loadingSecondary:i,$destroyingExpandedGallery:o,loadingComplete_handler:function(t){!function(e,t){const n=e.$$.callbacks[t.type];n&&n.slice().forEach(e=>e(t))}(e,t)},onwindowscroll:function(){m=window.pageYOffset,n("y",m)},click_handler:function({index:e},t){return N(t,e)},div_binding:function(e,t){n("activeCollection",r=e)},div_binding_1:function(e,t){n("thirdLevel",a=e)}}}class Ce extends ie{constructor(e){super(),ne(this,e,Ee,ke,a,["stack","lowresdir","hiresdir","originaltarget"])}}function _e(e,t,n){const i=Object.create(e);return i.image=t[n],i.index=n,i}function Le(n){var i,o,r,a,l,s,d;return{c(){i=w("div"),o=w("p"),r=x(n.name),o.className="svelte-npvu4c",i.id="breadcrumb",i.className="breadcrumb svelte-npvu4c",d=E(i,"click",n.resetStacks)},m(e,t){p(e,i,t),h(i,o),h(o,r),s=!0},p(e,t){s&&!e.name||C(r,t.name)},i(n){s||(q(()=>{l&&l.end(1),a||(a=function(n,i,o){let r,a,l=i(n,o),s=!1,d=0;function m(){r&&S(n,r)}function g(){const{delay:i=0,duration:o=300,easing:g=t,tick:u=e,css:f}=l;f&&(r=T(n,0,1,o,i,g,f,d++)),u(0,1);const h=c()+i,p=h+o;a&&a.abort(),s=!0,a=$(e=>{if(s){if(e>=p)return u(1,0),m(),s=!1;if(e>=h){const t=g((e-h)/o);u(t,1-t)}}return s})}let u=!1;return{start(){u||(S(n),"function"==typeof l?(l=l(),F().then(g)):g())},invalidate(){u=!1},end(){s&&(m(),s=!1)}}}(i,he,{y:-40,duration:400})),a.start()}),s=!0)},o(e){a&&a.invalidate(),e&&(l=Z(i,he,{y:-40,duration:400})),s=!1},d(e){e&&(y(i),l&&l.end()),d()}}}function Ne(e){var t,n=new ce({});return{c(){n.$$.fragment.c()},m(e,i){ee(n,e,i),t=!0},i(e){t||(n.$$.fragment.i(e),t=!0)},o(e){n.$$.fragment.o(e),t=!1},d(e){n.$destroy(e)}}}function Ge(t){var n;return{c(){(n=w("div")).className="dummyimage svelte-npvu4c",_(n,"transform","rotate("+2*t.index+"deg)"),_(n,"z-index","-"+t.index),_(n,"opacity",1-1/t.imagecollection.length*t.index/1.2)},m(e,t){p(e,n,t)},p(e,t){e.imagecollection&&_(n,"opacity",1-1/t.imagecollection.length*t.index/1.2)},i:e,o:e,d(e){e&&y(n)}}}function Pe(e){var t,n=new le({props:{image:e.lowresdir+"/"+e.image.src}});return{c(){n.$$.fragment.c()},m(e,i){ee(n,e,i),t=!0},p(e,t){var i={};(e.lowresdir||e.imagecollection)&&(i.image=t.lowresdir+"/"+t.image.src),n.$set(i)},i(e){t||(n.$$.fragment.i(e),t=!0)},o(e){n.$$.fragment.o(e),t=!1},d(e){n.$destroy(e)}}}function Te(e){var t,n,i,o,r=[Pe,Ge],a=[];function l(e){return 0==e.index?0:1}return t=l(e),n=a[t]=r[t](e),{c(){n.c(),i=k()},m(e,n){a[t].m(e,n),p(e,i,n),o=!0},p(e,o){var s=t;(t=l(o))===s?a[t].p(e,o):(V(),U(()=>{a[s].d(1),a[s]=null}),n.o(1),Q(),(n=a[t])||(n=a[t]=r[t](o)).c(),n.i(1),n.m(i.parentNode,i))},i(e){o||(n&&n.i(),o=!0)},o(e){n&&n.o(),o=!1},d(e){a[t].d(e),e&&y(i)}}}function Se(e){var t,n,i;let o={lowresdir:e.lowresdir,hiresdir:e.hiresdir,stack:e.imagecollection,originaltarget:e.collection};var r=new Ce({props:o});return H(()=>e.galleryexpanded_binding(r)),r.$on("loadingComplete",e.handleLoadingComplete),{c(){t=w("div"),r.$$.fragment.c(),t.className=n="loading--"+e.$loadingSecondary+" svelte-npvu4c"},m(e,n){p(e,t,n),ee(r,t,null),i=!0},p(e,o){var a={};e.lowresdir&&(a.lowresdir=o.lowresdir),e.hiresdir&&(a.hiresdir=o.hiresdir),e.imagecollection&&(a.stack=o.imagecollection),e.collection&&(a.originaltarget=o.collection),r.$set(a),i&&!e.$loadingSecondary||n===(n="loading--"+o.$loadingSecondary+" svelte-npvu4c")||(t.className=n)},i(e){i||(r.$$.fragment.i(e),i=!0)},o(e){r.$$.fragment.o(e),i=!1},d(n){n&&y(t),e.galleryexpanded_binding(null),r.$destroy()}}}function Je(e){for(var t,n,i,r,a,l,s,c,d,m,g,u,f,$,_,N,G=e.imagecollection.length,P=e.$activeCollection==e.id&&Le(e),T=e.$activeCollection==e.id&&Ne(),S=e.imagecollection,J=[],B=0;B<S.length;B+=1)J[B]=Te(_e(e,S,B));function z(e,t,n){J[e]&&(t&&U(()=>{J[e].d(t),J[e]=null}),J[e].o(n))}var O=e.attemptingtoLoad&&Se(e);return{c(){P&&P.c(),t=b(),n=w("a"),T&&T.c(),i=b();for(var o=0;o<J.length;o+=1)J[o].c();r=b(),a=w("h2"),l=x(e.name),s=b(),c=w("span"),d=x("("),m=x(G),g=x(" Images)"),f=b(),O&&O.c(),$=k(),c.className="svelte-npvu4c",a.className="svelte-npvu4c",n.href=u=e.hiresdir+"/"+e.imagecollection[0].src,n.className="collection svelte-npvu4c",n.dataset.id=e.id,L(n,"active",e.id===e.$activeCollection&&1==e.$loadingSecondary),L(n,"nonactive",0!==e.$activeCollection&&e.id!==e.$activeCollection),N=[E(n,"mouseenter",e.rotate),E(n,"mouseleave",e.unRotate),E(n,"click",e.showContents)]},m(o,u){P&&P.m(o,u),p(o,t,u),p(o,n,u),T&&T.m(n,null),h(n,i);for(var y=0;y<J.length;y+=1)J[y].m(n,null);h(n,r),h(n,a),h(a,l),h(a,s),h(a,c),h(c,d),h(c,m),h(c,g),H(()=>e.a_binding(n,null)),p(o,f,u),O&&O.m(o,u),p(o,$,u),_=!0},p(e,o){if(o.$activeCollection==o.id?P?(P.p(e,o),P.i(1)):((P=Le(o)).c(),P.i(1),P.m(t.parentNode,t)):P&&(V(),U(()=>{P.d(1),P=null}),P.o(1),Q()),o.$activeCollection==o.id?T?T.i(1):((T=Ne()).c(),T.i(1),T.m(n,i)):T&&(V(),U(()=>{T.d(1),T=null}),T.o(1),Q()),e.lowresdir||e.imagecollection){S=o.imagecollection;for(var a=0;a<S.length;a+=1){const t=_e(o,S,a);J[a]?(J[a].p(e,t),J[a].i(1)):(J[a]=Te(t),J[a].c(),J[a].i(1),J[a].m(n,r))}for(V();a<J.length;a+=1)z(a,1,1);Q()}_&&!e.name||C(l,o.name),_&&!e.imagecollection||G===(G=o.imagecollection.length)||C(m,G),e.items&&(o.a_binding(null,n),o.a_binding(n,null)),_&&!e.hiresdir&&!e.imagecollection||u===(u=o.hiresdir+"/"+o.imagecollection[0].src)||(n.href=u),_&&!e.id||(n.dataset.id=o.id),(e.id||e.$activeCollection||e.$loadingSecondary)&&L(n,"active",o.id===o.$activeCollection&&1==o.$loadingSecondary),(e.$activeCollection||e.id)&&L(n,"nonactive",0!==o.$activeCollection&&o.id!==o.$activeCollection),o.attemptingtoLoad?O?(O.p(e,o),O.i(1)):((O=Se(o)).c(),O.i(1),O.m($.parentNode,$)):O&&(V(),U(()=>{O.d(1),O=null}),O.o(1),Q())},i(e){if(!_){P&&P.i(),T&&T.i();for(var t=0;t<S.length;t+=1)J[t].i();O&&O.i(),_=!0}},o(e){P&&P.o(),T&&T.o(),J=J.filter(Boolean);for(let e=0;e<J.length;e+=1)z(e,0);O&&O.o(),_=!1},d(i){P&&P.d(i),i&&(y(t),y(n)),T&&T.d(),v(J,i),e.a_binding(null,n),i&&y(f),O&&O.d(i),i&&y($),o(N)}}}const Be=new Set;function ze(e,t,n){let i,o;l(e,ge,e=>{n("$activeCollection",i=e)}),l(e,ue,e=>{n("$loadingSecondary",o=e)});let{imagecollection:r,lowresdir:a,hiresdir:s,id:c=0,name:d,color:m}=t;const g=e=>new Promise(t=>setTimeout(t,e));let u,f,$,h,p,y=0,v=!1;return z(()=>($=u.getElementsByTagName("div"),h=u.getElementsByTagName("img")[0],Be.add(u),()=>Be.delete(u))),e.$set=(e=>{"imagecollection"in e&&n("imagecollection",r=e.imagecollection),"lowresdir"in e&&n("lowresdir",a=e.lowresdir),"hiresdir"in e&&n("hiresdir",s=e.hiresdir),"id"in e&&n("id",c=e.id),"name"in e&&n("name",d=e.name),"color"in e&&n("color",m=e.color)}),{imagecollection:r,lowresdir:a,hiresdir:s,id:c,name:d,color:m,collection:u,galleryExpanded:f,attemptingtoLoad:v,rotate:function(){Object.entries($).forEach(([e,t])=>{t.style.transform="rotate("+(4*parseInt(e)+5)+"deg)"}),h.style.transform="scale(1.03) translateY(5px) rotate(-1deg)"},unRotate:function(){Object.entries($).forEach(([e,t])=>{t.style.transform="rotate("+2*(parseInt(e)+1)+"deg)"}),h.style.transform="scale(1) rotate(0deg)"},showContents:function(e){if(n("attemptingtoLoad",v=!0),e.preventDefault(),p=getComputedStyle(document.documentElement).getPropertyValue("--bgcolor"),m){let e=m.split(",");document.documentElement.style.setProperty("--bgcolor",`hsla(${e[0]}, ${e[1]}%, ${e[2]}%, 1)`),document.documentElement.style.setProperty("--bgcolortint",`hsla(${e[0]}, ${e[1]}%, ${e[2]}%, 0.6)`),document.documentElement.style.setProperty("--bgcolordarktint",`hsl(${e[0]}, ${e[1]}%, ${e[2]/e[1]*10}%)`)}ue.update(e=>!0),ge.update(e=>c),function(){let e=document.documentElement.clientWidth/2,t=document.documentElement.clientHeight/2;Be.forEach(n=>{var o=n.getBoundingClientRect();n.classList.add("neardeath");let r=parseInt(n.dataset.id);n.classList.add("no-pointer-events"),r!==i&&(n.style.transform=`translateX(${o.left/3-e/3}px) translateY(${o.top/3-t/3}px)`)})}()},resetStacks:function(){console.log("resetting..."),document.documentElement.style.setProperty("--bgcolor",p),me.update(e=>!0),Be.forEach(e=>{e.classList.remove("neardeath")}),(async()=>{await g(200),ge.update(e=>0),n("attemptingtoLoad",v=!1),Be.forEach(e=>{e.style.transform="translateX(0px) translateY(0px)"})})(),(async()=>{await g(600),Be.forEach(e=>{e.classList.remove("no-pointer-events")})})()},handleLoadingComplete:function(e){(y+=e.detail.loadingComplete)===r.length&&(console.log("Loading complete"),ue.update(e=>!1),y=0)},$activeCollection:i,$loadingSecondary:o,a_binding:function(e,t){n("collection",u=e)},galleryexpanded_binding:function(e){n("galleryExpanded",f=e)}}}class Oe extends ie{constructor(e){super(),ne(this,e,ze,Je,a,["imagecollection","lowresdir","hiresdir","id","name","color"])}}function Xe(e){var t,n,i,o,r,a,l,s,c,d,m=new Oe({props:{width:"",name:"Ongakukai",color:"44, 47, 90",lowresdir:"images/16_ongakukai",hiresdir:"images/16_ongakukai/originals",imagecollection:e.collection0,id:je++}}),g=new Oe({props:{width:"",name:"Painterly",color:"261, 27, 71",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection1,id:je++}}),u=new Oe({props:{width:"",name:"Splashes",color:"206, 69, 88",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection2,id:je++}}),f=new Oe({props:{width:"",name:"Citizens of Science",color:"182, 37, 73",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection3,id:je++}}),$=new Oe({props:{width:"",name:"Travelling",color:"209, 25, 24",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection4,id:je++}}),v=new Oe({props:{width:"",name:"Angry at kids",color:"13, 92, 87",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection5,id:je++}}),x=new Oe({props:{width:"",name:"Sketches",color:"109, 0, 76",lowresdir:"images",hiresdir:"images/originals",imagecollection:e.collection6,id:je++}});return{c(){t=w("div"),m.$$.fragment.c(),n=b(),g.$$.fragment.c(),i=b(),u.$$.fragment.c(),o=b(),f.$$.fragment.c(),r=b(),$.$$.fragment.c(),a=b(),v.$$.fragment.c(),l=b(),x.$$.fragment.c(),s=b(),(c=w("p")).innerHTML='<a href="https://github.com/cssandstuff/portfolio-scaffold" class="svelte-lq41rl">View on Github</a>',t.className="container svelte-lq41rl",c.className="svelte-lq41rl"},m(e,y){p(e,t,y),ee(m,t,null),h(t,n),ee(g,t,null),h(t,i),ee(u,t,null),h(t,o),ee(f,t,null),h(t,r),ee($,t,null),h(t,a),ee(v,t,null),h(t,l),ee(x,t,null),p(e,s,y),p(e,c,y),d=!0},p(e,t){var n={};e.collection0&&(n.imagecollection=t.collection0),e.uid&&(n.id=je++),m.$set(n);var i={};e.collection1&&(i.imagecollection=t.collection1),e.uid&&(i.id=je++),g.$set(i);var o={};e.collection2&&(o.imagecollection=t.collection2),e.uid&&(o.id=je++),u.$set(o);var r={};e.collection3&&(r.imagecollection=t.collection3),e.uid&&(r.id=je++),f.$set(r);var a={};e.collection4&&(a.imagecollection=t.collection4),e.uid&&(a.id=je++),$.$set(a);var l={};e.collection5&&(l.imagecollection=t.collection5),e.uid&&(l.id=je++),v.$set(l);var s={};e.collection6&&(s.imagecollection=t.collection6),e.uid&&(s.id=je++),x.$set(s)},i(e){d||(m.$$.fragment.i(e),g.$$.fragment.i(e),u.$$.fragment.i(e),f.$$.fragment.i(e),$.$$.fragment.i(e),v.$$.fragment.i(e),x.$$.fragment.i(e),d=!0)},o(e){m.$$.fragment.o(e),g.$$.fragment.o(e),u.$$.fragment.o(e),f.$$.fragment.o(e),$.$$.fragment.o(e),v.$$.fragment.o(e),x.$$.fragment.o(e),d=!1},d(e){e&&y(t),m.$destroy(),g.$destroy(),u.$destroy(),f.$destroy(),$.$destroy(),v.$destroy(),x.$destroy(),e&&(y(s),y(c))}}}let je=1;function Re(e,t,n){let{name:i}=t;return e.$set=(e=>{"name"in e&&n("name",i=e.name)}),{name:i,collection0:[{src:"01_front_cover.jpg",name:"Noa"},{src:"02_back_cover.jpg",name:"Dog"},{src:"racoon_together.jpg",name:"Glass"}],collection1:[{src:"Noa.JPG",name:"Noa"},{src:"dog.JPG",name:"Dog"},{src:"glass.JPG",name:"Glass"}],collection4:[{src:"atami.JPG",name:"Atami at night"},{src:"kenodo.JPG",name:"Konodo Highway"},{src:"kenodo2.JPG",name:"Tunnels"}],collection6:[{src:"boring.JPG",name:"Everything is boring"},{src:"hownotto.JPG",name:"How not to draw"},{src:"isometric.JPG",name:"Isometric"},{src:"notes.JPG",name:"Notes"},{src:"glass-b+w.JPG",name:"Glass"}],collection2:[{src:"cash.JPG",name:"Cash Suitcase"},{src:"robo.JPG",name:"Robot"},{src:"tako.JPG",name:"Octopus"}],collection5:[{src:"angrykid2.JPG",name:"Angry 1"},{src:"angrykid1.JPG",name:"Angry 2"},{src:"angrykid3.JPG",name:"Angry 3"},{src:"angrykid4.JPG",name:"Angry 4"},{src:"angrykid5.JPG",name:"Angry 5"}],collection3:[{src:"citizens.JPG",name:"Citizens of Science"},{src:"screwit.JPG",name:"Screw It"},{src:"boltit.JPG",name:"Boltman"},{src:"kumo.JPG",name:"Spiderdeath"}]}}return new class extends ie{constructor(e){super(),ne(this,e,Re,Xe,a,["name"])}}({target:document.body})}();
+var app = (function () {
+    'use strict';
+
+    function noop() { }
+    const identity = x => x;
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function validate_store(store, name) {
+        if (!store || typeof store.subscribe !== 'function') {
+            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+        }
+    }
+    function subscribe(component, store, callback) {
+        const unsub = store.subscribe(callback);
+        component.$$.on_destroy.push(unsub.unsubscribe
+            ? () => unsub.unsubscribe()
+            : unsub);
+    }
+    const is_client = typeof window !== 'undefined';
+    let now = is_client
+        ? () => window.performance.now()
+        : () => Date.now();
+    let raf = is_client ? requestAnimationFrame : noop;
+
+    const tasks = new Set();
+    let running = false;
+    function run_tasks() {
+        tasks.forEach(task => {
+            if (!task[0](now())) {
+                tasks.delete(task);
+                task[1]();
+            }
+        });
+        running = tasks.size > 0;
+        if (running)
+            raf(run_tasks);
+    }
+    function loop(fn) {
+        let task;
+        if (!running) {
+            running = true;
+            raf(run_tasks);
+        }
+        return {
+            promise: new Promise(fulfil => {
+                tasks.add(task = [fn, fulfil]);
+            }),
+            abort() {
+                tasks.delete(task);
+            }
+        };
+    }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function destroy_each(iterations, detaching) {
+        for (let i = 0; i < iterations.length; i += 1) {
+            if (iterations[i])
+                iterations[i].d(detaching);
+        }
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function empty() {
+        return text('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_data(text, data) {
+        data = '' + data;
+        if (text.data !== data)
+            text.data = data;
+    }
+    function set_style(node, key, value) {
+        node.style.setProperty(key, value);
+    }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
+    function custom_event(type, detail) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, false, false, detail);
+        return e;
+    }
+
+    let stylesheet;
+    let active = 0;
+    let current_rules = {};
+    // https://github.com/darkskyapp/string-hash/blob/master/index.js
+    function hash(str) {
+        let hash = 5381;
+        let i = str.length;
+        while (i--)
+            hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+        return hash >>> 0;
+    }
+    function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+        const step = 16.666 / duration;
+        let keyframes = '{\n';
+        for (let p = 0; p <= 1; p += step) {
+            const t = a + (b - a) * ease(p);
+            keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+        }
+        const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+        const name = `__svelte_${hash(rule)}_${uid}`;
+        if (!current_rules[name]) {
+            if (!stylesheet) {
+                const style = element('style');
+                document.head.appendChild(style);
+                stylesheet = style.sheet;
+            }
+            current_rules[name] = true;
+            stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+        }
+        const animation = node.style.animation || '';
+        node.style.animation = `${animation ? `${animation}, ` : ``}${name} ${duration}ms linear ${delay}ms 1 both`;
+        active += 1;
+        return name;
+    }
+    function delete_rule(node, name) {
+        node.style.animation = (node.style.animation || '')
+            .split(', ')
+            .filter(name
+            ? anim => anim.indexOf(name) < 0 // remove specific animation
+            : anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+        )
+            .join(', ');
+        if (name && !--active)
+            clear_rules();
+    }
+    function clear_rules() {
+        raf(() => {
+            if (active)
+                return;
+            let i = stylesheet.cssRules.length;
+            while (i--)
+                stylesheet.deleteRule(i);
+            current_rules = {};
+        });
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error(`Function called outside component initialization`);
+        return current_component;
+    }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+    function afterUpdate(fn) {
+        get_current_component().$$.after_render.push(fn);
+    }
+    function onDestroy(fn) {
+        get_current_component().$$.on_destroy.push(fn);
+    }
+    function createEventDispatcher() {
+        const component = current_component;
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
+    }
+    // TODO figure out if we still want to support
+    // shorthand events, or if we want to implement
+    // a real bubbling mechanism
+    function bubble(component, event) {
+        const callbacks = component.$$.callbacks[event.type];
+        if (callbacks) {
+            callbacks.slice().forEach(fn => fn(event));
+        }
+    }
+
+    const dirty_components = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_binding_callback(fn) {
+        binding_callbacks.push(fn);
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    function flush() {
+        const seen_callbacks = new Set();
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            while (dirty_components.length) {
+                const component = dirty_components.shift();
+                set_current_component(component);
+                update(component.$$);
+            }
+            while (binding_callbacks.length)
+                binding_callbacks.shift()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            while (render_callbacks.length) {
+                const callback = render_callbacks.pop();
+                if (!seen_callbacks.has(callback)) {
+                    callback();
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                }
+            }
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+    }
+    function update($$) {
+        if ($$.fragment) {
+            $$.update($$.dirty);
+            run_all($$.before_render);
+            $$.fragment.p($$.dirty, $$.ctx);
+            $$.dirty = null;
+            $$.after_render.forEach(add_render_callback);
+        }
+    }
+
+    let promise;
+    function wait() {
+        if (!promise) {
+            promise = Promise.resolve();
+            promise.then(() => {
+                promise = null;
+            });
+        }
+        return promise;
+    }
+    let outros;
+    function group_outros() {
+        outros = {
+            remaining: 0,
+            callbacks: []
+        };
+    }
+    function check_outros() {
+        if (!outros.remaining) {
+            run_all(outros.callbacks);
+        }
+    }
+    function on_outro(callback) {
+        outros.callbacks.push(callback);
+    }
+    function create_in_transition(node, fn, params) {
+        let config = fn(node, params);
+        let running = false;
+        let animation_name;
+        let task;
+        let uid = 0;
+        function cleanup() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function go() {
+            const { delay = 0, duration = 300, easing = identity, tick: tick$$1 = noop, css } = config;
+            if (css)
+                animation_name = create_rule(node, 0, 1, duration, delay, easing, css, uid++);
+            tick$$1(0, 1);
+            const start_time = now() + delay;
+            const end_time = start_time + duration;
+            if (task)
+                task.abort();
+            running = true;
+            task = loop(now$$1 => {
+                if (running) {
+                    if (now$$1 >= end_time) {
+                        tick$$1(1, 0);
+                        cleanup();
+                        return running = false;
+                    }
+                    if (now$$1 >= start_time) {
+                        const t = easing((now$$1 - start_time) / duration);
+                        tick$$1(t, 1 - t);
+                    }
+                }
+                return running;
+            });
+        }
+        let started = false;
+        return {
+            start() {
+                if (started)
+                    return;
+                delete_rule(node);
+                if (typeof config === 'function') {
+                    config = config();
+                    wait().then(go);
+                }
+                else {
+                    go();
+                }
+            },
+            invalidate() {
+                started = false;
+            },
+            end() {
+                if (running) {
+                    cleanup();
+                    running = false;
+                }
+            }
+        };
+    }
+    function create_out_transition(node, fn, params) {
+        let config = fn(node, params);
+        let running = true;
+        let animation_name;
+        const group = outros;
+        group.remaining += 1;
+        function go() {
+            const { delay = 0, duration = 300, easing = identity, tick: tick$$1 = noop, css } = config;
+            if (css)
+                animation_name = create_rule(node, 1, 0, duration, delay, easing, css);
+            const start_time = now() + delay;
+            const end_time = start_time + duration;
+            loop(now$$1 => {
+                if (running) {
+                    if (now$$1 >= end_time) {
+                        tick$$1(0, 1);
+                        if (!--group.remaining) {
+                            // this will result in `end()` being called,
+                            // so we don't need to clean up here
+                            run_all(group.callbacks);
+                        }
+                        return false;
+                    }
+                    if (now$$1 >= start_time) {
+                        const t = easing((now$$1 - start_time) / duration);
+                        tick$$1(1 - t, t);
+                    }
+                }
+                return running;
+            });
+        }
+        if (typeof config === 'function') {
+            wait().then(() => {
+                config = config();
+                go();
+            });
+        }
+        else {
+            go();
+        }
+        return {
+            end(reset) {
+                if (reset && config.tick) {
+                    config.tick(1, 0);
+                }
+                if (running) {
+                    if (animation_name)
+                        delete_rule(node, animation_name);
+                    running = false;
+                }
+            }
+        };
+    }
+    function mount_component(component, target, anchor) {
+        const { fragment, on_mount, on_destroy, after_render } = component.$$;
+        fragment.m(target, anchor);
+        // onMount happens after the initial afterUpdate. Because
+        // afterUpdate callbacks happen in reverse order (inner first)
+        // we schedule onMount callbacks before afterUpdate callbacks
+        add_render_callback(() => {
+            const new_on_destroy = on_mount.map(run).filter(is_function);
+            if (on_destroy) {
+                on_destroy.push(...new_on_destroy);
+            }
+            else {
+                // Edge case - component was destroyed immediately,
+                // most likely as a result of a binding initialising
+                run_all(new_on_destroy);
+            }
+            component.$$.on_mount = [];
+        });
+        after_render.forEach(add_render_callback);
+    }
+    function destroy(component, detaching) {
+        if (component.$$) {
+            run_all(component.$$.on_destroy);
+            component.$$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            component.$$.on_destroy = component.$$.fragment = null;
+            component.$$.ctx = {};
+        }
+    }
+    function make_dirty(component, key) {
+        if (!component.$$.dirty) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty = blank_object();
+        }
+        component.$$.dirty[key] = true;
+    }
+    function init(component, options, instance, create_fragment, not_equal$$1, prop_names) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const props = options.props || {};
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props: prop_names,
+            update: noop,
+            not_equal: not_equal$$1,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            before_render: [],
+            after_render: [],
+            context: new Map(parent_component ? parent_component.$$.context : []),
+            // everything else
+            callbacks: blank_object(),
+            dirty: null
+        };
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, props, (key, value) => {
+                if ($$.ctx && not_equal$$1($$.ctx[key], $$.ctx[key] = value)) {
+                    if ($$.bound[key])
+                        $$.bound[key](value);
+                    if (ready)
+                        make_dirty(component, key);
+                }
+            })
+            : props;
+        $$.update();
+        ready = true;
+        run_all($$.before_render);
+        $$.fragment = create_fragment($$.ctx);
+        if (options.target) {
+            if (options.hydrate) {
+                $$.fragment.l(children(options.target));
+            }
+            else {
+                $$.fragment.c();
+            }
+            if (options.intro && component.$$.fragment.i)
+                component.$$.fragment.i();
+            mount_component(component, options.target, options.anchor);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    class SvelteComponent {
+        $destroy() {
+            destroy(this, true);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set() {
+            // overridden by instance, if it has props
+        }
+    }
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error(`'target' is a required option`);
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn(`Component was already destroyed`); // eslint-disable-line no-console
+            };
+        }
+    }
+
+    /* src/Image.svelte generated by Svelte v3.4.4 */
+
+    const file = "src/Image.svelte";
+
+    // (103:0) {#if !visible}
+    function create_if_block(ctx) {
+    	var div1, div0;
+
+    	return {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			div0.className = "inner svelte-vtevxo";
+    			add_location(div0, file, 104, 4, 2133);
+    			div1.className = "loader svelte-vtevxo";
+    			add_location(div1, file, 103, 2, 2108);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div1, anchor);
+    			append(div1, div0);
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div1);
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment(ctx) {
+    	var img, img_class_value, t, if_block_anchor;
+
+    	var if_block = (!ctx.visible) && create_if_block(ctx);
+
+    	return {
+    		c: function create() {
+    			img = element("img");
+    			t = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    			img.src = ctx.image;
+    			img.alt = "";
+    			img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo";
+    			add_location(img, file, 101, 0, 2026);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, img, anchor);
+    			insert(target, t, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (changed.image) {
+    				img.src = ctx.image;
+    			}
+
+    			if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo")) {
+    				img.className = img_class_value;
+    			}
+
+    			if (!ctx.visible) {
+    				if (!if_block) {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(img);
+    				detach(t);
+    			}
+
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(if_block_anchor);
+    			}
+    		}
+    	};
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	
+      let { image, visible = 0 } = $$props;
+      const dispatch = createEventDispatcher();
+
+      onMount(async () => {
+        const res = await fetch(image);
+        if(res.status === 200){
+           $$invalidate('image', image = res.url);
+           const loader = new Image();
+           loader.onload = () => {
+             $$invalidate('visible', visible = true);
+             dispatch('loadingComplete', {
+              loadingComplete: 1
+             });
+           };
+           loader.src = image;
+        }else{
+          $$invalidate('visible', visible = false);
+        }
+      });
+
+    	const writable_props = ['image', 'visible'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Image> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('image' in $$props) $$invalidate('image', image = $$props.image);
+    		if ('visible' in $$props) $$invalidate('visible', visible = $$props.visible);
+    	};
+
+    	return { image, visible };
+    }
+
+    class Image_1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, ["image", "visible"]);
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.image === undefined && !('image' in props)) {
+    			console.warn("<Image> was created without expected prop 'image'");
+    		}
+    	}
+
+    	get image() {
+    		throw new Error("<Image>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set image(value) {
+    		throw new Error("<Image>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get visible() {
+    		throw new Error("<Image>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set visible(value) {
+    		throw new Error("<Image>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/Spinner.svelte generated by Svelte v3.4.4 */
+
+    const file$1 = "src/Spinner.svelte";
+
+    function create_fragment$1(ctx) {
+    	var div1, div0;
+
+    	return {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			div0.className = "inner svelte-148bgtc";
+    			add_location(div0, file$1, 68, 0, 1388);
+    			div1.className = "spinner svelte-148bgtc";
+    			add_location(div1, file$1, 67, 0, 1366);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div1, anchor);
+    			append(div1, div0);
+    		},
+
+    		p: noop,
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div1);
+    			}
+    		}
+    	};
+    }
+
+    class Spinner extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, null, create_fragment$1, safe_not_equal, []);
+    	}
+    }
+
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = [];
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (!stop) {
+                    return; // not ready
+                }
+                subscribers.forEach((s) => s[1]());
+                subscribers.forEach((s) => s[0](value));
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.push(subscriber);
+            if (subscribers.length === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                const index = subscribers.indexOf(subscriber);
+                if (index !== -1) {
+                    subscribers.splice(index, 1);
+                }
+                if (subscribers.length === 0) {
+                    stop();
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+
+    const destroyingExpandedGallery = writable(false);
+    const activeCollection = writable(0);
+    const loadingSecondary = writable(false);
+
+    function cubicOut(t) {
+        const f = t - 1.0;
+        return f * f * f + 1.0;
+    }
+
+    function fade(node, { delay = 0, duration = 400 }) {
+        const o = +getComputedStyle(node).opacity;
+        return {
+            delay,
+            duration,
+            css: t => `opacity: ${t * o}`
+        };
+    }
+    function fly(node, { delay = 0, duration = 400, easing = cubicOut, x = 0, y = 0, opacity = 0 }) {
+        const style = getComputedStyle(node);
+        const target_opacity = +style.opacity;
+        const transform = style.transform === 'none' ? '' : style.transform;
+        const od = target_opacity * (1 - opacity);
+        return {
+            delay,
+            duration,
+            easing,
+            css: (t, u) => `
+			transform: ${transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);
+			opacity: ${target_opacity - (od * u)}`
+        };
+    }
+
+    /* src/GalleryExpanded.svelte generated by Svelte v3.4.4 */
+
+    const file$2 = "src/GalleryExpanded.svelte";
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = Object.create(ctx);
+    	child_ctx.image = list[i];
+    	child_ctx.index = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = Object.create(ctx);
+    	child_ctx.image = list[i];
+    	child_ctx.index = i;
+    	return child_ctx;
+    }
+
+    // (571:4) {#each stack as image, index}
+    function create_each_block_1(ctx) {
+    	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
+
+    	var image = new Image_1({
+    		props: {
+    		image: "" + ctx.lowresdir + "/" + ctx.image.src
+    	},
+    		$$inline: true
+    	});
+    	image.$on("loadingComplete", ctx.loadingComplete_handler);
+
+    	function click_handler(...args) {
+    		return ctx.click_handler(ctx, ...args);
+    	}
+
+    	return {
+    		c: function create() {
+    			a = element("a");
+    			image.$$.fragment.c();
+    			t0 = space();
+    			span = element("span");
+    			t1 = space();
+    			h2 = element("h2");
+    			t2 = text(t2_value);
+    			span.className = "magnify svelte-1tf03iq";
+    			toggle_class(span, "out", ctx.showTitles === false);
+    			add_location(span, file$2, 573, 8, 16096);
+    			h2.className = "svelte-1tf03iq";
+    			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
+    			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
+    			add_location(h2, file$2, 574, 8, 16169);
+    			a.className = "galleryitem svelte-1tf03iq";
+    			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
+    			toggle_class(a, "transitioning", ctx.transitioning === true);
+    			add_location(a, file$2, 571, 6, 15875);
+    			dispose = listen(a, "click", click_handler);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, a, anchor);
+    			mount_component(image, a, null);
+    			append(a, t0);
+    			append(a, span);
+    			append(a, t1);
+    			append(a, h2);
+    			append(h2, t2);
+    			current_1 = true;
+    		},
+
+    		p: function update(changed, new_ctx) {
+    			ctx = new_ctx;
+    			var image_changes = {};
+    			if (changed.lowresdir || changed.stack) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
+    			image.$set(image_changes);
+
+    			if (changed.showTitles) {
+    				toggle_class(span, "out", ctx.showTitles === false);
+    			}
+
+    			if ((!current_1 || changed.stack) && t2_value !== (t2_value = ctx.image.name)) {
+    				set_data(t2, t2_value);
+    			}
+
+    			if ((changed.$destroyingExpandedGallery || changed.showTitles)) {
+    				toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
+    			}
+
+    			if ((changed.$loadingSecondary || changed.showTitles || changed.$destroyingExpandedGallery)) {
+    				toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
+    			}
+
+    			if ((!current_1 || changed.hiresdir || changed.stack) && a_href_value !== (a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src)) {
+    				a.href = a_href_value;
+    			}
+
+    			if (changed.transitioning) {
+    				toggle_class(a, "transitioning", ctx.transitioning === true);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current_1) return;
+    			image.$$.fragment.i(local);
+
+    			current_1 = true;
+    		},
+
+    		o: function outro(local) {
+    			image.$$.fragment.o(local);
+    			current_1 = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(a);
+    			}
+
+    			image.$destroy();
+
+    			dispose();
+    		}
+    	};
+    }
+
+    // (582:0) {#if ready}
+    function create_if_block$1(ctx) {
+    	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
+
+    	var if_block = (!ctx.hiresLoaded) && create_if_block_1(ctx);
+
+    	var each_value = ctx.stack;
+
+    	var each_blocks = [];
+
+    	for (var i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	function outro_block(i, detaching, local) {
+    		if (each_blocks[i]) {
+    			if (detaching) {
+    				on_outro(() => {
+    					each_blocks[i].d(detaching);
+    					each_blocks[i] = null;
+    				});
+    			}
+
+    			each_blocks[i].o(local);
+    		}
+    	}
+
+    	return {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t0 = space();
+    			div = element("div");
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t1 = space();
+    			span0 = element("span");
+    			t2 = space();
+    			span1 = element("span");
+    			t3 = space();
+    			span2 = element("span");
+    			t4 = text(ctx.currentTitle);
+    			span0.className = "previous svelte-1tf03iq";
+    			add_location(span0, file$2, 591, 4, 16806);
+    			span1.className = "next svelte-1tf03iq";
+    			add_location(span1, file$2, 592, 4, 16865);
+    			span2.className = "close svelte-1tf03iq";
+    			add_location(span2, file$2, 593, 4, 16916);
+    			div.className = "hires svelte-1tf03iq";
+    			toggle_class(div, "ready", ctx.hiresLoaded === true);
+    			add_location(div, file$2, 585, 2, 16473);
+
+    			dispose = [
+    				listen(span0, "click", ctx.showPrevious),
+    				listen(span1, "click", ctx.showNext),
+    				listen(span2, "click", ctx.closeGallery)
+    			];
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, div, anchor);
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+
+    			append(div, t1);
+    			append(div, span0);
+    			append(div, t2);
+    			append(div, span1);
+    			append(div, t3);
+    			append(div, span2);
+    			append(span2, t4);
+    			add_binding_callback(() => ctx.div_binding_1(div, null));
+    			current_1 = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (!ctx.hiresLoaded) {
+    				if (!if_block) {
+    					if_block = create_if_block_1(ctx);
+    					if_block.c();
+    					if_block.i(1);
+    					if_block.m(t0.parentNode, t0);
+    				} else {
+    									if_block.i(1);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block.d(1);
+    					if_block = null;
+    				});
+
+    				if_block.o(1);
+    				check_outros();
+    			}
+
+    			if (changed.current || changed.hiresdir || changed.stack || changed.handleLoadingHiResComplete) {
+    				each_value = ctx.stack;
+
+    				for (var i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(changed, child_ctx);
+    						each_blocks[i].i(1);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].i(1);
+    						each_blocks[i].m(div, t1);
+    					}
+    				}
+
+    				group_outros();
+    				for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+    				check_outros();
+    			}
+
+    			if (!current_1 || changed.currentTitle) {
+    				set_data(t4, ctx.currentTitle);
+    			}
+
+    			if (changed.items) {
+    				ctx.div_binding_1(null, div);
+    				ctx.div_binding_1(div, null);
+    			}
+
+    			if (changed.hiresLoaded) {
+    				toggle_class(div, "ready", ctx.hiresLoaded === true);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current_1) return;
+    			if (if_block) if_block.i();
+
+    			for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+
+    			if (div_outro) div_outro.end(1);
+
+    			current_1 = true;
+    		},
+
+    		o: function outro(local) {
+    			if (if_block) if_block.o();
+
+    			each_blocks = each_blocks.filter(Boolean);
+    			for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+    			if (local) {
+    				div_outro = create_out_transition(div, fade, {duration: 100});
+    			}
+
+    			current_1 = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(div);
+    			}
+
+    			destroy_each(each_blocks, detaching);
+
+    			ctx.div_binding_1(null, div);
+
+    			if (detaching) {
+    				if (div_outro) div_outro.end();
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    // (583:2) {#if !hiresLoaded}
+    function create_if_block_1(ctx) {
+    	var current_1;
+
+    	var spinner = new Spinner({ $$inline: true });
+
+    	return {
+    		c: function create() {
+    			spinner.$$.fragment.c();
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(spinner, target, anchor);
+    			current_1 = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current_1) return;
+    			spinner.$$.fragment.i(local);
+
+    			current_1 = true;
+    		},
+
+    		o: function outro(local) {
+    			spinner.$$.fragment.o(local);
+    			current_1 = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			spinner.$destroy(detaching);
+    		}
+    	};
+    }
+
+    // (587:4) {#each stack as image, index}
+    function create_each_block(ctx) {
+    	var div, current_1;
+
+    	var image = new Image_1({
+    		props: {
+    		image: "" + ctx.hiresdir + "/" + ctx.image.src
+    	},
+    		$$inline: true
+    	});
+    	image.$on("loadingComplete", ctx.handleLoadingHiResComplete);
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			image.$$.fragment.c();
+    			div.className = "hi-image svelte-1tf03iq";
+    			toggle_class(div, "active", ctx.current === ctx.index);
+    			add_location(div, file$2, 587, 6, 16622);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			mount_component(image, div, null);
+    			current_1 = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var image_changes = {};
+    			if (changed.hiresdir || changed.stack) image_changes.image = "" + ctx.hiresdir + "/" + ctx.image.src;
+    			image.$set(image_changes);
+
+    			if (changed.current) {
+    				toggle_class(div, "active", ctx.current === ctx.index);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current_1) return;
+    			image.$$.fragment.i(local);
+
+    			current_1 = true;
+    		},
+
+    		o: function outro(local) {
+    			image.$$.fragment.o(local);
+    			current_1 = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+
+    			image.$destroy();
+    		}
+    	};
+    }
+
+    function create_fragment$2(ctx) {
+    	var scrolling = false, clear_scrolling = () => { scrolling = false; }, scrolling_timeout, div, t, if_block_anchor, current_1, dispose;
+
+    	add_render_callback(ctx.onwindowscroll);
+
+    	var each_value_1 = ctx.stack;
+
+    	var each_blocks = [];
+
+    	for (var i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	function outro_block(i, detaching, local) {
+    		if (each_blocks[i]) {
+    			if (detaching) {
+    				on_outro(() => {
+    					each_blocks[i].d(detaching);
+    					each_blocks[i] = null;
+    				});
+    			}
+
+    			each_blocks[i].o(local);
+    		}
+    	}
+
+    	var if_block = (ctx.ready) && create_if_block$1(ctx);
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    			div.className = "stack gallery svelte-1tf03iq";
+    			add_location(div, file$2, 569, 2, 15777);
+
+    			dispose = [
+    				listen(window, "keydown", ctx.handleKeydown),
+    				listen(window, "scroll", () => {
+    					scrolling = true;
+    					clearTimeout(scrolling_timeout);
+    					scrolling_timeout = setTimeout(clear_scrolling, 100);
+    					ctx.onwindowscroll();
+    				})
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+
+    			add_binding_callback(() => ctx.div_binding(div, null));
+    			insert(target, t, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current_1 = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (changed.y && !scrolling) {
+    				scrolling = true;
+    				clearTimeout(scrolling_timeout);
+    				window.scrollTo(window.pageXOffset, ctx.y);
+    				scrolling_timeout = setTimeout(clear_scrolling, 100);
+    			}
+
+    			if (changed.hiresdir || changed.stack || changed.transitioning || changed.$destroyingExpandedGallery || changed.showTitles || changed.$loadingSecondary || changed.lowresdir) {
+    				each_value_1 = ctx.stack;
+
+    				for (var i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(changed, child_ctx);
+    						each_blocks[i].i(1);
+    					} else {
+    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].i(1);
+    						each_blocks[i].m(div, null);
+    					}
+    				}
+
+    				group_outros();
+    				for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+    				check_outros();
+    			}
+
+    			if (changed.items) {
+    				ctx.div_binding(null, div);
+    				ctx.div_binding(div, null);
+    			}
+
+    			if (ctx.ready) {
+    				if (if_block) {
+    					if_block.p(changed, ctx);
+    					if_block.i(1);
+    				} else {
+    					if_block = create_if_block$1(ctx);
+    					if_block.c();
+    					if_block.i(1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block.d(1);
+    					if_block = null;
+    				});
+
+    				if_block.o(1);
+    				check_outros();
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current_1) return;
+    			for (var i = 0; i < each_value_1.length; i += 1) each_blocks[i].i();
+
+    			if (if_block) if_block.i();
+    			current_1 = true;
+    		},
+
+    		o: function outro(local) {
+    			each_blocks = each_blocks.filter(Boolean);
+    			for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+    			if (if_block) if_block.o();
+    			current_1 = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+
+    			destroy_each(each_blocks, detaching);
+
+    			ctx.div_binding(null, div);
+
+    			if (detaching) {
+    				detach(t);
+    			}
+
+    			if (if_block) if_block.d(detaching);
+
+    			if (detaching) {
+    				detach(if_block_anchor);
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let $loadingSecondary, $destroyingExpandedGallery;
+
+    	validate_store(loadingSecondary, 'loadingSecondary');
+    	subscribe($$self, loadingSecondary, $$value => { $loadingSecondary = $$value; $$invalidate('$loadingSecondary', $loadingSecondary); });
+    	validate_store(destroyingExpandedGallery, 'destroyingExpandedGallery');
+    	subscribe($$self, destroyingExpandedGallery, $$value => { $destroyingExpandedGallery = $$value; $$invalidate('$destroyingExpandedGallery', $destroyingExpandedGallery); });
+
+    	
+      //import { _resetStacks } from './GalleryStack.svelte';
+
+      let { stack, lowresdir, hiresdir, originaltarget } = $$props;
+
+      // references to divs
+      let activeCollection;
+      let thirdLevel;
+
+      // placeholders for objects that we'll iterate over
+      let images;
+      let hiresImages;
+      let currentTitle;
+
+      // indexes of the current image (why are there two??)
+      let current;
+
+      // Scroll position stuff
+      let y;
+      let originalScrollPos;
+      let hiresScrollPos;
+      
+      // Handles transition of single gallery image when it transitions to hi-res.
+      let transitionHandler;
+      
+      // count for loading
+      let count = 0;
+
+      // booleans, do I need so many?
+      let showTitles          = true;
+      let hiresLoaded         = false;
+      let ready               = false;
+      let expandedOnce        = false;
+      let transitioning       = false;
+      let closedGallery       = false;
+      
+      // could probably remove the need for this?
+      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+
+      // want a reference to each gallery items within the active Collection.
+      onMount(() => {
+        images = activeCollection.getElementsByClassName('galleryitem');
+        
+        // want the item in a stack on first mount
+        attemptToConsolidate();
+        
+      });
+
+      // Might be able to refactor this to not use AfterUpdate, 
+      // but for now it seems ok.
+      afterUpdate(() => {
+        if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
+          expandStuff();
+          expandedOnce = true;
+        }
+        if($destroyingExpandedGallery && expandedOnce){
+          attemptToConsolidate();
+          expandedOnce = false;
+        }
+      });
+
+      onDestroy(() => {
+        console.log('being destroyed... laters');
+        destroyingExpandedGallery.update(n => false);
+      });
+
+      function handleLoadingHiResComplete(event){
+        count = count + event.detail.loadingComplete;
+        if(count === stack.length){
+          count = 0;
+          $$invalidate('hiresLoaded', hiresLoaded = true);
+        }
+        hiresImages = thirdLevel.getElementsByClassName('hi-image');
+      }
+
+      // Keyboard functionality.
+      function handleKeydown(event){
+        if(event.code == "ArrowRight"){
+          showNext();
+        }
+        if(event.code == "ArrowLeft"){
+          showPrevious();
+        }
+        if(event.code == "Escape"){
+          if(!closedGallery){
+            closeGallery();
+          }else{
+            document.getElementById("breadcrumb").click();
+          }
+        }
+      }
+
+      function loadLargeImages(event, index){
+        $$invalidate('current', current = index);
+        event.preventDefault();
+
+        // animates clicked image into center of screen.
+        animateClicked(current);
+
+        // Gets the hi-res images into the DOM and loading
+        $$invalidate('ready', ready = true);
+      }
+      
+      // Function for bringing everything together.
+      function attemptToConsolidate(){
+        activeCollection.classList.add('no-pointer-events');
+
+        //sometimes the object is undefined I don't know why.
+        if(images !== undefined){
+          console.log("weren't me guv, everything normal...");
+          performConsolidation();
+        
+        // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
+        }else{
+          console.log('object was undefined, hard luck son.');
+          
+          // Try again?
+          (async () => {
+            await sleep(180);
+            Object.entries(images).forEach(([key, value]) => {
+              console.log('trying again...');
+              performConsolidation();
+            });
+          })();
+        }
+      }
+
+      // sometimes the object is empty, so we want a function that only runs when the object is there.
+      // This is only called by the attemptToConsolidate function.
+      function performConsolidation(){
+        let rect = originaltarget.getBoundingClientRect();
+        
+        Object.entries(images).forEach(([key, value]) => {
+          let imageDivRect = value.getBoundingClientRect();
+          let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+          
+          // If first image
+          if(key == 0){
+            transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+          }
+          
+          value.style.zIndex = images.length - key;
+
+          // if gallery is being closed/destroyed we want a quicker transition.
+          if($destroyingExpandedGallery){
+
+            // Scroll to position we were at when item was first clicked.
+            window.scrollTo(0, originalScrollPos);
+            activeCollection.style.transform = `translateY(0px)`; $$invalidate('activeCollection', activeCollection);
+            transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+            
+            // Quick transition please.
+            value.classList.add('quicktransition');
+
+            // Set tranformed style.
+            value.style.transform = transformedStyle;
+
+            }else{
+            // Set tranformed style.
+            value.style.transform = transformedStyle;
+          }
+          
+        });
+      }
+
+      // Function for Expanding things into place.  
+      function expandStuff(){
+        
+        originalScrollPos = scrollY;
+        window.scrollTo(0,0);
+        activeCollection.style.transform = `translateY(-${originalScrollPos}px)`; $$invalidate('activeCollection', activeCollection);
+      
+        (async () => {
+          await sleep(80);
+          Object.entries(images).forEach(([key, value]) => {
+            var imageDivRect = value.getBoundingClientRect();
+            $$invalidate('transitioning', transitioning = true);
+            value.classList.add('slowtransition');
+            value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
+          });
+        })();
+
+        (async () => {
+          // sleep for half a second
+          await sleep(500);
+          activeCollection.classList.remove('no-pointer-events');
+          $$invalidate('transitioning', transitioning = false);
+        })();
+      }
+
+      // animate clicked image to the center.
+      function animateClicked(current){
+        let currentImage = images[current].getElementsByTagName('img')[0];
+        let rect = images[current].getBoundingClientRect();
+        let centerX = document.documentElement.clientWidth/2;
+        let centerY = document.documentElement.clientHeight/2;
+
+        let centerArea = centerX + centerY * 2;
+        let imageArea = rect.width + rect.height;
+
+        $$invalidate('showTitles', showTitles = false);
+        $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+        Object.entries(images).forEach(([key, value]) => {
+          value.style.zIndex = '1';
+        });
+
+        currentImage.classList.remove('notransition');
+        currentImage.classList.remove('quicktransition');
+        images[current].style.zIndex = '99';    hiresScrollPos = scrollY;
+
+        (async () => {
+          await sleep(10);
+          currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+          currentImage.addEventListener('transitionend', transitionHandler = () => {
+            console.log('Transition ended');
+            document.getElementsByTagName("body")[0].classList.add('locked');
+          });    })();
+        closedGallery = false;
+      }
+
+      function showPrevious(){
+        let offset = 25;
+        if(current <= 0) {
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            $$invalidate('current', current = stack.length - 1);
+            setImagePos(current);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+          })();
+        }else{
+          hiresImages[current].style.transform = `translateX(${offset}px)`;      hiresImages[current - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            current--; $$invalidate('current', current);
+            setImagePos(current);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+          })();
+        }
+      }
+      
+      function showNext(){
+        let offset = 25;
+        
+        if(current >= (stack.length - 1)) {
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            $$invalidate('current', current = 0);
+            setImagePos(current);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+          })();
+        }else{
+          hiresImages[current].style.transform = `translateX(-${offset}px)`;      hiresImages[current + 1].style.transform = `translateX(${offset}px)`;      (async () => {
+            // sleep for half a second
+            await sleep(200);
+            current++; $$invalidate('current', current);
+            setImagePos(current);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+          })();
+        }
+        
+      }
+
+      // Sets non-active gallery items to a position where they can shrink from when the hi-res gallery is closed.
+      function setImagePos(current){
+        let rect = images[current].getBoundingClientRect();
+        let centerX = document.documentElement.clientWidth/2;
+        let centerY = document.documentElement.clientHeight/2;
+        let centerArea = centerX + centerY * 2;
+        let imageArea = rect.width + rect.height;
+        let currentImage = images[current].getElementsByTagName('img')[0];
+
+        
+        Object.entries(images).forEach(([key, value]) => {
+          value.style.zIndex = '1';
+          value.firstChild.classList.add('notransition');
+          value.firstChild.classList.remove('hitransition');
+          value.firstChild.style.transform = `translateX(0) translateY(0px) scale(1)`;
+        });
+
+        images[current].style.zIndex = '99';    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+      }
+
+      function closeGallery(){
+          let currentImage = images[current].getElementsByTagName('img')[0];
+          let currentTransformPos = currentImage.style;
+          currentImage.removeEventListener('transitionend', transitionHandler ,false);
+
+          // this is tricky because we might need two offset values
+          window.scrollTo(0, hiresScrollPos);
+          document.getElementsByTagName("body")[0].classList.remove('locked');
+
+          currentImage.classList.remove('notransition');
+          currentImage.classList.add('hitransition');
+
+          (async () => {
+            // wait for animation to end.
+            await sleep(200);
+            currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+            $$invalidate('ready', ready = false);
+            $$invalidate('hiresLoaded', hiresLoaded = false);
+            $$invalidate('showTitles', showTitles = true);
+          })();
+          
+          closedGallery = true;
+      }
+
+    	const writable_props = ['stack', 'lowresdir', 'hiresdir', 'originaltarget'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<GalleryExpanded> was created with unknown prop '${key}'`);
+    	});
+
+    	function loadingComplete_handler(event) {
+    		bubble($$self, event);
+    	}
+
+    	function onwindowscroll() {
+    		y = window.pageYOffset; $$invalidate('y', y);
+    	}
+
+    	function click_handler({ index }, e) {
+    		return loadLargeImages(e, index);
+    	}
+
+    	function div_binding($$node, check) {
+    		activeCollection = $$node;
+    		$$invalidate('activeCollection', activeCollection);
+    	}
+
+    	function div_binding_1($$node, check) {
+    		thirdLevel = $$node;
+    		$$invalidate('thirdLevel', thirdLevel);
+    	}
+
+    	$$self.$set = $$props => {
+    		if ('stack' in $$props) $$invalidate('stack', stack = $$props.stack);
+    		if ('lowresdir' in $$props) $$invalidate('lowresdir', lowresdir = $$props.lowresdir);
+    		if ('hiresdir' in $$props) $$invalidate('hiresdir', hiresdir = $$props.hiresdir);
+    		if ('originaltarget' in $$props) $$invalidate('originaltarget', originaltarget = $$props.originaltarget);
+    	};
+
+    	return {
+    		stack,
+    		lowresdir,
+    		hiresdir,
+    		originaltarget,
+    		activeCollection,
+    		thirdLevel,
+    		currentTitle,
+    		current,
+    		y,
+    		showTitles,
+    		hiresLoaded,
+    		ready,
+    		transitioning,
+    		handleLoadingHiResComplete,
+    		handleKeydown,
+    		loadLargeImages,
+    		showPrevious,
+    		showNext,
+    		closeGallery,
+    		$loadingSecondary,
+    		$destroyingExpandedGallery,
+    		loadingComplete_handler,
+    		onwindowscroll,
+    		click_handler,
+    		div_binding,
+    		div_binding_1
+    	};
+    }
+
+    class GalleryExpanded extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$1, create_fragment$2, safe_not_equal, ["stack", "lowresdir", "hiresdir", "originaltarget"]);
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.stack === undefined && !('stack' in props)) {
+    			console.warn("<GalleryExpanded> was created without expected prop 'stack'");
+    		}
+    		if (ctx.lowresdir === undefined && !('lowresdir' in props)) {
+    			console.warn("<GalleryExpanded> was created without expected prop 'lowresdir'");
+    		}
+    		if (ctx.hiresdir === undefined && !('hiresdir' in props)) {
+    			console.warn("<GalleryExpanded> was created without expected prop 'hiresdir'");
+    		}
+    		if (ctx.originaltarget === undefined && !('originaltarget' in props)) {
+    			console.warn("<GalleryExpanded> was created without expected prop 'originaltarget'");
+    		}
+    	}
+
+    	get stack() {
+    		throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set stack(value) {
+    		throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get lowresdir() {
+    		throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set lowresdir(value) {
+    		throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hiresdir() {
+    		throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hiresdir(value) {
+    		throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get originaltarget() {
+    		throw new Error("<GalleryExpanded>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set originaltarget(value) {
+    		throw new Error("<GalleryExpanded>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/GalleryStack.svelte generated by Svelte v3.4.4 */
+
+    const file$3 = "src/GalleryStack.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = Object.create(ctx);
+    	child_ctx.image = list[i];
+    	child_ctx.index = i;
+    	return child_ctx;
+    }
+
+    // (293:0) {#if $activeCollection == id}
+    function create_if_block_3(ctx) {
+    	var div, p, t, div_intro, div_outro, current, dispose;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			p = element("p");
+    			t = text(ctx.name);
+    			p.className = "svelte-nzscmq";
+    			add_location(p, file$3, 294, 4, 8154);
+    			div.id = "breadcrumb";
+    			div.className = "breadcrumb svelte-nzscmq";
+    			add_location(div, file$3, 293, 2, 8010);
+    			dispose = listen(div, "click", ctx.resetStacks);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			append(div, p);
+    			append(p, t);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (!current || changed.name) {
+    				set_data(t, ctx.name);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (div_outro) div_outro.end(1);
+    				if (!div_intro) div_intro = create_in_transition(div, fly, { y: -40, duration: 400 });
+    				div_intro.start();
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (div_intro) div_intro.invalidate();
+
+    			if (local) {
+    				div_outro = create_out_transition(div, fly, { y: -40, duration: 400 });
+    			}
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    				if (div_outro) div_outro.end();
+    			}
+
+    			dispose();
+    		}
+    	};
+    }
+
+    // (309:2) {#if $activeCollection == id}
+    function create_if_block_2(ctx) {
+    	var current;
+
+    	var spinner = new Spinner({ $$inline: true });
+
+    	return {
+    		c: function create() {
+    			spinner.$$.fragment.c();
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(spinner, target, anchor);
+    			current = true;
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			spinner.$$.fragment.i(local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			spinner.$$.fragment.o(local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			spinner.$destroy(detaching);
+    		}
+    	};
+    }
+
+    // (316:4) {:else}
+    function create_else_block(ctx) {
+    	var div;
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			div.className = "dummyimage svelte-nzscmq";
+    			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
+    			set_style(div, "z-index", "-" + ctx.index);
+    			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
+    			add_location(div, file$3, 316, 6, 8829);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (changed.imagecollection) {
+    				set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
+    			}
+    		},
+
+    		i: noop,
+    		o: noop,
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+    		}
+    	};
+    }
+
+    // (314:4) {#if index==0}
+    function create_if_block_1$1(ctx) {
+    	var current;
+
+    	var image = new Image_1({
+    		props: {
+    		image: "" + ctx.lowresdir + "/" + ctx.image.src
+    	},
+    		$$inline: true
+    	});
+
+    	return {
+    		c: function create() {
+    			image.$$.fragment.c();
+    		},
+
+    		m: function mount(target, anchor) {
+    			mount_component(image, target, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var image_changes = {};
+    			if (changed.lowresdir || changed.imagecollection) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
+    			image.$set(image_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			image.$$.fragment.i(local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			image.$$.fragment.o(local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			image.$destroy(detaching);
+    		}
+    	};
+    }
+
+    // (313:2) {#each imagecollection as image, index}
+    function create_each_block$1(ctx) {
+    	var current_block_type_index, if_block, if_block_anchor, current;
+
+    	var if_block_creators = [
+    		create_if_block_1$1,
+    		create_else_block
+    	];
+
+    	var if_blocks = [];
+
+    	function select_block_type(ctx) {
+    		if (ctx.index==0) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	return {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+
+    		m: function mount(target, anchor) {
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var previous_block_index = current_block_type_index;
+    			current_block_type_index = select_block_type(ctx);
+    			if (current_block_type_index === previous_block_index) {
+    				if_blocks[current_block_type_index].p(changed, ctx);
+    			} else {
+    				group_outros();
+    				on_outro(() => {
+    					if_blocks[previous_block_index].d(1);
+    					if_blocks[previous_block_index] = null;
+    				});
+    				if_block.o(1);
+    				check_outros();
+
+    				if_block = if_blocks[current_block_type_index];
+    				if (!if_block) {
+    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block.c();
+    				}
+    				if_block.i(1);
+    				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			if (if_block) if_block.i();
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (if_block) if_block.o();
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if_blocks[current_block_type_index].d(detaching);
+
+    			if (detaching) {
+    				detach(if_block_anchor);
+    			}
+    		}
+    	};
+    }
+
+    // (327:0) {#if attemptingtoLoad}
+    function create_if_block$2(ctx) {
+    	var div, div_class_value, current;
+
+    	let galleryexpanded_props = {
+    		lowresdir: ctx.lowresdir,
+    		hiresdir: ctx.hiresdir,
+    		stack: ctx.imagecollection,
+    		originaltarget: ctx.collection
+    	};
+    	var galleryexpanded = new GalleryExpanded({
+    		props: galleryexpanded_props,
+    		$$inline: true
+    	});
+
+    	add_binding_callback(() => ctx.galleryexpanded_binding(galleryexpanded));
+    	galleryexpanded.$on("loadingComplete", ctx.handleLoadingComplete);
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			galleryexpanded.$$.fragment.c();
+    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-nzscmq";
+    			add_location(div, file$3, 328, 3, 9209);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			mount_component(galleryexpanded, div, null);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var galleryexpanded_changes = {};
+    			if (changed.lowresdir) galleryexpanded_changes.lowresdir = ctx.lowresdir;
+    			if (changed.hiresdir) galleryexpanded_changes.hiresdir = ctx.hiresdir;
+    			if (changed.imagecollection) galleryexpanded_changes.stack = ctx.imagecollection;
+    			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
+    			galleryexpanded.$set(galleryexpanded_changes);
+
+    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-nzscmq")) {
+    				div.className = div_class_value;
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			galleryexpanded.$$.fragment.i(local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			galleryexpanded.$$.fragment.o(local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+
+    			ctx.galleryexpanded_binding(null);
+
+    			galleryexpanded.$destroy();
+    		}
+    	};
+    }
+
+    function create_fragment$3(ctx) {
+    	var t0, a, t1, t2, h2, t3, t4, span, t5, t6_value = ctx.imagecollection.length, t6, t7, a_href_value, t8, if_block2_anchor, current, dispose;
+
+    	var if_block0 = (ctx.$activeCollection == ctx.id) && create_if_block_3(ctx);
+
+    	var if_block1 = (ctx.$activeCollection == ctx.id) && create_if_block_2(ctx);
+
+    	var each_value = ctx.imagecollection;
+
+    	var each_blocks = [];
+
+    	for (var i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	function outro_block(i, detaching, local) {
+    		if (each_blocks[i]) {
+    			if (detaching) {
+    				on_outro(() => {
+    					each_blocks[i].d(detaching);
+    					each_blocks[i] = null;
+    				});
+    			}
+
+    			each_blocks[i].o(local);
+    		}
+    	}
+
+    	var if_block2 = (ctx.attemptingtoLoad) && create_if_block$2(ctx);
+
+    	return {
+    		c: function create() {
+    			if (if_block0) if_block0.c();
+    			t0 = space();
+    			a = element("a");
+    			if (if_block1) if_block1.c();
+    			t1 = space();
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t2 = space();
+    			h2 = element("h2");
+    			t3 = text(ctx.name);
+    			t4 = space();
+    			span = element("span");
+    			t5 = text("(");
+    			t6 = text(t6_value);
+    			t7 = text(" Images)");
+    			t8 = space();
+    			if (if_block2) if_block2.c();
+    			if_block2_anchor = empty();
+    			span.className = "svelte-nzscmq";
+    			add_location(span, file$3, 321, 4, 9016);
+    			h2.className = "svelte-nzscmq";
+    			add_location(h2, file$3, 319, 2, 8996);
+    			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.imagecollection[0].src;
+    			a.className = "collection svelte-nzscmq";
+    			a.dataset.id = ctx.id;
+    			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
+    			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
+    			add_location(a, file$3, 298, 0, 8184);
+
+    			dispose = [
+    				listen(a, "mouseenter", ctx.rotate),
+    				listen(a, "mouseleave", ctx.unRotate),
+    				listen(a, "click", ctx.showContents)
+    			];
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert(target, t0, anchor);
+    			insert(target, a, anchor);
+    			if (if_block1) if_block1.m(a, null);
+    			append(a, t1);
+
+    			for (var i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(a, null);
+    			}
+
+    			append(a, t2);
+    			append(a, h2);
+    			append(h2, t3);
+    			append(h2, t4);
+    			append(h2, span);
+    			append(span, t5);
+    			append(span, t6);
+    			append(span, t7);
+    			add_binding_callback(() => ctx.a_binding(a, null));
+    			insert(target, t8, anchor);
+    			if (if_block2) if_block2.m(target, anchor);
+    			insert(target, if_block2_anchor, anchor);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (ctx.$activeCollection == ctx.id) {
+    				if (if_block0) {
+    					if_block0.p(changed, ctx);
+    					if_block0.i(1);
+    				} else {
+    					if_block0 = create_if_block_3(ctx);
+    					if_block0.c();
+    					if_block0.i(1);
+    					if_block0.m(t0.parentNode, t0);
+    				}
+    			} else if (if_block0) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block0.d(1);
+    					if_block0 = null;
+    				});
+
+    				if_block0.o(1);
+    				check_outros();
+    			}
+
+    			if (ctx.$activeCollection == ctx.id) {
+    				if (!if_block1) {
+    					if_block1 = create_if_block_2(ctx);
+    					if_block1.c();
+    					if_block1.i(1);
+    					if_block1.m(a, t1);
+    				} else {
+    									if_block1.i(1);
+    				}
+    			} else if (if_block1) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block1.d(1);
+    					if_block1 = null;
+    				});
+
+    				if_block1.o(1);
+    				check_outros();
+    			}
+
+    			if (changed.lowresdir || changed.imagecollection) {
+    				each_value = ctx.imagecollection;
+
+    				for (var i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(changed, child_ctx);
+    						each_blocks[i].i(1);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].i(1);
+    						each_blocks[i].m(a, t2);
+    					}
+    				}
+
+    				group_outros();
+    				for (; i < each_blocks.length; i += 1) outro_block(i, 1, 1);
+    				check_outros();
+    			}
+
+    			if (!current || changed.name) {
+    				set_data(t3, ctx.name);
+    			}
+
+    			if ((!current || changed.imagecollection) && t6_value !== (t6_value = ctx.imagecollection.length)) {
+    				set_data(t6, t6_value);
+    			}
+
+    			if (changed.items) {
+    				ctx.a_binding(null, a);
+    				ctx.a_binding(a, null);
+    			}
+
+    			if ((!current || changed.hiresdir || changed.imagecollection) && a_href_value !== (a_href_value = "" + ctx.hiresdir + "/" + ctx.imagecollection[0].src)) {
+    				a.href = a_href_value;
+    			}
+
+    			if (!current || changed.id) {
+    				a.dataset.id = ctx.id;
+    			}
+
+    			if ((changed.id || changed.$activeCollection || changed.$loadingSecondary)) {
+    				toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
+    			}
+
+    			if ((changed.$activeCollection || changed.id)) {
+    				toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
+    			}
+
+    			if (ctx.attemptingtoLoad) {
+    				if (if_block2) {
+    					if_block2.p(changed, ctx);
+    					if_block2.i(1);
+    				} else {
+    					if_block2 = create_if_block$2(ctx);
+    					if_block2.c();
+    					if_block2.i(1);
+    					if_block2.m(if_block2_anchor.parentNode, if_block2_anchor);
+    				}
+    			} else if (if_block2) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block2.d(1);
+    					if_block2 = null;
+    				});
+
+    				if_block2.o(1);
+    				check_outros();
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			if (if_block0) if_block0.i();
+    			if (if_block1) if_block1.i();
+
+    			for (var i = 0; i < each_value.length; i += 1) each_blocks[i].i();
+
+    			if (if_block2) if_block2.i();
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (if_block0) if_block0.o();
+    			if (if_block1) if_block1.o();
+
+    			each_blocks = each_blocks.filter(Boolean);
+    			for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
+
+    			if (if_block2) if_block2.o();
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (if_block0) if_block0.d(detaching);
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(a);
+    			}
+
+    			if (if_block1) if_block1.d();
+
+    			destroy_each(each_blocks, detaching);
+
+    			ctx.a_binding(null, a);
+
+    			if (detaching) {
+    				detach(t8);
+    			}
+
+    			if (if_block2) if_block2.d(detaching);
+
+    			if (detaching) {
+    				detach(if_block2_anchor);
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    }
+
+    // TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
+    // add dark mode.
+    // for wizardry to keep tabs on the collections
+    const elements = new Set();
+    //export let _resetStacks;
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let $activeCollection, $loadingSecondary;
+
+    	validate_store(activeCollection, 'activeCollection');
+    	subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
+    	validate_store(loadingSecondary, 'loadingSecondary');
+    	subscribe($$self, loadingSecondary, $$value => { $loadingSecondary = $$value; $$invalidate('$loadingSecondary', $loadingSecondary); });
+
+    	
+      
+      let { imagecollection, lowresdir, hiresdir, id = 0, name, color } = $$props;
+      const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+
+      // placeholders for objects that we'll iterate over
+      let collection;
+      let galleryExpanded;
+      let fakeImages;
+      let firstImage;
+
+      // reference to orginal colour
+      let originalbgcolor;
+
+      // count for loading
+      let count = 0;
+      
+      // booleans
+      let attemptingtoLoad = false;
+
+      onMount(() => {
+    		fakeImages = collection.getElementsByTagName('div');
+        firstImage = collection.getElementsByTagName('img')[0];
+        
+        // some wizardry for keeping tabs on the collections
+        elements.add(collection);
+    		return () => elements.delete(collection);
+      });
+      
+      
+      // Rotate image stack on hover over
+      function rotate() {
+        //collection.style.transform = 'rotate(-1.5deg)';
+        Object.entries(fakeImages).forEach(([key, value]) => {
+          value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
+        });
+        firstImage.style.transform = 'scale(1.03) translateY(5px) rotate(-1deg)';  }
+
+      // Un-Rotate image stack on hover out
+      function unRotate() {
+        //collection.style.transform = 'rotate(0deg)';
+        Object.entries(fakeImages).forEach(([key, value]) => {
+          value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
+        });
+        firstImage.style.transform = 'scale(1) rotate(0deg)';  }
+
+      // Initiate the gallery and expand the stack
+      function showContents(event){
+        $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
+        event.preventDefault();
+
+        originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+        if(color){
+          
+          let hslcolor = color.split(",");
+
+          // Can I do this automatically to find the primary color of the image?
+          document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+          document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
+          document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
+        }
+
+        // this sets the loading to true.
+        loadingSecondary.update(n => true);
+        
+        // sets which stack needs to be expanded.
+        activeCollection.update(n => id);
+        blowStacks();
+      }
+
+      // Blow away the other stacks when we're initiating an Expanded Gallery
+      function blowStacks(){
+        
+        let centerX = document.documentElement.clientWidth/2;
+        let centerY = document.documentElement.clientHeight/2;
+        
+        elements.forEach(element => {
+          var rect = element.getBoundingClientRect();
+          element.classList.add('neardeath');
+          let myId = parseInt(element.dataset.id);
+          element.classList.add('no-pointer-events');
+          if(myId!==$activeCollection){
+            element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`;
+          }
+        });
+
+      }
+
+      // Function for bringing the stacks back after we've closed an Expanded Gallery
+      function resetStacks(){
+        console.log('resetting...');
+        
+        document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
+        
+        // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
+        // might be able to call the funtion directly instead of this??
+        destroyingExpandedGallery.update(n => true);
+
+        elements.forEach(element => {
+          element.classList.remove('neardeath'); 
+        });
+        
+        (async () => {
+          await sleep(200);
+          activeCollection.update(n => 0);
+          $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
+
+          elements.forEach(element => {
+            element.style.transform = `translateX(0px) translateY(0px)`; 
+          });
+
+        })();
+        (async () => {
+          await sleep(600);
+          elements.forEach(element => {
+            element.classList.remove('no-pointer-events');
+          });
+        })();
+      }
+      
+      // Wanted to maybe have a loader, so the following will let us know when all
+      // Image components in an Expanded Gallery have loaded.
+      function handleLoadingComplete(event) {
+        count = count + event.detail.loadingComplete;
+        if(count === imagecollection.length){
+          
+          console.log("Loading complete");
+          loadingSecondary.update(n => false);
+
+          count = 0;
+        }
+      }
+
+    	const writable_props = ['imagecollection', 'lowresdir', 'hiresdir', 'id', 'name', 'color'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<GalleryStack> was created with unknown prop '${key}'`);
+    	});
+
+    	function a_binding($$node, check) {
+    		collection = $$node;
+    		$$invalidate('collection', collection);
+    	}
+
+    	function galleryexpanded_binding($$component) {
+    		galleryExpanded = $$component;
+    		$$invalidate('galleryExpanded', galleryExpanded);
+    	}
+
+    	$$self.$set = $$props => {
+    		if ('imagecollection' in $$props) $$invalidate('imagecollection', imagecollection = $$props.imagecollection);
+    		if ('lowresdir' in $$props) $$invalidate('lowresdir', lowresdir = $$props.lowresdir);
+    		if ('hiresdir' in $$props) $$invalidate('hiresdir', hiresdir = $$props.hiresdir);
+    		if ('id' in $$props) $$invalidate('id', id = $$props.id);
+    		if ('name' in $$props) $$invalidate('name', name = $$props.name);
+    		if ('color' in $$props) $$invalidate('color', color = $$props.color);
+    	};
+
+    	return {
+    		imagecollection,
+    		lowresdir,
+    		hiresdir,
+    		id,
+    		name,
+    		color,
+    		collection,
+    		galleryExpanded,
+    		attemptingtoLoad,
+    		rotate,
+    		unRotate,
+    		showContents,
+    		resetStacks,
+    		handleLoadingComplete,
+    		$activeCollection,
+    		$loadingSecondary,
+    		a_binding,
+    		galleryexpanded_binding
+    	};
+    }
+
+    class GalleryStack extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$3, safe_not_equal, ["imagecollection", "lowresdir", "hiresdir", "id", "name", "color"]);
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.imagecollection === undefined && !('imagecollection' in props)) {
+    			console.warn("<GalleryStack> was created without expected prop 'imagecollection'");
+    		}
+    		if (ctx.lowresdir === undefined && !('lowresdir' in props)) {
+    			console.warn("<GalleryStack> was created without expected prop 'lowresdir'");
+    		}
+    		if (ctx.hiresdir === undefined && !('hiresdir' in props)) {
+    			console.warn("<GalleryStack> was created without expected prop 'hiresdir'");
+    		}
+    		if (ctx.name === undefined && !('name' in props)) {
+    			console.warn("<GalleryStack> was created without expected prop 'name'");
+    		}
+    		if (ctx.color === undefined && !('color' in props)) {
+    			console.warn("<GalleryStack> was created without expected prop 'color'");
+    		}
+    	}
+
+    	get imagecollection() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set imagecollection(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get lowresdir() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set lowresdir(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hiresdir() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hiresdir(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get id() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set id(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get name() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get color() {
+    		throw new Error("<GalleryStack>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set color(value) {
+    		throw new Error("<GalleryStack>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/App.svelte generated by Svelte v3.4.4 */
+
+    const file$4 = "src/App.svelte";
+
+    function create_fragment$4(ctx) {
+    	var div, t0, t1, t2, t3, t4, t5, t6, p, a, current;
+
+    	var gallerystack0 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Ongakukai",
+    		color: "44, 47, 90",
+    		lowresdir: "images/16_ongakukai",
+    		hiresdir: "images/16_ongakukai/originals",
+    		imagecollection: ctx.collection0,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack1 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Painterly",
+    		color: "261, 27, 71",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection1,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack2 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Splashes",
+    		color: "206, 69, 88",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection2,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack3 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Citizens of Science",
+    		color: "182, 37, 73",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection3,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack4 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Travelling",
+    		color: "209, 25, 24",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection4,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack5 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Angry at kids",
+    		color: "13, 92, 87",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection5,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	var gallerystack6 = new GalleryStack({
+    		props: {
+    		width: "",
+    		name: "Sketches",
+    		color: "109, 0, 76",
+    		lowresdir: "images",
+    		hiresdir: "images/originals",
+    		imagecollection: ctx.collection6,
+    		id: uid++
+    	},
+    		$$inline: true
+    	});
+
+    	return {
+    		c: function create() {
+    			div = element("div");
+    			gallerystack0.$$.fragment.c();
+    			t0 = space();
+    			gallerystack1.$$.fragment.c();
+    			t1 = space();
+    			gallerystack2.$$.fragment.c();
+    			t2 = space();
+    			gallerystack3.$$.fragment.c();
+    			t3 = space();
+    			gallerystack4.$$.fragment.c();
+    			t4 = space();
+    			gallerystack5.$$.fragment.c();
+    			t5 = space();
+    			gallerystack6.$$.fragment.c();
+    			t6 = space();
+    			p = element("p");
+    			a = element("a");
+    			a.textContent = "View on Github";
+    			div.className = "container svelte-lq41rl";
+    			add_location(div, file$4, 110, 0, 2708);
+    			a.href = "https://github.com/cssandstuff/portfolio-scaffold";
+    			a.className = "svelte-lq41rl";
+    			add_location(a, file$4, 120, 3, 3858);
+    			p.className = "svelte-lq41rl";
+    			add_location(p, file$4, 120, 0, 3855);
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div, anchor);
+    			mount_component(gallerystack0, div, null);
+    			append(div, t0);
+    			mount_component(gallerystack1, div, null);
+    			append(div, t1);
+    			mount_component(gallerystack2, div, null);
+    			append(div, t2);
+    			mount_component(gallerystack3, div, null);
+    			append(div, t3);
+    			mount_component(gallerystack4, div, null);
+    			append(div, t4);
+    			mount_component(gallerystack5, div, null);
+    			append(div, t5);
+    			mount_component(gallerystack6, div, null);
+    			insert(target, t6, anchor);
+    			insert(target, p, anchor);
+    			append(p, a);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			var gallerystack0_changes = {};
+    			if (changed.collection0) gallerystack0_changes.imagecollection = ctx.collection0;
+    			if (changed.uid) gallerystack0_changes.id = uid++;
+    			gallerystack0.$set(gallerystack0_changes);
+
+    			var gallerystack1_changes = {};
+    			if (changed.collection1) gallerystack1_changes.imagecollection = ctx.collection1;
+    			if (changed.uid) gallerystack1_changes.id = uid++;
+    			gallerystack1.$set(gallerystack1_changes);
+
+    			var gallerystack2_changes = {};
+    			if (changed.collection2) gallerystack2_changes.imagecollection = ctx.collection2;
+    			if (changed.uid) gallerystack2_changes.id = uid++;
+    			gallerystack2.$set(gallerystack2_changes);
+
+    			var gallerystack3_changes = {};
+    			if (changed.collection3) gallerystack3_changes.imagecollection = ctx.collection3;
+    			if (changed.uid) gallerystack3_changes.id = uid++;
+    			gallerystack3.$set(gallerystack3_changes);
+
+    			var gallerystack4_changes = {};
+    			if (changed.collection4) gallerystack4_changes.imagecollection = ctx.collection4;
+    			if (changed.uid) gallerystack4_changes.id = uid++;
+    			gallerystack4.$set(gallerystack4_changes);
+
+    			var gallerystack5_changes = {};
+    			if (changed.collection5) gallerystack5_changes.imagecollection = ctx.collection5;
+    			if (changed.uid) gallerystack5_changes.id = uid++;
+    			gallerystack5.$set(gallerystack5_changes);
+
+    			var gallerystack6_changes = {};
+    			if (changed.collection6) gallerystack6_changes.imagecollection = ctx.collection6;
+    			if (changed.uid) gallerystack6_changes.id = uid++;
+    			gallerystack6.$set(gallerystack6_changes);
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			gallerystack0.$$.fragment.i(local);
+
+    			gallerystack1.$$.fragment.i(local);
+
+    			gallerystack2.$$.fragment.i(local);
+
+    			gallerystack3.$$.fragment.i(local);
+
+    			gallerystack4.$$.fragment.i(local);
+
+    			gallerystack5.$$.fragment.i(local);
+
+    			gallerystack6.$$.fragment.i(local);
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			gallerystack0.$$.fragment.o(local);
+    			gallerystack1.$$.fragment.o(local);
+    			gallerystack2.$$.fragment.o(local);
+    			gallerystack3.$$.fragment.o(local);
+    			gallerystack4.$$.fragment.o(local);
+    			gallerystack5.$$.fragment.o(local);
+    			gallerystack6.$$.fragment.o(local);
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div);
+    			}
+
+    			gallerystack0.$destroy();
+
+    			gallerystack1.$destroy();
+
+    			gallerystack2.$destroy();
+
+    			gallerystack3.$destroy();
+
+    			gallerystack4.$destroy();
+
+    			gallerystack5.$destroy();
+
+    			gallerystack6.$destroy();
+
+    			if (detaching) {
+    				detach(t6);
+    				detach(p);
+    			}
+    		}
+    	};
+    }
+
+    let uid = 1;
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { name } = $$props;
+
+    	// Images, maybe I can make this easier somehow?
+    	// Auto-generate from a directory structure maybe?
+    	let collection0 = [
+    		{ src: '01_front_cover.jpg', name: 'Noa' },
+    		{ src: '02_back_cover.jpg', name: 'Dog' },
+    		{ src: 'racoon_together.jpg', name: 'Glass' }
+    	];
+    	let collection1 = [
+    		{ src: 'Noa.JPG', name: 'Noa' },
+    		{ src: 'dog.JPG', name: 'Dog' },
+    		{ src: 'glass.JPG', name: 'Glass' }
+    	];
+    	
+    	let collection4 = [
+    		{ src: 'atami.JPG', name: 'Atami at night' },
+    		{ src: 'kenodo.JPG', name: 'Konodo Highway' },
+    		{ src: 'kenodo2.JPG', name: 'Tunnels' }
+    	];
+    	let collection6 = [
+    		{ src: 'boring.JPG', name: 'Everything is boring' },
+    		{ src: 'hownotto.JPG', name: 'How not to draw' },
+    		{ src: 'isometric.JPG', name: 'Isometric' },
+    		{ src: 'notes.JPG', name: 'Notes' },
+    		{ src: 'glass-b+w.JPG', name: 'Glass' }
+    	];
+    	let collection2 = [
+    		{ src: 'cash.JPG', name: 'Cash Suitcase' },
+    		{ src: 'robo.JPG', name: 'Robot' },
+    		{ src: 'tako.JPG', name: 'Octopus' }
+    	];
+    	let collection5 = [
+    		{ src: 'angrykid2.JPG', name: 'Angry 1' },
+    		{ src: 'angrykid1.JPG', name: 'Angry 2' },
+    		{ src: 'angrykid3.JPG', name: 'Angry 3' },
+    		{ src: 'angrykid4.JPG', name: 'Angry 4' },
+    		{ src: 'angrykid5.JPG', name: 'Angry 5' }
+    	];
+    	let collection3 = [
+    		{ src: 'citizens.JPG', name: 'Citizens of Science' },
+    		{ src: 'screwit.JPG', name: 'Screw It' },
+    		{ src: 'boltit.JPG', name: 'Boltman' },
+    		{ src: 'kumo.JPG', name: 'Spiderdeath' }
+    	];
+
+    	const writable_props = ['name'];
+    	Object.keys($$props).forEach(key => {
+    		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<App> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$set = $$props => {
+    		if ('name' in $$props) $$invalidate('name', name = $$props.name);
+    	};
+
+    	return {
+    		name,
+    		collection0,
+    		collection1,
+    		collection4,
+    		collection6,
+    		collection2,
+    		collection5,
+    		collection3
+    	};
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$4, safe_not_equal, ["name"]);
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+    		if (ctx.name === undefined && !('name' in props)) {
+    			console.warn("<App> was created without expected prop 'name'");
+    		}
+    	}
+
+    	get name() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    const app = new App({
+    	target: document.body
+    });
+
+    return app;
+
+}());
 //# sourceMappingURL=bundle.js.map

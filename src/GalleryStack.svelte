@@ -261,7 +261,7 @@
       content: '';
       display: block;
       position: absolute;
-      left: 4px; top: 7px;
+      left: 4px; top: 8px;
       height: 6px; width: 2px;
       background: currentColor;
       transform: rotate(45deg);

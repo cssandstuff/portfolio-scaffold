@@ -24,6 +24,7 @@
   // placeholders for objects that we'll iterate over
   let images;
   let hiresImages;
+  let currentTitle;
 
   // indexes of the current image (why are there two??)
   let current;
@@ -221,6 +222,7 @@
     let imageArea = rect.width + rect.height;
 
     showTitles = false;
+    currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
     });
@@ -251,6 +253,7 @@
         await sleep(200);
         current = stack.length - 1;
         setImagePos(current);
+        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }else{
       hiresImages[current].style.transform = `translateX(${offset}px)`;
@@ -260,10 +263,9 @@
         await sleep(200);
         current--;
         setImagePos(current);
+        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }
-    
-
   }
   
   function showNext(){
@@ -277,6 +279,7 @@
         await sleep(200);
         current = 0;
         setImagePos(current);
+        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }else{
       hiresImages[current].style.transform = `translateX(-${offset}px)`;
@@ -286,8 +289,10 @@
         await sleep(200);
         current++;
         setImagePos(current);
+        currentTitle = images[current].getElementsByTagName('h2')[0].innerText;
       })();
     }
+    
   }
 
   // Sets non-active gallery items to a position where they can shrink from when the hi-res gallery is closed.
@@ -509,23 +514,24 @@
     text-transform: lowercase;
     font-weight: bold;
     font-size: 1.2em;
-    width: 40px; height: 40px;
+    width: 25%; height: 40px;
     padding-left: 16px;
     cursor: pointer;
   }
   .close:before, .close:after{
     content:'';
     position: absolute;
-    width: 10px;
-    height: 2px;
+    width: 2px;
+    height: 6px;
     background: #333;
-    left: 1px; top: 11px;
+    left: 6px; top: 8px;
   }
   .close:before{
-    transform: rotate(-45deg);
+    transform: rotate(45deg);
   }
   .close:after{
-    transform: rotate(45deg);
+    transform: rotate(-45deg);
+    top: 10px;
   }
   .magnify{
     width: 100%;
@@ -585,6 +591,6 @@
     {/each}
     <span class="previous" on:click={showPrevious}></span>
     <span class="next" on:click={showNext}></span>
-    <span class="close" on:click={closeGallery}>close</span>
+    <span class="close" on:click={closeGallery}>{currentTitle}</span>
   </div>
 {/if}
