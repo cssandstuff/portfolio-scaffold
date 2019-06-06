@@ -8,6 +8,7 @@
   import { onMount, afterUpdate, onDestroy, createEventDispatcher } from 'svelte';
   import { destroyingExpandedGallery, loadingSecondary } from './stores.js';
   import { fade } from 'svelte/transition';
+  //import { _resetStacks } from './GalleryStack.svelte';
 
   export let stack;
   export let lowresdir;
@@ -29,9 +30,11 @@
   let originalScrollPos;
   let hiresScrollPos;
   let expandedOnce = false;
+  let transitioning = false;
   let transitionHandler;
   let animateDirection = 0;
-  let showtitles;
+  let showTitles;
+  let closedGallery = false;
 
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
@@ -51,10 +54,8 @@
     if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
       expandStuff();
       expandedOnce = true;
-      console.log('wtf');
     }
     if($destroyingExpandedGallery && expandedOnce){
-      console.log('boom')
       attemptToConsolidate();
       expandedOnce = false;
     }
@@ -164,6 +165,7 @@
       await sleep(80);
       Object.entries(images).forEach(([key, value]) => {
         var imageDivRect = value.getBoundingClientRect();
+        transitioning = true;
         value.classList.add('slowtransition');
         value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
       });
@@ -173,6 +175,7 @@
       // sleep for half a second
       await sleep(500);
       secondLevel.classList.remove('no-pointer-events');
+      transitioning = false;
     })();
   }
 
@@ -187,7 +190,7 @@
     let centerArea = centerX + centerY * 2;
     let imageArea = rect.width + rect.height;
 
-    showtitles = false;
+    showTitles = false;
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
     });
@@ -209,8 +212,7 @@
         document.getElementsByTagName("body")[0].classList.add('locked');
       });
     })();
-
-    
+    closedGallery = false;
   }
 
   function showPrevious(){
@@ -301,10 +303,10 @@
         currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
         ready = false;
         hiresLoaded = false;
-        showtitles = true;
+        showTitles = true;
       })();
       
-  
+      closedGallery = true;
   }
 
   function handleKeydown(event){
@@ -315,7 +317,11 @@
       showPrevious();
     }
     if(event.code == "Escape"){
-      closeGallery();
+      if(!closedGallery){
+        closeGallery();
+      }else{
+        document.getElementById("breadcrumb").click();
+      }
     }
   }
 </script>
@@ -337,8 +343,7 @@
     transition: 0.4s 0.6s opacity;
   }
   .out{
-    opacity: 0;
-    
+    opacity: 0 !important;
   }
   h2:after{
     position: relative;
@@ -363,6 +368,12 @@
     box-shadow: 0 0 2px #ccc;
     border-radius: 4px;
     background: #ccc;
+  }
+  .transitioning :global(img) {
+    transition: 0s all;
+  }
+  .transitioning .magnify {
+    display: none;
   }
   .stack :global(.slowtransition) {
     /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
@@ -509,6 +520,9 @@
     opacity: 0;
     transition: 0.3s opacity;
   }
+  .magnify.out{
+    transition: 0s opacity;
+  }
   .magnify:before{
     content: '';
     position: absolute;
@@ -534,10 +548,10 @@
 <svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
 <div class="stack gallery" bind:this={secondLevel} >
   {#each stack as image, index}
-    <a class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
+    <a class:transitioning="{transitioning === true}" class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
       <Image image="{lowresdir}/{image.src}" on:loadingComplete />
-      <span class="magnify"></span>
-      <h2 class:out="{$destroyingExpandedGallery === true || showtitles === false}" class:in="{$loadingSecondary === false && showtitles !== false}">
+      <span class:out="{showTitles === false}" class="magnify"></span>
+      <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false}">
         {image.name}
       </h2>
     </a>
@@ -553,7 +567,6 @@
   <div class="hires" class:ready="{hiresLoaded === true}" out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
       <div class:active="{current === index}" class="hi-image" >
-        
         <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}

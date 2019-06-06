@@ -1,6 +1,9 @@
 <script context="module">
+  //TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
+  // add dark mode.
   // for wizardry to keep tabs on the collections
-	const elements = new Set();
+  const elements = new Set();
+  //export let _resetStacks;
 </script>
 
 <script>
@@ -46,7 +49,8 @@
     // some wizardry for keeping tabs on the collections
     elements.add(collection);
 		return () => elements.delete(collection);
-	});
+  });
+  
   
   // Rotate image stack on hover over
   function rotate() {
@@ -114,29 +118,30 @@
     
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
     
-      // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
-      // might be able to call the funtion directly instead of this??
-      destroyingExpandedGallery.update(n => true);
+    // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
+    // might be able to call the funtion directly instead of this??
+    destroyingExpandedGallery.update(n => true);
+    console.log(`destroyingExpandedGallery is ${$destroyingExpandedGallery}`);
+    elements.forEach(element => {
+      element.classList.remove('neardeath'); 
+    });
+    
+    (async () => {
+      await sleep(200);
+      activeCollection.update(n => 0);
+      attemptingtoLoad = false;
+      console.log(`attemptingtoLoad is ${attemptingtoLoad}`)
       elements.forEach(element => {
-        element.classList.remove('neardeath'); 
+        element.style.transform = `translateX(0px) translateY(0px)` 
       });
-     
-      (async () => {
-        await sleep(200);
-        activeCollection.update(n => 0);
-        attemptingtoLoad = false;
-        elements.forEach(element => {
-          element.style.transform = `translateX(0px) translateY(0px)`
-          
-        });
 
-      })();
-      (async () => {
-        await sleep(600);
-        elements.forEach(element => {
-          element.classList.remove('no-pointer-events');
-        });
-      })();
+    })();
+    (async () => {
+      await sleep(600);
+      elements.forEach(element => {
+        element.classList.remove('no-pointer-events');
+      });
+    })();
   }
   
   // Wanted to maybe have a loader, so the following will let us know when all
@@ -288,7 +293,7 @@
 
 
 {#if $activeCollection == id}
-  <div class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
+  <div id="breadcrumb" class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
     <p>{name} <span>({imagecollection.length} images)</span></p>
   </div>
 {/if}
