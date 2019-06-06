@@ -506,7 +506,7 @@
     left: 0.4em; top: 0.5em;
     position: absolute;
     font-weight: 300;
-    text-transform: uppercase;
+    text-transform: lowercase;
     font-weight: bold;
     font-size: 1.2em;
     width: 40px; height: 40px;

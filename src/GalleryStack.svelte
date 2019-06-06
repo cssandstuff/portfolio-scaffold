@@ -255,7 +255,7 @@
       display: block;
       color: #333;
       padding-left: 14px;
-      text-transform: uppercase;
+      text-transform: lowercase;
     }
     .breadcrumb p:before, .breadcrumb p:after{
       content: '';
