@@ -502,23 +502,24 @@
     border-radius: 20px 0 0 20px;
   }
   .close{
-    color: #999;
-    left: 1em; top: 1em;
+    color: #333;
+    left: 0.4em; top: 0.5em;
     position: absolute;
     font-weight: 300;
     text-transform: uppercase;
-    font-size: 0.8em;
+    font-weight: bold;
+    font-size: 1.2em;
     width: 40px; height: 40px;
-    padding-left: 20px;
+    padding-left: 16px;
     cursor: pointer;
   }
   .close:before, .close:after{
     content:'';
     position: absolute;
-    width: 15px;
+    width: 10px;
     height: 2px;
-    background: #999;
-    left: 0; top: 7px;
+    background: #333;
+    left: 1px; top: 11px;
   }
   .close:before{
     transform: rotate(-45deg);

@@ -254,14 +254,14 @@
       position: relative;
       display: block;
       color: #333;
-      padding-left: 10px;
+      padding-left: 14px;
       text-transform: uppercase;
     }
     .breadcrumb p:before, .breadcrumb p:after{
       content: '';
       display: block;
       position: absolute;
-      left: 0; top: 7px;
+      left: 4px; top: 7px;
       height: 6px; width: 2px;
       background: currentColor;
       transform: rotate(45deg);
