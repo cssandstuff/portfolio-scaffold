@@ -29,17 +29,19 @@
   const dispatch = createEventDispatcher();
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
-  // Local stuff
+  // placeholders for objects that we'll iterate over
   let collection;
-  let originalbgcolor;
   let galleryExpanded;
-  let secondLevel;
   let fakeImages;
   let firstImage;
+
+  // reference to orginal colour
+  let originalbgcolor;
 
   // count for loading
   let count = 0;
   
+  // booleans
   let attemptingtoLoad = false;
 
   onMount(() => {
@@ -74,7 +76,7 @@
   function showContents(event){
     attemptingtoLoad = true;
     event.preventDefault();
-    //console.log(color);
+
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     if(color){
       
@@ -121,7 +123,7 @@
     // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
     // might be able to call the funtion directly instead of this??
     destroyingExpandedGallery.update(n => true);
-    console.log(`destroyingExpandedGallery is ${$destroyingExpandedGallery}`);
+
     elements.forEach(element => {
       element.classList.remove('neardeath'); 
     });
@@ -130,7 +132,7 @@
       await sleep(200);
       activeCollection.update(n => 0);
       attemptingtoLoad = false;
-      console.log(`attemptingtoLoad is ${attemptingtoLoad}`)
+
       elements.forEach(element => {
         element.style.transform = `translateX(0px) translateY(0px)` 
       });
@@ -169,7 +171,6 @@
     margin-left: 0.8em;
     font-size: 0.9em;
     color: #222;
-    
     display: block;
     width: 99%;
   }

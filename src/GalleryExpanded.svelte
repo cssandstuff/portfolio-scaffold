@@ -15,37 +15,49 @@
   export let hiresdir;
   export let originaltarget;
 
-  // Local stuff
-  let secondLevel;
+  const dispatch = createEventDispatcher();
+
+  // references to divs
+  let activeCollection;
   let thirdLevel;
+
+  // placeholders for objects that we'll iterate over
   let images;
   let hiresImages;
-  let hiresLoaded = false;
-  let imageCount;
-  let ready = false;
+
+  // indexes of the current image (why are there two??)
   let current;
-  let clicked;
-  let loadedSuccessfully = false;
+
+  // Scroll position stuff
   let y;
   let originalScrollPos;
   let hiresScrollPos;
-  let expandedOnce = false;
-  let transitioning = false;
+  
+  // Handles transition of single gallery image when it transitions to hi-res.
   let transitionHandler;
-  let animateDirection = 0;
-  let showTitles;
-  let closedGallery = false;
-
-  const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
-
+  
   // count for loading
   let count = 0;
-  const dispatch = createEventDispatcher();
 
+  // booleans, do I need so many?
+  let showTitles          = true;
+  let hiresLoaded         = false;
+  let ready               = false;
+  let loadedSuccessfully  = false;
+  let expandedOnce        = false;
+  let transitioning       = false;
+  let closedGallery       = false;
+  
+  // could probably remove the need for this?
+  const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+
+  // want a reference to each gallery items within the active Collection.
   onMount(() => {
-    images = secondLevel.getElementsByClassName('galleryitem');
-    imageCount = secondLevel.getElementsByClassName('galleryitem').length; 
+    images = activeCollection.getElementsByClassName('galleryitem');
+    
+    // want the item in a stack on first mount
     attemptToConsolidate();
+    
   });
 
   // Might be able to refactor this to not use AfterUpdate, 
@@ -62,22 +74,9 @@
   });
 
   onDestroy(() => {
-    console.log('being destroyed');
+    console.log('being destroyed... laters');
     destroyingExpandedGallery.update(n => false);
   });
-
-
-  function loadLargeImages(event, index){
-    current = index;
-    clicked = index;
-    event.preventDefault();
-    animateClicked(current);
-    // (async () => {
-    //   await sleep(400);
-    //   hiresLoaded = false;
-    // });
-    ready = true;
-  }
 
   function handleLoadingComplete(event){
     count = count + event.detail.loadingComplete;
@@ -95,15 +94,45 @@
     }
     hiresImages = thirdLevel.getElementsByClassName('hi-image');
   }
+
+  // Keyboard functionality.
+  function handleKeydown(event){
+    if(event.code == "ArrowRight"){
+      showNext();
+    }
+    if(event.code == "ArrowLeft"){
+      showPrevious();
+    }
+    if(event.code == "Escape"){
+      if(!closedGallery){
+        closeGallery();
+      }else{
+        document.getElementById("breadcrumb").click();
+      }
+    }
+  }
+
+  function loadLargeImages(event, index){
+    current = index;
+    event.preventDefault();
+
+    // animates clicked image into center of screen.
+    animateClicked(current);
+
+    // Gets the hi-res images into the DOM and loading
+    ready = true;
+  }
   
   // Function for bringing everything together.
   function attemptToConsolidate(){
-    secondLevel.classList.add('no-pointer-events');
+    activeCollection.classList.add('no-pointer-events');
 
     //sometimes the object is undefined I don't know why.
     if(images !== undefined){
-      console.log("weren't me guv");
+      console.log("weren't me guv, everything normal...");
       performConsolidation();
+    
+    // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
     }else{
       console.log('object was undefined, hard luck son.');
       
@@ -111,7 +140,7 @@
       (async () => {
         await sleep(180);
         Object.entries(images).forEach(([key, value]) => {
-          console.log('trying again');
+          console.log('trying again...');
           performConsolidation();
         });
       })();
@@ -119,7 +148,7 @@
   }
 
   // sometimes the object is empty, so we want a function that only runs when the object is there.
-  // This is only called by the attemptToCOnsolidate function.
+  // This is only called by the attemptToConsolidate function.
   function performConsolidation(){
     let rect = originaltarget.getBoundingClientRect();
     
@@ -132,16 +161,19 @@
         transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
       }
       
-      value.style.zIndex = imageCount - key;
+      value.style.zIndex = images.length - key;
 
       // if gallery is being closed/destroyed we want a quicker transition.
       if($destroyingExpandedGallery){
-        console.log(`destroying originalScrollPos = ${originalScrollPos}`);
 
+        // Scroll to position we were at when item was first clicked.
         window.scrollTo(0, originalScrollPos);
-        secondLevel.style.transform = `translateY(0px)`;
+        activeCollection.style.transform = `translateY(0px)`;
         transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+        
+        // Quick transition please.
         value.classList.add('quicktransition');
+
         // Set tranformed style.
         value.style.transform = transformedStyle;
 
@@ -155,11 +187,10 @@
 
   // Function for Expanding things into place.  
   function expandStuff(){
-    console.log(`scrollOffset = ${scrollY}`);
     
     originalScrollPos = scrollY;
     window.scrollTo(0,0);
-    secondLevel.style.transform = `translateY(-${originalScrollPos}px)`;
+    activeCollection.style.transform = `translateY(-${originalScrollPos}px)`;
   
     (async () => {
       await sleep(80);
@@ -174,15 +205,14 @@
     (async () => {
       // sleep for half a second
       await sleep(500);
-      secondLevel.classList.remove('no-pointer-events');
+      activeCollection.classList.remove('no-pointer-events');
       transitioning = false;
     })();
   }
 
+  // animate clicked image to the center.
   function animateClicked(current){
-    
     let currentImage = images[current].getElementsByTagName('img')[0];
-    
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
     let centerY = document.documentElement.clientHeight/2;
@@ -199,14 +229,10 @@
     currentImage.classList.remove('quicktransition');
     images[current].style.zIndex = '99';
     hiresScrollPos = scrollY;
-    //console.log(`hiresScrollPos is ${hiresScrollPos}`);
 
     (async () => {
       await sleep(10);
-      //currentImage.style.transition = "0.4s all cubic-bezier(1, 0.22, 0.93, 1.04)";
       currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
-      //document.documentElement.classList.add('locked');
-      
       currentImage.addEventListener('transitionend', transitionHandler = () => {
         console.log('Transition ended');
         document.getElementsByTagName("body")[0].classList.add('locked');
@@ -264,6 +290,7 @@
     }
   }
 
+  // Sets non-active gallery items to a position where they can shrink from when the hi-res gallery is closed.
   function setImagePos(current){
     let rect = images[current].getBoundingClientRect();
     let centerX = document.documentElement.clientWidth/2;
@@ -271,7 +298,7 @@
     let centerArea = centerX + centerY * 2;
     let imageArea = rect.width + rect.height;
     let currentImage = images[current].getElementsByTagName('img')[0];
-    let openedImage = images[clicked].getElementsByTagName('img')[0];
+
     
     Object.entries(images).forEach(([key, value]) => {
       value.style.zIndex = '1';
@@ -288,17 +315,16 @@
       let currentImage = images[current].getElementsByTagName('img')[0];
       let currentTransformPos = currentImage.style;
       currentImage.removeEventListener('transitionend', transitionHandler ,false);
-      console.log(originalScrollPos);
+
       // this is tricky because we might need two offset values
       window.scrollTo(0, hiresScrollPos);
       document.getElementsByTagName("body")[0].classList.remove('locked');
-      console.log(scrollY);
 
       currentImage.classList.remove('notransition');
       currentImage.classList.add('hitransition');
 
       (async () => {
-        // sleep for half a second
+        // wait for animation to end.
         await sleep(200);
         currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
         ready = false;
@@ -309,24 +335,10 @@
       closedGallery = true;
   }
 
-  function handleKeydown(event){
-    if(event.code == "ArrowRight"){
-      showNext();
-    }
-    if(event.code == "ArrowLeft"){
-      showPrevious();
-    }
-    if(event.code == "Escape"){
-      if(!closedGallery){
-        closeGallery();
-      }else{
-        document.getElementById("breadcrumb").click();
-      }
-    }
-  }
 </script>
 
 <style>
+  /* TODO: Clean+optimise these a little, get rid of any globals. */
   h2{
     position: absolute; bottom: -50px; left: -10px;
     font-weight: 200;
@@ -336,15 +348,9 @@
     color: #222;
     opacity: 0;
     width: 99%;
-    transition: 0.2s 0s opacity;
+    transition: 0s opacity;
   }
-  .in{
-    opacity: 1;
-    transition: 0.4s 0.6s opacity;
-  }
-  .out{
-    opacity: 0 !important;
-  }
+
   h2:after{
     position: relative;
     display: block;
@@ -353,6 +359,14 @@
     width: 100%;
     bottom: -8px;
     background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
+  }
+
+  .in{
+    opacity: 1;
+    transition: 0.4s 0.6s opacity;
+  }
+  .out{
+    opacity: 0 !important;
   }
 
   .stack{
@@ -395,13 +409,9 @@
   .gallery{
     display: flex;
     flex: 1 auto;
-    flex-basis: 25em;
     flex-flow: row wrap;
     align-content: flex-start;
     justify-content: center;
-    /* height: 100%; */
-    width: auto;
-    margin: 1em;
   }
 
   .gallery a{
@@ -412,6 +422,7 @@
   .gallery a:hover .magnify{
     opacity: 1;
   }
+
   .hires{
     position: fixed;
     top: 0; left: 0;
@@ -421,13 +432,16 @@
     opacity: 0;
     transition: 0.8s opacity;
   }
+
   .hires.ready{
     opacity: 1;
   }
+
   .hires :global(img){
     object-fit: contain;
     position: absolute; top: 0;
   }
+
   .hires div{
     opacity: 0;
     transition: 0.3s all;
@@ -546,19 +560,17 @@
 </style>
 
 <svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
-<div class="stack gallery" bind:this={secondLevel} >
-  {#each stack as image, index}
-    <a class:transitioning="{transitioning === true}" class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
-      <Image image="{lowresdir}/{image.src}" on:loadingComplete />
-      <span class:out="{showTitles === false}" class="magnify"></span>
-      <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false}">
-        {image.name}
-      </h2>
-    </a>
-
-  {/each}
-  
-</div>
+  <div class="stack gallery" bind:this={activeCollection} >
+    {#each stack as image, index}
+      <a class:transitioning="{transitioning === true}" class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
+        <Image image="{lowresdir}/{image.src}" on:loadingComplete />
+        <span class:out="{showTitles === false}" class="magnify"></span>
+        <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false && !$destroyingExpandedGallery}">
+          {image.name}
+        </h2>
+      </a>
+    {/each}
+  </div>
 
 {#if ready}
   {#if !hiresLoaded}
