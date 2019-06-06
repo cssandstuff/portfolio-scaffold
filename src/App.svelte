@@ -98,7 +98,8 @@
 	}
 	p{text-align: center; margin-bottom: 7em;}
 	p a{
-		color: #2781b4
+		color: #2781b4;
+		font-size: 0.8em;
 	}
 	@media(min-width: 420px){
 		.container :global(.collection, .galleryitem) {
@@ -117,4 +118,4 @@
 	<GalleryStack width="" name="Sketches" color="109, 0, 76" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
 
-<p><a href="https://github.com/cssandstuff/portfolio-scaffold">See on Github</a></p>
+<p><a href="https://github.com/cssandstuff/portfolio-scaffold">View on Github</a></p>
