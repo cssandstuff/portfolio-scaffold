@@ -292,7 +292,7 @@
 
 {#if $activeCollection == id}
   <div id="breadcrumb" class="breadcrumb" on:click={resetStacks} in:fly="{{ y: -40, duration: 400 }}" out:fly="{{ y: -40, duration: 400 }}" >
-    <p>{name} <span>({imagecollection.length} images)</span></p>
+    <p>{name}</p>
   </div>
 {/if}
 
