@@ -2807,15 +2807,20 @@ var app = (function () {
 
     // (235:0) {#if about }
     function create_if_block$3(ctx) {
-    	var div, p, div_intro, div_outro, current, dispose;
+    	var div, p0, t_1, p1, div_intro, div_outro, current, dispose;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			p = element("p");
-    			p.textContent = "This started out as a small code challenge to see if I could build a procreate-like gallery for the web";
-    			p.className = "svelte-143rcmn";
-    			add_location(p, file$4, 236, 0, 11560);
+    			p0 = element("p");
+    			p0.textContent = "This started out as a small code challenge to learn Svelte v3 & to see if I could build a procreate-like gallery.";
+    			t_1 = space();
+    			p1 = element("p");
+    			p1.textContent = "I'm hopefully going to move it into Sapper and see if I can transition between routes.";
+    			p0.className = "svelte-143rcmn";
+    			add_location(p0, file$4, 236, 0, 11560);
+    			p1.className = "svelte-143rcmn";
+    			add_location(p1, file$4, 237, 0, 11681);
     			div.className = "about svelte-143rcmn";
     			add_location(div, file$4, 235, 0, 11444);
     			dispose = listen(div, "click", ctx.handleAbout);
@@ -2823,7 +2828,9 @@ var app = (function () {
 
     		m: function mount(target, anchor) {
     			insert(target, div, anchor);
-    			append(div, p);
+    			append(div, p0);
+    			append(div, t_1);
+    			append(div, p1);
     			current = true;
     		},
 

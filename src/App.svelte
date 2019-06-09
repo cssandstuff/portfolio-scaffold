@@ -234,6 +234,7 @@
 </div>
 {#if about }
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
-<p>This started out as a small code challenge to see if I could build a procreate-like gallery for the web </p>
+<p>This started out as a small code challenge to learn Svelte v3 & to see if I could build a procreate-like gallery.</p>
+<p>I'm hopefully going to move it into Sapper and see if I can transition between routes.</p>
 </div>
 {/if}
