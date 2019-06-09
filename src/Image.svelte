@@ -13,6 +13,7 @@
     const res = await fetch(image);
     if(res.status === 200){
        image = res.url;
+       console.log(`this is the url ${image}`)
        const loader = new Image();
        loader.onload = () => {
          visible = true;

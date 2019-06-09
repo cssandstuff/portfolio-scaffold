@@ -14,12 +14,24 @@
 	// 	{ src: '02_back_cover.jpg', name: 'Dog' },
 	// 	{ src: 'racoon_together.jpg', name: 'Glass' }
 	// ];
+	
+
 	let collection1 = [
 		{ src: 'Noa.JPG', name: 'Noa' },
 		{ src: 'dog.JPG', name: 'Dog' },
 		{ src: 'glass.JPG', name: 'Glass' }
 	];
-	
+	let collection2 = [
+		{ src: 'cash.JPG', name: 'Cash suitcase' },
+		{ src: 'robo.JPG', name: 'Robot' },
+		{ src: 'tako.JPG', name: 'Octopus' }
+	];
+	let collection3 = [
+		{ src: 'citizens.JPG', name: 'Citizens of science' },
+		{ src: 'screwit.JPG', name: 'Screw It' },
+		{ src: 'boltit.JPG', name: 'Boltman' },
+		{ src: 'kumo.JPG', name: 'Spiderdeath' }
+	];
 	let collection4 = [
 		{ src: 'atami.JPG', name: 'Atami at night' },
 		{ src: 'kenodo.JPG', name: 'Konodo Highway' },
@@ -32,11 +44,6 @@
 		{ src: 'notes.JPG', name: 'Notes' },
 		{ src: 'glass-b+w.JPG', name: 'Glass' }
 	];
-	let collection2 = [
-		{ src: 'cash.JPG', name: 'Cash suitcase' },
-		{ src: 'robo.JPG', name: 'Robot' },
-		{ src: 'tako.JPG', name: 'Octopus' }
-	];
 	let collection5 = [
 		{ src: 'angrykid2.JPG', name: 'Angry 1' },
 		{ src: 'angrykid1.JPG', name: 'Angry 2' },
@@ -44,12 +51,7 @@
 		{ src: 'angrykid4.JPG', name: 'Angry 4' },
 		{ src: 'angrykid5.JPG', name: 'Angry 5' }
 	];
-	let collection3 = [
-		{ src: 'citizens.JPG', name: 'Citizens of science' },
-		{ src: 'screwit.JPG', name: 'Screw It' },
-		{ src: 'boltit.JPG', name: 'Boltman' },
-		{ src: 'kumo.JPG', name: 'Spiderdeath' }
-	];
+
 
 	function handleHover(){
 		if(menuHover){
@@ -97,7 +99,8 @@
 		opacity: 1;
 	}
 	.menu{
-
+		padding: 10px;
+		margin-top: -10px;
 	}
 	/* Experimenting with css grid...
 	 .container{
@@ -172,16 +175,13 @@
 		border-radius: 3px; 
 		transition: 0.3s all;
 	}
-	.stacks-logo:hover:before,
 	.stacks-logo.hovering:before{
 		transform: rotate(0deg);
 	}
-	.stacks-logo:hover:after,
 	.stacks-logo.hovering:after{
 		background: var(--dark);
 		transform: rotate(-5deg);
 	}
-	.stacks-logo:hover svg,
 	.stacks-logo.hovering svg{
 		fill: var(--light);
 	}
@@ -235,6 +235,6 @@
 {#if about }
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
 <p>This started out as a small code challenge to learn Svelte v3 & to see if I could build a procreate-like gallery.</p>
-<p>I'm hopefully going to move it into Sapper and see if I can transition between routes.</p>
+<p>I'm hopefully going to move it into Sapper and see if I can transition between</p>
 </div>
 {/if}
