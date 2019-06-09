@@ -87,6 +87,9 @@ var app = (function () {
     function element(name) {
         return document.createElement(name);
     }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
     function text(data) {
         return document.createTextNode(data);
     }
@@ -99,6 +102,12 @@ var app = (function () {
     function listen(node, event, handler, options) {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else
+            node.setAttribute(attribute, value);
     }
     function children(element) {
         return Array.from(element.childNodes);
@@ -2690,8 +2699,114 @@ var app = (function () {
 
     const file$4 = "src/App.svelte";
 
+    // (185:0) {#if $activeCollection==0}
+    function create_if_block$3(ctx) {
+    	var div1, a0, t1, div0, svg, g, path, div0_intro, div0_outro, t2, a1, current, dispose;
+
+    	return {
+    		c: function create() {
+    			div1 = element("div");
+    			a0 = element("a");
+    			a0.textContent = "About";
+    			t1 = space();
+    			div0 = element("div");
+    			svg = svg_element("svg");
+    			g = svg_element("g");
+    			path = svg_element("path");
+    			t2 = space();
+    			a1 = element("a");
+    			a1.textContent = "Github";
+    			a0.className = "links svelte-wb36e5";
+    			a0.href = "about";
+    			toggle_class(a0, "hovering", ctx.menuHover === true);
+    			add_location(a0, file$4, 186, 2, 4351);
+    			attr(path, "d", "M28.664,22.376 C30.152,22.376 31.784,23.72 31.784,25.28 C31.784,27.464 28.424,31.616 26.768,31.616 C26.144,31.616 25.064,30.68 25.064,30.152 C25.064,29.6 25.88,28.88 26.624,28.16 C27.32,27.464 27.656,26.792 27.896,26.792 C28.136,26.792 28.904,27.632 28.904,27.632 C29.576,27.056 30.44,26.024 30.44,25.064 C30.44,24.728 30.032,24.296 29.648,24.296 C26.648,24.296 21.224,28.376 21.224,31.112 C21.224,33.512 27.44,34.304 27.44,37.616 C27.44,41.576 22.64,45.464 18.368,45.464 C15.44,45.464 12.8,42.344 12.8,41.792 C12.8,41.48 13.04,41.144 13.328,41.144 C13.544,41.144 15.104,42.968 17.648,42.968 C20.864,42.968 24.2,40.136 24.2,37.472 C24.2,34.448 18.488,34.016 18.488,30.08 C18.488,26.36 24.632,22.376 28.664,22.376 Z M32.624,41.312 C31.04,41.312 28.904,39.992 28.904,38.096 C28.904,36.536 30.032,33.896 31.184,31.568 C30.56,31.304 30.176,30.728 30.176,30.488 C30.176,30.344 30.344,30.152 30.488,30.152 C30.656,30.152 30.92,30.416 31.736,30.488 C32.72,28.568 33.584,27.032 33.584,26.816 C33.584,26.624 33.632,26.456 33.848,26.456 C34.472,26.456 35.504,27.344 35.504,28.28 C35.504,28.904 35.288,29.12 34.544,30.44 C35.576,30.392 36.512,30.32 36.728,30.32 C37.112,30.32 37.208,30.392 37.208,30.632 C37.208,30.872 36.512,32.048 35.624,32.048 C35.216,32.048 34.496,32 33.776,31.928 L32.96,33.656 C31.472,36.896 31.352,38.024 31.352,38.528 C31.352,39.296 31.664,39.92 32.48,39.92 C33.488,39.92 35.168,37.856 36.152,36.488 C36.56,35.912 36.68,35.72 36.8,35.72 C36.992,35.72 37.376,36.296 37.376,36.656 C37.376,37.016 37.28,37.304 36.776,37.952 C35.864,39.152 34.232,41.312 32.624,41.312 Z M44.384,41.192 C43.328,41.192 42.392,40.616 41.984,39.944 C41.84,39.68 41.816,39.224 41.816,38.912 L41.816,38.6 C41.816,38.6 40.016,41.336 38.504,41.336 C37.016,41.336 35.624,39.728 35.624,38.36 C35.624,35.816 39.344,30.848 41.768,30.848 C42.872,30.848 44.096,31.904 44.096,32.696 C44.096,32.696 44.456,32.456 44.648,32.456 C45.152,32.456 46.352,33.248 46.352,33.584 C46.352,33.92 44.888,35.696 44.312,37.472 C44,38.432 43.928,38.96 43.928,39.2 C43.928,39.584 44.288,39.8 44.6,39.8 C45.104,39.8 46.736,37.856 47.72,36.488 C48.128,35.912 48.248,35.72 48.368,35.72 C48.56,35.72 48.944,36.296 48.944,36.656 C48.944,37.016 48.848,37.304 48.344,37.952 C47.432,39.152 45.896,41.192 44.384,41.192 Z M42.272,32.888 C41.144,32.888 37.904,37.4 37.904,39.392 C37.904,39.752 38.216,39.944 38.552,39.944 C39.104,39.944 41.168,37.712 42.056,36.152 C41.984,36.032 41.912,35.96 41.912,35.792 C41.912,35.384 42.872,34.592 42.872,33.464 C42.872,33.104 42.584,32.888 42.272,32.888 Z M51.992,41.336 C49.88,41.336 47.576,39.896 47.576,37.232 C47.576,34.64 50.792,30.944 52.976,30.944 C54.392,30.944 55.52,32.024 55.52,32.96 C55.52,34.04 54.656,36.008 54.056,36.008 C53.456,36.008 52.904,35.408 52.904,35.24 C52.904,35.168 52.976,35.072 53.12,34.928 C53.552,34.496 54.248,33.584 54.248,32.912 C54.248,32.696 54.104,32.6 53.936,32.6 C52.544,32.6 50.24,35.84 50.24,37.88 C50.24,39.104 51.08,39.992 52.112,39.992 C53.528,39.992 55.232,37.856 56.216,36.488 C56.624,35.912 56.744,35.72 56.864,35.72 C57.056,35.72 57.44,36.296 57.44,36.656 C57.44,37.016 57.344,37.304 56.84,37.952 C55.928,39.152 54.2,41.336 51.992,41.336 Z M62.816,32.264 C61.976,32.264 59.264,36.032 58.904,37.04 C60.728,37.04 63.128,34.304 63.128,32.672 C63.128,32.408 63.056,32.264 62.816,32.264 Z M62.384,41.528 C59.864,41.528 59.12,38.624 58.208,38.552 C58.208,38.552 57.248,40.568 57.2,41.024 C57.176,41.288 56.936,41.408 56.72,41.408 C56.504,41.408 55.208,41.096 55.208,40.16 C55.208,39.224 55.448,38.192 57.2,33.608 C58.952,29.024 59.96,27.08 59.96,26.696 C59.96,26.528 60.104,26.48 60.344,26.48 C60.584,26.48 62.048,27.104 62.048,27.584 C62.048,28.064 60.632,30.92 59.312,34.52 C59.84,33.968 61.568,31.112 63.008,31.112 C64.448,31.112 65.144,32.072 65.144,33.776 C65.144,36.104 62.768,37.688 60.872,38.072 C62,38.576 62.288,39.512 62.984,39.512 C64.016,39.512 65.336,37.856 66.32,36.488 C66.728,35.912 66.848,35.72 66.968,35.72 C67.16,35.72 67.544,36.296 67.544,36.656 C67.544,37.016 67.448,37.304 66.944,37.952 C66.032,39.152 63.992,41.528 62.384,41.528 Z M64.664,38.792 C64.664,38.168 65.192,37.448 65.744,37.28 C66.872,35.672 68.36,33.824 69.296,32.216 C69.752,30.464 70.592,28.76 71.168,28.76 C72.104,28.76 73.112,29.504 73.112,30.272 C73.112,30.848 72.08,32.072 71.264,33.128 C71.264,35.048 72.704,35.336 72.704,38.072 C72.704,38.456 72.536,38.936 72.536,38.936 C73.664,38.24 74.576,37.28 75.152,36.488 C75.56,35.912 75.68,35.72 75.8,35.72 C75.992,35.72 76.376,36.296 76.376,36.656 C76.376,37.016 76.256,37.256 75.752,37.952 C74.336,39.896 71.864,41.384 69.224,41.384 C66.656,41.384 64.664,39.992 64.664,38.792 Z M66.776,38.216 C66.776,38.744 67.64,39.848 68.456,39.848 C69.344,39.848 69.968,38.696 69.968,37.232 C69.968,35.744 69.8,33.776 69.8,33.776 C68.96,35.096 67.952,36.608 66.776,38.216 Z");
+    			attr(path, "id", "Stacks");
+    			add_location(path, file$4, 190, 6, 4799);
+    			attr(g, "transform", "translate(-12.000000, -22.000000)");
+    			attr(g, "fill-rule", "nonzero");
+    			add_location(g, file$4, 189, 5, 4723);
+    			attr(svg, "width", "65px");
+    			attr(svg, "height", "24px");
+    			attr(svg, "viewBox", "0 0 65 24");
+    			attr(svg, "version", "1.1");
+    			attr(svg, "xmlns", "http://www.w3.org/2000/svg");
+    			attr(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+    			attr(svg, "class", "svelte-wb36e5");
+    			add_location(svg, file$4, 188, 3, 4573);
+    			div0.className = "stacks-logo svelte-wb36e5";
+    			toggle_class(div0, "hovering", ctx.menuHover === true);
+    			add_location(div0, file$4, 187, 2, 4431);
+    			a1.className = "links svelte-wb36e5";
+    			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
+    			toggle_class(a1, "hovering", ctx.menuHover === true);
+    			add_location(a1, file$4, 194, 2, 9689);
+    			div1.className = "menu svelte-wb36e5";
+    			add_location(div1, file$4, 185, 1, 4270);
+
+    			dispose = [
+    				listen(div1, "mouseenter", ctx.handleHover),
+    				listen(div1, "mouseleave", ctx.handleHover)
+    			];
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, div1, anchor);
+    			append(div1, a0);
+    			append(div1, t1);
+    			append(div1, div0);
+    			append(div0, svg);
+    			append(svg, g);
+    			append(g, path);
+    			append(div1, t2);
+    			append(div1, a1);
+    			current = true;
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (changed.menuHover) {
+    				toggle_class(a0, "hovering", ctx.menuHover === true);
+    				toggle_class(div0, "hovering", ctx.menuHover === true);
+    				toggle_class(a1, "hovering", ctx.menuHover === true);
+    			}
+    		},
+
+    		i: function intro(local) {
+    			if (current) return;
+    			add_render_callback(() => {
+    				if (div0_outro) div0_outro.end(1);
+    				if (!div0_intro) div0_intro = create_in_transition(div0, fly, { y: -50, duration: 400 });
+    				div0_intro.start();
+    			});
+
+    			current = true;
+    		},
+
+    		o: function outro(local) {
+    			if (div0_intro) div0_intro.invalidate();
+
+    			if (local) {
+    				div0_outro = create_out_transition(div0, fly, { y: -50, duration: 400 });
+    			}
+
+    			current = false;
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(div1);
+    				if (div0_outro) div0_outro.end();
+    			}
+
+    			run_all(dispose);
+    		}
+    	};
+    }
+
     function create_fragment$4(ctx) {
-    	var div, t0, t1, t2, t3, t4, t5, p, a, current;
+    	var div0, t0, div1, t1, t2, t3, t4, t5, current;
+
+    	var if_block = (ctx.$activeCollection==0) && create_if_block$3(ctx);
 
     	var gallerystack0 = new GalleryStack({
     		props: {
@@ -2773,29 +2888,28 @@ var app = (function () {
 
     	return {
     		c: function create() {
-    			div = element("div");
-    			gallerystack0.$$.fragment.c();
+    			div0 = element("div");
+    			if (if_block) if_block.c();
     			t0 = space();
-    			gallerystack1.$$.fragment.c();
+    			div1 = element("div");
+    			gallerystack0.$$.fragment.c();
     			t1 = space();
-    			gallerystack2.$$.fragment.c();
+    			gallerystack1.$$.fragment.c();
     			t2 = space();
-    			gallerystack3.$$.fragment.c();
+    			gallerystack2.$$.fragment.c();
     			t3 = space();
-    			gallerystack4.$$.fragment.c();
+    			gallerystack3.$$.fragment.c();
     			t4 = space();
-    			gallerystack5.$$.fragment.c();
+    			gallerystack4.$$.fragment.c();
     			t5 = space();
-    			p = element("p");
-    			a = element("a");
-    			a.textContent = "View on Github";
-    			div.className = "container svelte-lq41rl";
-    			add_location(div, file$4, 110, 0, 2723);
-    			a.href = "https://github.com/cssandstuff/portfolio-scaffold";
-    			a.className = "svelte-lq41rl";
-    			add_location(a, file$4, 120, 3, 3882);
-    			p.className = "svelte-lq41rl";
-    			add_location(p, file$4, 120, 0, 3879);
+    			gallerystack5.$$.fragment.c();
+    			div0.className = "container svelte-wb36e5";
+    			set_style(div0, "height", "50px");
+    			set_style(div0, "margin-bottom", "20px");
+    			set_style(div0, "margin-top", "25px");
+    			add_location(div0, file$4, 183, 0, 4158);
+    			div1.className = "container svelte-wb36e5";
+    			add_location(div1, file$4, 199, 0, 9834);
     		},
 
     		l: function claim(nodes) {
@@ -2803,25 +2917,46 @@ var app = (function () {
     		},
 
     		m: function mount(target, anchor) {
-    			insert(target, div, anchor);
-    			mount_component(gallerystack0, div, null);
-    			append(div, t0);
-    			mount_component(gallerystack1, div, null);
-    			append(div, t1);
-    			mount_component(gallerystack2, div, null);
-    			append(div, t2);
-    			mount_component(gallerystack3, div, null);
-    			append(div, t3);
-    			mount_component(gallerystack4, div, null);
-    			append(div, t4);
-    			mount_component(gallerystack5, div, null);
-    			insert(target, t5, anchor);
-    			insert(target, p, anchor);
-    			append(p, a);
+    			insert(target, div0, anchor);
+    			if (if_block) if_block.m(div0, null);
+    			insert(target, t0, anchor);
+    			insert(target, div1, anchor);
+    			mount_component(gallerystack0, div1, null);
+    			append(div1, t1);
+    			mount_component(gallerystack1, div1, null);
+    			append(div1, t2);
+    			mount_component(gallerystack2, div1, null);
+    			append(div1, t3);
+    			mount_component(gallerystack3, div1, null);
+    			append(div1, t4);
+    			mount_component(gallerystack4, div1, null);
+    			append(div1, t5);
+    			mount_component(gallerystack5, div1, null);
     			current = true;
     		},
 
     		p: function update(changed, ctx) {
+    			if (ctx.$activeCollection==0) {
+    				if (if_block) {
+    					if_block.p(changed, ctx);
+    					if_block.i(1);
+    				} else {
+    					if_block = create_if_block$3(ctx);
+    					if_block.c();
+    					if_block.i(1);
+    					if_block.m(div0, null);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+    				on_outro(() => {
+    					if_block.d(1);
+    					if_block = null;
+    				});
+
+    				if_block.o(1);
+    				check_outros();
+    			}
+
     			var gallerystack0_changes = {};
     			if (changed.collection1) gallerystack0_changes.imagecollection = ctx.collection1;
     			if (changed.uid) gallerystack0_changes.id = uid++;
@@ -2855,6 +2990,8 @@ var app = (function () {
 
     		i: function intro(local) {
     			if (current) return;
+    			if (if_block) if_block.i();
+
     			gallerystack0.$$.fragment.i(local);
 
     			gallerystack1.$$.fragment.i(local);
@@ -2871,6 +3008,7 @@ var app = (function () {
     		},
 
     		o: function outro(local) {
+    			if (if_block) if_block.o();
     			gallerystack0.$$.fragment.o(local);
     			gallerystack1.$$.fragment.o(local);
     			gallerystack2.$$.fragment.o(local);
@@ -2882,7 +3020,14 @@ var app = (function () {
 
     		d: function destroy(detaching) {
     			if (detaching) {
-    				detach(div);
+    				detach(div0);
+    			}
+
+    			if (if_block) if_block.d();
+
+    			if (detaching) {
+    				detach(t0);
+    				detach(div1);
     			}
 
     			gallerystack0.$destroy();
@@ -2896,11 +3041,6 @@ var app = (function () {
     			gallerystack4.$destroy();
 
     			gallerystack5.$destroy();
-
-    			if (detaching) {
-    				detach(t5);
-    				detach(p);
-    			}
     		}
     	};
     }
@@ -2908,8 +3048,13 @@ var app = (function () {
     let uid = 1;
 
     function instance$3($$self, $$props, $$invalidate) {
-    	let { name } = $$props;
+    	let $activeCollection;
 
+    	validate_store(activeCollection, 'activeCollection');
+    	subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
+
+    	let { name } = $$props;
+    	let menuHover = false;
     	// Images, maybe I can make this easier somehow?
     	// Auto-generate from a directory structure maybe?
     	// let collection0 = [
@@ -2954,6 +3099,14 @@ var app = (function () {
     		{ src: 'kumo.JPG', name: 'Spiderdeath' }
     	];
 
+    	function handleHover(){
+    		if(menuHover){
+    			$$invalidate('menuHover', menuHover = false);
+    		}else{
+    			$$invalidate('menuHover', menuHover = true);
+    		}
+    	}
+
     	const writable_props = ['name'];
     	Object.keys($$props).forEach(key => {
     		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<App> was created with unknown prop '${key}'`);
@@ -2965,12 +3118,15 @@ var app = (function () {
 
     	return {
     		name,
+    		menuHover,
     		collection1,
     		collection4,
     		collection6,
     		collection2,
     		collection5,
-    		collection3
+    		collection3,
+    		handleHover,
+    		$activeCollection
     	};
     }
 
