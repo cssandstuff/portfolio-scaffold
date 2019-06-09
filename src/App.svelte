@@ -6,6 +6,7 @@
 
 	let uid = 1;
 	let menuHover = false;
+	let about = false;
 	// Images, maybe I can make this easier somehow?
 	// Auto-generate from a directory structure maybe?
 	// let collection0 = [
@@ -55,6 +56,15 @@
 			menuHover = false;
 		}else{
 			menuHover = true;
+		}
+	}
+
+	function handleAbout(event){
+		event.preventDefault();
+		if(about){
+			about = false;
+		}else{
+			about = true;
 		}
 	}
 
@@ -180,11 +190,27 @@
 			width: calc(22vw - 3em);
 		}
 	}
+
+	.about{
+		background: var(--dark);
+		color: var(--light);
+		width: 100vw;
+		height: 100vh;
+		position: fixed; top: 0; left: 0;
+	}
+	.about p{
+		font-weight: 200;
+		text-align: center;
+		width: 40%;
+		max-width: 800px;
+		padding-top: 140px;
+		margin: auto;
+	}
 </style>
 <div class="container" style="height: 50px; margin-bottom: 20px; margin-top: 25px">
 {#if $activeCollection==0}
 	<div class="menu" on:mouseenter="{handleHover}" on:mouseleave="{handleHover}">
-		<a class:hovering="{menuHover === true}" class="links" href="about">About</a>
+		<a on:click="{handleAbout}" class:hovering="{menuHover === true}" class="links" href="about">About</a>
 		<div class:hovering="{menuHover === true}" class="stacks-logo" in:fly="{{ y: -50, duration: 400 }}" out:fly="{{ y: -50, duration: 400 }}">
 			<svg width="65px" height="24px" viewBox="0 0 65 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 					<g transform="translate(-12.000000, -22.000000)" fill-rule="nonzero">
@@ -192,7 +218,7 @@
 					</g>
 			</svg>
 		</div>
-		<a class:hovering="{menuHover === true}" class="links" href="https://github.com/cssandstuff/portfolio-scaffold">Github</a>
+		<a class:hovering="{menuHover === true}" target="_blank" class="links" href="https://github.com/cssandstuff/portfolio-scaffold">Github</a>
 	</div>
 {/if}
 </div>
@@ -206,3 +232,8 @@
 	<GalleryStack width="" name="Angry at kids" color="13, 92, 87" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack width="" name="Sketches" color="109, 0, 76" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
 </div>
+{#if about }
+<div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
+<p>This started out as a small code challenge to see if I could build a procreate-like gallery for the web </p>
+</div>
+{/if}
