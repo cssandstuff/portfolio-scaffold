@@ -47,7 +47,6 @@
 
   onMount(() => {
 		fakeImages = collection.getElementsByTagName('div');
-    firstImage = collection.getElementsByTagName('img')[0];
     
     // some wizardry for keeping tabs on the collections
     elements.add(collection);
@@ -154,16 +153,25 @@
     })();
   }
   
-  // Wanted to maybe have a loader, so the following will let us know when all
-  // Image components in an Expanded Gallery have loaded.
+  // Calls when first image in each collection loads.
+  function handleFirst(event) {
+    // Some weird thing that the image is there but hasn't rendered to the DOM yet?
+    // Maybe I could put this in afterupdate instead?
+    // Perhaps my lazyloading just sucks?
+    (async () => {
+      await sleep(50);
+      firstImage = collection.getElementsByTagName('img')[0];
+    })();
+  }
+
   function handleLoadingComplete(event) {
     count = count + event.detail.loadingComplete;
     if(count === imagecollection.length){
       
       console.log("Loading complete");
       loadingSecondary.update(n => false);
-
       count = 0;
+      
     }
   }
 </script>
@@ -331,7 +339,7 @@
   <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}
-      <Image image="{image.lowres}" />
+      <Image image="{image.lowres}" on:loadingComplete="{handleFirst}" />
     {:else}
       <div class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></div>
     {/if}
