@@ -2771,17 +2771,17 @@ var app = (function () {
     			a0.className = "links svelte-17bl7c9";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$5, 220, 3, 6001);
+    			add_location(a0, file$5, 220, 3, 6009);
     			div0.className = "stacks-logo svelte-17bl7c9";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$5, 222, 3, 6111);
+    			add_location(div0, file$5, 222, 3, 6119);
     			a1.target = "_blank";
     			a1.className = "links svelte-17bl7c9";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$5, 226, 3, 6277);
+    			add_location(a1, file$5, 226, 3, 6285);
     			div1.className = "menu svelte-17bl7c9";
-    			add_location(div1, file$5, 218, 2, 5915);
+    			add_location(div1, file$5, 218, 2, 5923);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
@@ -2872,18 +2872,18 @@ var app = (function () {
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
     			a0.className = "svelte-17bl7c9";
-    			add_location(a0, file$5, 245, 77, 7240);
-    			add_location(br0, file$5, 245, 193, 7356);
-    			add_location(br1, file$5, 245, 198, 7361);
+    			add_location(a0, file$5, 245, 77, 7248);
+    			add_location(br0, file$5, 245, 193, 7364);
+    			add_location(br1, file$5, 245, 198, 7369);
     			a1.href = "http://svelte.dev/sapper";
     			a1.className = "svelte-17bl7c9";
-    			add_location(a1, file$5, 246, 36, 7403);
-    			add_location(br2, file$5, 246, 162, 7529);
-    			add_location(br3, file$5, 246, 167, 7534);
+    			add_location(a1, file$5, 246, 36, 7411);
+    			add_location(br2, file$5, 246, 162, 7537);
+    			add_location(br3, file$5, 246, 167, 7542);
     			p.className = "svelte-17bl7c9";
-    			add_location(p, file$5, 245, 0, 7163);
+    			add_location(p, file$5, 245, 0, 7171);
     			div.className = "about svelte-17bl7c9";
-    			add_location(div, file$5, 244, 0, 7047);
+    			add_location(div, file$5, 244, 0, 7055);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
@@ -3022,9 +3022,9 @@ var app = (function () {
     			set_style(div0, "height", "50px");
     			set_style(div0, "margin-bottom", "20px");
     			set_style(div0, "margin-top", "25px");
-    			add_location(div0, file$5, 215, 0, 5800);
+    			add_location(div0, file$5, 215, 0, 5808);
     			div1.className = "container svelte-17bl7c9";
-    			add_location(div1, file$5, 233, 0, 6442);
+    			add_location(div1, file$5, 233, 0, 6450);
     		},
 
     		l: function claim(nodes) {
@@ -3225,8 +3225,8 @@ var app = (function () {
     		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
     		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
     		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-    		{ lowres: 'images/notes.jpg', hires: 'images/originals/Noa.jpg', name: 'Notes' },
-    		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' },
+    		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
+    		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
     		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
     		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
     	];

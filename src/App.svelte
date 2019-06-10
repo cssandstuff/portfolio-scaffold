@@ -43,8 +43,8 @@
 		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
 		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
 		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-		{ lowres: 'images/notes.jpg', hires: 'images/originals/Noa.jpg', name: 'Notes' },
-		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' },
+		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
+		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
 		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
 		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
 	];
