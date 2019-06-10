@@ -24,7 +24,8 @@
   export let hiresdir;
   export let id = 0;
   export let name;
-  export let color;
+  export let bgcolor;
+  export let textcolor;
 
   const dispatch = createEventDispatcher();
   const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
@@ -78,14 +79,21 @@
     event.preventDefault();
 
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
-    if(color){
+    if(bgcolor){
       
-      let hslcolor = color.split(",");
+      let hslcolor = bgcolor.split(",");
 
       // Can I do this automatically to find the primary color of the image?
       document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
       document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
       document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
+    }
+    if(textcolor){
+      
+      let hslcolor = textcolor.split(",");
+
+      // Can I do this automatically to find the primary color of the image?
+      document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
     }
 
     // this sets the loading to true.

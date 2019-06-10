@@ -14,8 +14,17 @@
 	// 	{ src: '02_back_cover.jpg', name: 'Dog' },
 	// 	{ src: 'racoon_together.jpg', name: 'Glass' }
 	// ];
-	
-
+	let collection_0 = [
+		{ lowres: 'https://live.staticflickr.com/3825/32856531256_5800b31cef_z_d.jpg', hires: 'https://live.staticflickr.com/3825/32856531256_11557063a3_k_d.jpg', name: 'Dog' },
+		{ lowres: 'https://live.staticflickr.com/7218/7144426225_61e9dbb236_z_d.jpg', hires: 'https://live.staticflickr.com/7218/7144426225_ff6a7f453d_o_d.jpg', name: 'Noa' }
+		
+	];
+	let collection0 = [
+		{ lowres: 'https://live.staticflickr.com/7519/15895341677_9bf57be9b4_z_d.jpg', hires: 'https://live.staticflickr.com/7519/15895341677_07758f6b90_k_d.jpg', name: 'Noa' },
+		{ lowres: 'https://live.staticflickr.com/8441/7926832180_7d20be8038_z_d.jpg', hires: 'https://live.staticflickr.com/8441/7926832180_3d5c3936de_k_d.jpg', name: 'Dog' },
+		{ lowres: 'https://live.staticflickr.com/8443/7926703396_1b94cfc661_z_d.jpg', hires: 'https://live.staticflickr.com/8443/7926703396_63887f8c7b_k_d.jpg', name: 'Glass' },
+		{ lowres: 'https://live.staticflickr.com/3253/5868097632_840f8a4eab_z_d.jpg', hires: 'https://live.staticflickr.com/3253/5868097632_eb4c54b25d_o_d.jpg', name: 'Glass' }
+	];
 	let collection1 = [
 		{ lowres: 'images/Noa.jpg', hires: 'images/originals/Noa.jpg', name: 'Noa' },
 		{ lowres: 'images/dog.jpg', hires: 'images/originals/dog.jpg', name: 'Dog' },
@@ -206,6 +215,9 @@
 		padding-top: 140px;
 		margin: auto;
 	}
+	.about a{
+		color: rgba(255,255,255,0.8);
+	}
 </style>
 <div class="container" style="height: 50px; margin-bottom: 20px; margin-top: 25px">
 {#if $activeCollection==0}
@@ -225,16 +237,18 @@
 
 <div class="container">
 	<!-- <GalleryStack width="" name="Ongakukai" color="44, 47, 90" lowresdir="images/16_ongakukai" hiresdir="images/16_ongakukai/originals" imagecollection={collection0} id="{uid++}" /> -->
-	<GalleryStack width="" name="Painterly" color="261, 27, 71" lowresdir="images" hiresdir="images/originals" imagecollection={collection1} id="{uid++}" />
-	<GalleryStack width="" name="Splashes" color="206, 69, 88" lowresdir="images" hiresdir="images/originals" imagecollection={collection2} id="{uid++}" />
-	<GalleryStack width="" name="Citizens of science" color="182, 37, 73" lowresdir="images" hiresdir="images/originals" imagecollection={collection3} id="{uid++}" />
-	<GalleryStack width="" name="Travelling" color="209, 25, 24" lowresdir="images" hiresdir="images/originals" imagecollection={collection4} id="{uid++}" />
-	<GalleryStack width="" name="Angry at kids" color="13, 92, 87" lowresdir="images" hiresdir="images/originals" imagecollection={collection5} id="{uid++}" />
-	<GalleryStack width="" name="Sketches" color="109, 0, 76" lowresdir="images" hiresdir="images/originals" imagecollection={collection6} id="{uid++}"  />
+	<GalleryStack width="" name="Maiko" bgcolor="109, 0, 76" imagecollection={collection_0} id="{uid++}"  />
+	<GalleryStack width="" name="Flickr" bgcolor="109, 0, 76" imagecollection={collection0} id="{uid++}"  />
+	<GalleryStack width="" name="Painterly" bgcolor="261, 27, 71" imagecollection={collection1} id="{uid++}" />
+	<GalleryStack width="" name="Splashes" bgcolor="206, 69, 88" imagecollection={collection2} id="{uid++}" />
+	<GalleryStack width="" name="Citizens of science" bgcolor="182, 37, 73" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack width="" name="Travelling" textcolor="0, 100, 50" bgcolor="209, 25, 24" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack width="" name="Angry at kids" bgcolor="13, 92, 87" imagecollection={collection5} id="{uid++}" />
+	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  />
 </div>
 {#if about }
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
-<p>This started out as a small code challenge to start getting to grips with Svelte v3 & to see if I could build a procreate-inspired UI for a gallery of images.<br/><br/>
-I'm hopefully going to move it into Sapper and see if I can have a proper url structure and transition between routes.</p>
+<p>This started out as a small code challenge to start getting to grips with <a href="http://svelte.dev">Svelte</a> v3 & to see if I could build a procreate-inspired UI for a gallery of images.<br/><br/>
+I'm hopefully going to move it into <a href="http://svelte.dev/sapper">Sapper</a> soon and see if I can have a proper url structure and transition between routes.</p>
 </div>
 {/if}
