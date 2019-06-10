@@ -11,8 +11,6 @@
   //import { _resetStacks } from './GalleryStack.svelte';
 
   export let stack;
-  export let lowresdir;
-  export let hiresdir;
   export let originaltarget;
 
   const dispatch = createEventDispatcher();
@@ -357,7 +355,7 @@
     padding: 0.5em 0;
     margin-left: 0.8em;
     font-size: 0.9em;
-    color: #222;
+    color: var(--textcolor);
     opacity: 0;
     width: 99%;
     transition: 0s opacity;
@@ -515,15 +513,18 @@
   }
   .close{
     color: #333;
-    left: 0.4em; top: 0.5em;
+    left: 0.4em; top: 0;
     position: absolute;
     font-weight: 300;
     text-transform: none;
     font-weight: bold;
     font-size: 1.2em;
-    width: 25%; height: 40px;
+    width: auto; height: 38px;
     padding-left: 18px;
     cursor: pointer;
+    background: #fff;
+    padding: 0.5em 1em 0;
+    border-radius: 0 0 4px;
   }
   .close:before, .close:after{
     content:'';
@@ -531,7 +532,7 @@
     width: 2px;
     height: 6px;
     background: #333;
-    left: 8px; top: 9px;
+    left: 9px; top: 17px;
   }
   .close:hover:before{
     transform: translateX(-2px); transform: rotate(45deg);
@@ -544,7 +545,7 @@
   }
   .close:after{
     transform: rotate(-45deg);
-    top: 12px;
+    top: 20px;
   }
   .magnify{
     width: 100%;
@@ -582,7 +583,7 @@
 <svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
   <div class="stack gallery" bind:this={activeCollection} >
     {#each stack as image, index}
-      <a class:transitioning="{transitioning === true}" class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
+      <a class:transitioning="{transitioning === true}" class="galleryitem" href="{image.hires}" on:click={e => loadLargeImages(e, index)}> 
         <Image image="{image.lowres}" on:loadingComplete />
         <span class:out="{showTitles === false}" class="magnify"></span>
         <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false && !$destroyingExpandedGallery}">

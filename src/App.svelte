@@ -211,22 +211,28 @@
 	}
 </style>
 <div class="container" style="height: 50px; margin-bottom: 20px; margin-top: 25px">
-{#if $activeCollection==0}
-	<div class="menu" on:mouseenter="{handleHover}" on:mouseleave="{handleHover}">
-		<a on:click="{handleAbout}" class:hovering="{menuHover === true}" class="links" href="about">About</a>
-		<div class:hovering="{menuHover === true}" class="stacks-logo" in:fly="{{ y: -50, duration: 400 }}" out:fly="{{ y: -50, duration: 400 }}">
-			<Logo />
+
+	{#if $activeCollection==0}
+		<div class="menu" on:mouseenter="{handleHover}" on:mouseleave="{handleHover}">
+			
+			<a on:click="{handleAbout}" class:hovering="{menuHover === true}" class="links" href="about">About</a>
+			
+			<div class:hovering="{menuHover === true}" class="stacks-logo" in:fly="{{ y: -50, duration: 400 }}" out:fly="{{ y: -50, duration: 400 }}">
+				<Logo />
+			</div>
+
+			<a class:hovering="{menuHover === true}" target="_blank" class="links" href="https://github.com/cssandstuff/portfolio-scaffold">Github</a>
+
 		</div>
-		<a class:hovering="{menuHover === true}" target="_blank" class="links" href="https://github.com/cssandstuff/portfolio-scaffold">Github</a>
-	</div>
-{/if}
+	{/if}
+
 </div>
 
 <div class="container">
 	<GalleryStack width="" name="Painterly" bgcolor="261, 27, 71" imagecollection={collection1} id="{uid++}" />
 	<GalleryStack width="" name="Splashes" bgcolor="206, 69, 88" imagecollection={collection2} id="{uid++}" />
 	<GalleryStack width="" name="Citizens of science" bgcolor="182, 37, 73" imagecollection={collection3} id="{uid++}" />
-	<GalleryStack width="" name="Travelling" textcolor="0, 100, 50" bgcolor="209, 25, 24" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack width="" name="Travelling" textcolor="0, 0, 100" bgcolor="209, 25, 24" imagecollection={collection4} id="{uid++}" />
 	<GalleryStack width="" name="Angry at kids" bgcolor="13, 92, 87" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  />
 </div>

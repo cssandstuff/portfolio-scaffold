@@ -20,8 +20,6 @@
   import { activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
   
   export let imagecollection;
-  export let lowresdir;
-  export let hiresdir;
   export let id = 0;
   export let name;
   export let bgcolor;
@@ -38,6 +36,7 @@
 
   // reference to orginal colour
   let originalbgcolor;
+  let originaltextcolor;
 
   // count for loading
   let count = 0;
@@ -78,6 +77,7 @@
     event.preventDefault();
 
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+    originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
     if(bgcolor){
       
       let hslcolor = bgcolor.split(",");
@@ -91,8 +91,10 @@
       
       let hslcolor = textcolor.split(",");
 
-      // Can I do this automatically to find the primary color of the image?
       document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+      console.log(`hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+      console.log(getComputedStyle(document.documentElement).getPropertyValue('--textcolor'))
+      
     }
 
     // this sets the loading to true.
@@ -126,6 +128,7 @@
     console.log('resetting...');
     
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
+    document.documentElement.style.setProperty('--textcolor', originaltextcolor);
     
     // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
     // might be able to call the funtion directly instead of this??
@@ -184,7 +187,7 @@
     padding: 0.5em 0 0.5em 0.5em;
     margin-left: 0.8em;
     font-size: 0.9em;
-    color: #222;
+    color: var(--textcolor);
     display: block;
     width: 99%;
   }
@@ -273,7 +276,7 @@
       margin: 0;
       position: relative;
       display: block;
-      color: #333;
+      color: var(--textcolor);
       padding-left: 16px;
       text-transform: none;
     }
@@ -281,7 +284,7 @@
       content: '';
       display: block;
       position: absolute;
-      left: 6px; top: 9px;
+      left: 6px; top: 7px;
       height: 6px; width: 2px;
       background: currentColor;
       transform: rotate(45deg);
@@ -300,7 +303,7 @@
       transform: translateX(-2px) rotate(-45deg);
     }
     .breadcrumb p:after{
-      top: 12px;
+      top: 10px;
       transform: rotate(-45deg);
     }
 
