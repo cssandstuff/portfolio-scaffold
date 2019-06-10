@@ -1,5 +1,6 @@
 <script>
 	// TODO: Add video if available
+	// control width as demo.
 	// Add swipe interactions.
 	export let name;
 	import Logo from './Logo.svelte';
@@ -40,10 +41,10 @@
 		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
 	];
 	let collection6 = [
+		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
 		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
 		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
 		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
 		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
 		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
 		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
@@ -138,6 +139,12 @@
 		margin: 0em 1.5em 6em 1.5em;
 		height: 15em;
 	}
+	/* .container :global(.collection){
+		filter: grayscale(33%);
+	}
+	.container :global(.collection:hover){
+		filter: grayscale(0%);
+	} */
 
 	.stacks-logo{
 		display: inline-block;

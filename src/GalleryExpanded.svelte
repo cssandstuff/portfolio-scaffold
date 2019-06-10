@@ -166,7 +166,7 @@
       
       // If first image
       if(key == 0){
-        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(-3px) rotate(-2deg)`;
       }
       
       // stacks the zindex's of images so first is always on top.

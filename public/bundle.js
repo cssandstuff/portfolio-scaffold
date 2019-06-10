@@ -946,15 +946,15 @@ var app = (function () {
     			t2 = text(t2_value);
     			span.className = "magnify svelte-113r2zk";
     			toggle_class(span, "out", ctx.showTitles === false);
-    			add_location(span, file$3, 587, 8, 16855);
+    			add_location(span, file$3, 587, 8, 16856);
     			h2.className = "svelte-113r2zk";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 588, 8, 16928);
+    			add_location(h2, file$3, 588, 8, 16929);
     			a.className = "galleryitem svelte-113r2zk";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 585, 6, 16652);
+    			add_location(a, file$3, 585, 6, 16653);
     			dispose = listen(a, "click", click_handler);
     		},
 
@@ -1069,14 +1069,14 @@ var app = (function () {
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
     			span0.className = "previous svelte-113r2zk";
-    			add_location(span0, file$3, 605, 4, 17556);
+    			add_location(span0, file$3, 605, 4, 17557);
     			span1.className = "next svelte-113r2zk";
-    			add_location(span1, file$3, 606, 4, 17615);
+    			add_location(span1, file$3, 606, 4, 17616);
     			span2.className = "close svelte-113r2zk";
-    			add_location(span2, file$3, 607, 4, 17666);
+    			add_location(span2, file$3, 607, 4, 17667);
     			div.className = "hires svelte-113r2zk";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 599, 2, 17232);
+    			add_location(div, file$3, 599, 2, 17233);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1257,7 +1257,7 @@ var app = (function () {
     			image.$$.fragment.c();
     			div.className = "hi-image svelte-113r2zk";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 601, 6, 17381);
+    			add_location(div, file$3, 601, 6, 17382);
     		},
 
     		m: function mount(target, anchor) {
@@ -1338,7 +1338,7 @@ var app = (function () {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			div.className = "stack gallery svelte-113r2zk";
-    			add_location(div, file$3, 583, 2, 16554);
+    			add_location(div, file$3, 583, 2, 16555);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1619,7 +1619,7 @@ var app = (function () {
           
           // If first image
           if(key == 0){
-            transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(5px) rotate(-2deg)`;
+            transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(-3px) rotate(-2deg)`;
           }
           
           // stacks the zindex's of images so first is always on top.
@@ -1890,7 +1890,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (323:0) {#if $activeCollection == id}
+    // (333:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1900,10 +1900,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-4geoe0";
-    			add_location(p, file$4, 324, 4, 9206);
+    			add_location(p, file$4, 334, 4, 9534);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-4geoe0";
-    			add_location(div, file$4, 323, 2, 9062);
+    			add_location(div, file$4, 333, 2, 9390);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1952,7 +1952,7 @@ var app = (function () {
     	};
     }
 
-    // (339:2) {#if $activeCollection == id}
+    // (349:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -1986,7 +1986,7 @@ var app = (function () {
     	};
     }
 
-    // (346:4) {:else}
+    // (356:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -1997,7 +1997,7 @@ var app = (function () {
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 346, 6, 9898);
+    			add_location(div, file$4, 356, 6, 10226);
     		},
 
     		m: function mount(target, anchor) {
@@ -2021,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (344:4) {#if index==0}
+    // (354:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2065,7 +2065,7 @@ var app = (function () {
     	};
     }
 
-    // (343:2) {#each imagecollection as image, index}
+    // (353:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2141,7 +2141,7 @@ var app = (function () {
     	};
     }
 
-    // (357:0) {#if attemptingtoLoad}
+    // (367:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2162,7 +2162,7 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-4geoe0";
-    			add_location(div, file$4, 358, 3, 10278);
+    			add_location(div, file$4, 368, 3, 10606);
     		},
 
     		m: function mount(target, anchor) {
@@ -2260,15 +2260,15 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-4geoe0";
-    			add_location(span, file$4, 351, 4, 10085);
+    			add_location(span, file$4, 361, 4, 10413);
     			h2.className = "svelte-4geoe0";
-    			add_location(h2, file$4, 349, 2, 10065);
+    			add_location(h2, file$4, 359, 2, 10393);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-4geoe0";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 328, 0, 9236);
+    			add_location(a, file$4, 338, 0, 9564);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2509,7 +2509,7 @@ var app = (function () {
       let attemptingtoLoad = false;
 
       onMount(() => {
-    		fakeImages = collection.getElementsByTagName('div');
+    		fakeImages = collection.getElementsByClassName('dummyimage');
         
         // some wizardry for keeping tabs on the collections
         elements.add(collection);
@@ -2523,7 +2523,13 @@ var app = (function () {
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
         });
-        firstImage.style.transform = 'scale(1.03) translateY(5px) rotate(-1deg)';  }
+        firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-1deg)';
+        // grayscale other images
+        elements.forEach(element => {
+    			if (element !== collection) element.firstElementChild.style.filter = "sepia(0.45) grayscale(0.9)";
+    		});
+        
+      }
 
       // Un-Rotate image stack on hover out
       function unRotate() {
@@ -2531,7 +2537,12 @@ var app = (function () {
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
         });
-        firstImage.style.transform = 'scale(1) rotate(0deg)';  }
+        firstImage.style.transform = 'scale(1) rotate(0deg)';    
+        // un-grayscale all images
+        elements.forEach(element => {
+    			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+    		});
+      }
 
       // Initiate the gallery and expand the stack
       function showContents(event){
@@ -2588,7 +2599,7 @@ var app = (function () {
       // Function for bringing the stacks back after we've closed an Expanded Gallery
       function resetStacks(){
         console.log('resetting...');
-        
+
         document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
         document.documentElement.style.setProperty('--textcolor', originaltextcolor);
         
@@ -2604,7 +2615,6 @@ var app = (function () {
           await sleep(200);
           activeCollection.update(n => 0);
           $$invalidate('attemptingtoLoad', attemptingtoLoad = false);
-
           elements.forEach(element => {
             element.style.transform = `translateX(0px) translateY(0px)`; 
           });
@@ -2751,7 +2761,7 @@ var app = (function () {
 
     const file$5 = "src/App.svelte";
 
-    // (218:1) {#if $activeCollection==0}
+    // (225:1) {#if $activeCollection==0}
     function create_if_block_1$2(ctx) {
     	var div1, a0, t1, div0, div0_intro, div0_outro, t2, a1, current, dispose;
 
@@ -2768,20 +2778,20 @@ var app = (function () {
     			t2 = space();
     			a1 = element("a");
     			a1.textContent = "Github";
-    			a0.className = "links svelte-17bl7c9";
+    			a0.className = "links svelte-1uqlejh";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$5, 220, 3, 6009);
-    			div0.className = "stacks-logo svelte-17bl7c9";
+    			add_location(a0, file$5, 227, 3, 6173);
+    			div0.className = "stacks-logo svelte-1uqlejh";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$5, 222, 3, 6119);
+    			add_location(div0, file$5, 229, 3, 6283);
     			a1.target = "_blank";
-    			a1.className = "links svelte-17bl7c9";
+    			a1.className = "links svelte-1uqlejh";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$5, 226, 3, 6285);
-    			div1.className = "menu svelte-17bl7c9";
-    			add_location(div1, file$5, 218, 2, 5923);
+    			add_location(a1, file$5, 233, 3, 6449);
+    			div1.className = "menu svelte-1uqlejh";
+    			add_location(div1, file$5, 225, 2, 6087);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
@@ -2849,7 +2859,7 @@ var app = (function () {
     	};
     }
 
-    // (244:0) {#if about }
+    // (251:0) {#if about }
     function create_if_block$3(ctx) {
     	var div, p, t0, a0, t2, br0, br1, t3, a1, t5, br2, br3, t6, div_intro, div_outro, current, dispose;
 
@@ -2871,19 +2881,19 @@ var app = (function () {
     			br3 = element("br");
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
-    			a0.className = "svelte-17bl7c9";
-    			add_location(a0, file$5, 245, 77, 7248);
-    			add_location(br0, file$5, 245, 193, 7364);
-    			add_location(br1, file$5, 245, 198, 7369);
+    			a0.className = "svelte-1uqlejh";
+    			add_location(a0, file$5, 252, 77, 7412);
+    			add_location(br0, file$5, 252, 193, 7528);
+    			add_location(br1, file$5, 252, 198, 7533);
     			a1.href = "http://svelte.dev/sapper";
-    			a1.className = "svelte-17bl7c9";
-    			add_location(a1, file$5, 246, 36, 7411);
-    			add_location(br2, file$5, 246, 162, 7537);
-    			add_location(br3, file$5, 246, 167, 7542);
-    			p.className = "svelte-17bl7c9";
-    			add_location(p, file$5, 245, 0, 7171);
-    			div.className = "about svelte-17bl7c9";
-    			add_location(div, file$5, 244, 0, 7055);
+    			a1.className = "svelte-1uqlejh";
+    			add_location(a1, file$5, 253, 36, 7575);
+    			add_location(br2, file$5, 253, 162, 7701);
+    			add_location(br3, file$5, 253, 167, 7706);
+    			p.className = "svelte-1uqlejh";
+    			add_location(p, file$5, 252, 0, 7335);
+    			div.className = "about svelte-1uqlejh";
+    			add_location(div, file$5, 251, 0, 7219);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
@@ -3018,13 +3028,13 @@ var app = (function () {
     			t5 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			div0.className = "container svelte-17bl7c9";
+    			div0.className = "container svelte-1uqlejh";
     			set_style(div0, "height", "50px");
     			set_style(div0, "margin-bottom", "20px");
     			set_style(div0, "margin-top", "25px");
-    			add_location(div0, file$5, 215, 0, 5808);
-    			div1.className = "container svelte-17bl7c9";
-    			add_location(div1, file$5, 233, 0, 6450);
+    			add_location(div0, file$5, 222, 0, 5972);
+    			div1.className = "container svelte-1uqlejh";
+    			add_location(div1, file$5, 240, 0, 6614);
     		},
 
     		l: function claim(nodes) {
@@ -3193,6 +3203,7 @@ var app = (function () {
     	subscribe($$self, activeCollection, $$value => { $activeCollection = $$value; $$invalidate('$activeCollection', $activeCollection); });
 
     	// TODO: Add video if available
+    	// control width as demo.
     	// Add swipe interactions.
     	let { name } = $$props;
     	let menuHover = false;
@@ -3222,10 +3233,10 @@ var app = (function () {
     		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
     	];
     	let collection6 = [
+    		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
     		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
     		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
     		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-    		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
     		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
     		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
     		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }

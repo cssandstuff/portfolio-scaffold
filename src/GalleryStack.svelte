@@ -45,7 +45,7 @@
   let attemptingtoLoad = false;
 
   onMount(() => {
-		fakeImages = collection.getElementsByTagName('div');
+		fakeImages = collection.getElementsByClassName('dummyimage');
     
     // some wizardry for keeping tabs on the collections
     elements.add(collection);
@@ -59,7 +59,13 @@
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
-    firstImage.style.transform = 'scale(1.03) translateY(5px) rotate(-1deg)';
+    firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-1deg)';
+
+    // grayscale other images
+    elements.forEach(element => {
+			if (element !== collection) element.firstElementChild.style.filter = "sepia(0.45) grayscale(0.9)";
+		});
+    
   }
 
   // Un-Rotate image stack on hover out
@@ -69,6 +75,11 @@
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     })
     firstImage.style.transform = 'scale(1) rotate(0deg)';
+    
+    // un-grayscale all images
+    elements.forEach(element => {
+			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+		});
   }
 
   // Initiate the gallery and expand the stack
@@ -126,7 +137,7 @@
   // Function for bringing the stacks back after we've closed an Expanded Gallery
   function resetStacks(){
     console.log('resetting...');
-    
+
     document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
     document.documentElement.style.setProperty('--textcolor', originaltextcolor);
     
@@ -142,7 +153,6 @@
       await sleep(200);
       activeCollection.update(n => 0);
       attemptingtoLoad = false;
-
       elements.forEach(element => {
         element.style.transform = `translateX(0px) translateY(0px)` 
       });
