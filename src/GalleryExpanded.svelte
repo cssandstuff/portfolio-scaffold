@@ -560,7 +560,7 @@
   .magnify:before{
     content: '';
     position: absolute;
-    right: calc(50% - 22px);
+    right: calc(50% - 29px);
     bottom: calc(50% - 16px);
     width: 14px;
     height: 4px;
@@ -573,7 +573,7 @@
     height: 32px;
     border-radius: 50%;
     border: 4px solid #fff;
-    position: absolute; left: calc(50% - 24px); top: calc(50% - 22px);
+    position: absolute; left: calc(50% - 19px); top: calc(50% - 22px);
     z-index: 9;
   }
   
@@ -583,7 +583,7 @@
   <div class="stack gallery" bind:this={activeCollection} >
     {#each stack as image, index}
       <a class:transitioning="{transitioning === true}" class="galleryitem" href="{hiresdir}/{image.src}" on:click={e => loadLargeImages(e, index)}> 
-        <Image image="{lowresdir}/{image.src}" on:loadingComplete />
+        <Image image="{image.lowres}" on:loadingComplete />
         <span class:out="{showTitles === false}" class="magnify"></span>
         <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false && !$destroyingExpandedGallery}">
           {image.name}
@@ -599,7 +599,7 @@
   <div class="hires" class:ready="{hiresLoaded === true}" out:fade="{{duration: 100}}" bind:this={thirdLevel}>
     {#each stack as image, index}
       <div class:active="{current === index}" class="hi-image" >
-        <Image image="{hiresdir}/{image.src}" on:loadingComplete={handleLoadingHiResComplete}/>
+        <Image image="{image.hires}" on:loadingComplete={handleLoadingHiResComplete}/>
       </div>
     {/each}
     <span class="previous" on:click={showPrevious}></span>

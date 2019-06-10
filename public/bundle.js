@@ -548,8 +548,8 @@ var app = (function () {
 
     const file = "src/Image.svelte";
 
-    // (104:0) {#if !visible}
-    function create_if_block(ctx) {
+    // (104:0) {:else}
+    function create_else_block(ctx) {
     	var div1, div0;
 
     	return {
@@ -557,15 +557,17 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			div0.className = "inner svelte-vtevxo";
-    			add_location(div0, file, 105, 4, 2180);
+    			add_location(div0, file, 105, 4, 2186);
     			div1.className = "loader svelte-vtevxo";
-    			add_location(div1, file, 104, 2, 2155);
+    			add_location(div1, file, 104, 2, 2161);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div1, anchor);
     			append(div1, div0);
     		},
+
+    		p: noop,
 
     		d: function destroy(detaching) {
     			if (detaching) {
@@ -575,32 +577,21 @@ var app = (function () {
     	};
     }
 
-    function create_fragment(ctx) {
-    	var img, img_class_value, t, if_block_anchor;
-
-    	var if_block = (!ctx.visible) && create_if_block(ctx);
+    // (102:0) {#if visible}
+    function create_if_block(ctx) {
+    	var img, img_class_value;
 
     	return {
     		c: function create() {
     			img = element("img");
-    			t = space();
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
     			img.src = ctx.image;
     			img.alt = "";
     			img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo";
-    			add_location(img, file, 102, 0, 2073);
-    		},
-
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    			add_location(img, file, 102, 0, 2086);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, img, anchor);
-    			insert(target, t, anchor);
-    			if (if_block) if_block.m(target, anchor);
-    			insert(target, if_block_anchor, anchor);
     		},
 
     		p: function update(changed, ctx) {
@@ -611,16 +602,52 @@ var app = (function () {
     			if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo")) {
     				img.className = img_class_value;
     			}
+    		},
 
-    			if (!ctx.visible) {
-    				if (!if_block) {
-    					if_block = create_if_block(ctx);
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(img);
+    			}
+    		}
+    	};
+    }
+
+    function create_fragment(ctx) {
+    	var if_block_anchor;
+
+    	function select_block_type(ctx) {
+    		if (ctx.visible) return create_if_block;
+    		return create_else_block;
+    	}
+
+    	var current_block_type = select_block_type(ctx);
+    	var if_block = current_block_type(ctx);
+
+    	return {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty();
+    		},
+
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+
+    		m: function mount(target, anchor) {
+    			if_block.m(target, anchor);
+    			insert(target, if_block_anchor, anchor);
+    		},
+
+    		p: function update(changed, ctx) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+    				if_block.p(changed, ctx);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+    				if (if_block) {
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
     			}
     		},
 
@@ -628,12 +655,7 @@ var app = (function () {
     		o: noop,
 
     		d: function destroy(detaching) {
-    			if (detaching) {
-    				detach(img);
-    				detach(t);
-    			}
-
-    			if (if_block) if_block.d(detaching);
+    			if_block.d(detaching);
 
     			if (detaching) {
     				detach(if_block_anchor);
@@ -848,9 +870,7 @@ var app = (function () {
     	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
 
     	var image = new Image_1({
-    		props: {
-    		image: "" + ctx.lowresdir + "/" + ctx.image.src
-    	},
+    		props: { image: ctx.image.lowres },
     		$$inline: true
     	});
     	image.$on("loadingComplete", ctx.loadingComplete_handler);
@@ -868,14 +888,14 @@ var app = (function () {
     			t1 = space();
     			h2 = element("h2");
     			t2 = text(t2_value);
-    			span.className = "magnify svelte-1gc5gmg";
+    			span.className = "magnify svelte-a2xd67";
     			toggle_class(span, "out", ctx.showTitles === false);
-    			add_location(span, file$2, 586, 8, 16833);
-    			h2.className = "svelte-1gc5gmg";
+    			add_location(span, file$2, 586, 8, 16824);
+    			h2.className = "svelte-a2xd67";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$2, 587, 8, 16906);
-    			a.className = "galleryitem svelte-1gc5gmg";
+    			add_location(h2, file$2, 587, 8, 16897);
+    			a.className = "galleryitem svelte-a2xd67";
     			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.image.src;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
     			add_location(a, file$2, 584, 6, 16612);
@@ -896,7 +916,7 @@ var app = (function () {
     		p: function update(changed, new_ctx) {
     			ctx = new_ctx;
     			var image_changes = {};
-    			if (changed.lowresdir || changed.stack) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
+    			if (changed.stack) image_changes.image = ctx.image.lowres;
     			image.$set(image_changes);
 
     			if (changed.showTitles) {
@@ -992,15 +1012,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-1gc5gmg";
-    			add_location(span0, file$2, 604, 4, 17543);
-    			span1.className = "next svelte-1gc5gmg";
-    			add_location(span1, file$2, 605, 4, 17602);
-    			span2.className = "close svelte-1gc5gmg";
-    			add_location(span2, file$2, 606, 4, 17653);
-    			div.className = "hires svelte-1gc5gmg";
+    			span0.className = "previous svelte-a2xd67";
+    			add_location(span0, file$2, 604, 4, 17525);
+    			span1.className = "next svelte-a2xd67";
+    			add_location(span1, file$2, 605, 4, 17584);
+    			span2.className = "close svelte-a2xd67";
+    			add_location(span2, file$2, 606, 4, 17635);
+    			div.className = "hires svelte-a2xd67";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$2, 598, 2, 17210);
+    			add_location(div, file$2, 598, 2, 17201);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1050,7 +1070,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (changed.current || changed.hiresdir || changed.stack || changed.handleLoadingHiResComplete) {
+    			if (changed.current || changed.stack || changed.handleLoadingHiResComplete) {
     				each_value = ctx.stack;
 
     				for (var i = 0; i < each_value.length; i += 1) {
@@ -1170,9 +1190,7 @@ var app = (function () {
     	var div, current_1;
 
     	var image = new Image_1({
-    		props: {
-    		image: "" + ctx.hiresdir + "/" + ctx.image.src
-    	},
+    		props: { image: ctx.image.hires },
     		$$inline: true
     	});
     	image.$on("loadingComplete", ctx.handleLoadingHiResComplete);
@@ -1181,9 +1199,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-1gc5gmg";
+    			div.className = "hi-image svelte-a2xd67";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$2, 600, 6, 17359);
+    			add_location(div, file$2, 600, 6, 17350);
     		},
 
     		m: function mount(target, anchor) {
@@ -1194,7 +1212,7 @@ var app = (function () {
 
     		p: function update(changed, ctx) {
     			var image_changes = {};
-    			if (changed.hiresdir || changed.stack) image_changes.image = "" + ctx.hiresdir + "/" + ctx.image.src;
+    			if (changed.stack) image_changes.image = ctx.image.hires;
     			image.$set(image_changes);
 
     			if (changed.current) {
@@ -1263,7 +1281,7 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-1gc5gmg";
+    			div.className = "stack gallery svelte-a2xd67";
     			add_location(div, file$2, 582, 2, 16514);
 
     			dispose = [
@@ -1303,7 +1321,7 @@ var app = (function () {
     				scrolling_timeout = setTimeout(clear_scrolling, 100);
     			}
 
-    			if (changed.hiresdir || changed.stack || changed.transitioning || changed.$destroyingExpandedGallery || changed.showTitles || changed.$loadingSecondary || changed.lowresdir) {
+    			if (changed.hiresdir || changed.stack || changed.transitioning || changed.$destroyingExpandedGallery || changed.showTitles || changed.$loadingSecondary) {
     				each_value_1 = ctx.stack;
 
     				for (var i = 0; i < each_value_1.length; i += 1) {
@@ -1842,7 +1860,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (300:0) {#if $activeCollection == id}
+    // (304:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1851,11 +1869,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			t = text(ctx.name);
-    			p.className = "svelte-78yqex";
-    			add_location(p, file$3, 301, 4, 8351);
+    			p.className = "svelte-1ygsga";
+    			add_location(p, file$3, 305, 4, 8412);
     			div.id = "breadcrumb";
-    			div.className = "breadcrumb svelte-78yqex";
-    			add_location(div, file$3, 300, 2, 8207);
+    			div.className = "breadcrumb svelte-1ygsga";
+    			add_location(div, file$3, 304, 2, 8268);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1904,7 +1922,7 @@ var app = (function () {
     	};
     }
 
-    // (316:2) {#if $activeCollection == id}
+    // (320:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -1938,18 +1956,18 @@ var app = (function () {
     	};
     }
 
-    // (323:4) {:else}
-    function create_else_block(ctx) {
+    // (327:4) {:else}
+    function create_else_block$1(ctx) {
     	var div;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			div.className = "dummyimage svelte-78yqex";
+    			div.className = "dummyimage svelte-1ygsga";
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$3, 323, 6, 9026);
+    			add_location(div, file$3, 327, 6, 9069);
     		},
 
     		m: function mount(target, anchor) {
@@ -1973,14 +1991,12 @@ var app = (function () {
     	};
     }
 
-    // (321:4) {#if index==0}
+    // (325:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
     	var image = new Image_1({
-    		props: {
-    		image: "" + ctx.lowresdir + "/" + ctx.image.src
-    	},
+    		props: { image: ctx.image.lowres },
     		$$inline: true
     	});
 
@@ -1996,7 +2012,7 @@ var app = (function () {
 
     		p: function update(changed, ctx) {
     			var image_changes = {};
-    			if (changed.lowresdir || changed.imagecollection) image_changes.image = "" + ctx.lowresdir + "/" + ctx.image.src;
+    			if (changed.imagecollection) image_changes.image = ctx.image.lowres;
     			image.$set(image_changes);
     		},
 
@@ -2018,13 +2034,13 @@ var app = (function () {
     	};
     }
 
-    // (320:2) {#each imagecollection as image, index}
+    // (324:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
     	var if_block_creators = [
     		create_if_block_1$1,
-    		create_else_block
+    		create_else_block$1
     	];
 
     	var if_blocks = [];
@@ -2094,13 +2110,11 @@ var app = (function () {
     	};
     }
 
-    // (334:0) {#if attemptingtoLoad}
+    // (338:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
     	let galleryexpanded_props = {
-    		lowresdir: ctx.lowresdir,
-    		hiresdir: ctx.hiresdir,
     		stack: ctx.imagecollection,
     		originaltarget: ctx.collection
     	};
@@ -2116,8 +2130,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
-    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-78yqex";
-    			add_location(div, file$3, 335, 3, 9406);
+    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1ygsga";
+    			add_location(div, file$3, 339, 3, 9449);
     		},
 
     		m: function mount(target, anchor) {
@@ -2128,13 +2142,11 @@ var app = (function () {
 
     		p: function update(changed, ctx) {
     			var galleryexpanded_changes = {};
-    			if (changed.lowresdir) galleryexpanded_changes.lowresdir = ctx.lowresdir;
-    			if (changed.hiresdir) galleryexpanded_changes.hiresdir = ctx.hiresdir;
     			if (changed.imagecollection) galleryexpanded_changes.stack = ctx.imagecollection;
     			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
     			galleryexpanded.$set(galleryexpanded_changes);
 
-    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-78yqex")) {
+    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1ygsga")) {
     				div.className = div_class_value;
     			}
     		},
@@ -2216,16 +2228,16 @@ var app = (function () {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
-    			span.className = "svelte-78yqex";
-    			add_location(span, file$3, 328, 4, 9213);
-    			h2.className = "svelte-78yqex";
-    			add_location(h2, file$3, 326, 2, 9193);
-    			a.href = a_href_value = "" + ctx.hiresdir + "/" + ctx.imagecollection[0].src;
-    			a.className = "collection svelte-78yqex";
+    			span.className = "svelte-1ygsga";
+    			add_location(span, file$3, 332, 4, 9256);
+    			h2.className = "svelte-1ygsga";
+    			add_location(h2, file$3, 330, 2, 9236);
+    			a.href = a_href_value = ctx.imagecollection[0].hires;
+    			a.className = "collection svelte-1ygsga";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$3, 305, 0, 8381);
+    			add_location(a, file$3, 309, 0, 8442);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2306,7 +2318,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (changed.lowresdir || changed.imagecollection) {
+    			if (changed.imagecollection) {
     				each_value = ctx.imagecollection;
 
     				for (var i = 0; i < each_value.length; i += 1) {
@@ -2341,7 +2353,7 @@ var app = (function () {
     				ctx.a_binding(a, null);
     			}
 
-    			if ((!current || changed.hiresdir || changed.imagecollection) && a_href_value !== (a_href_value = "" + ctx.hiresdir + "/" + ctx.imagecollection[0].src)) {
+    			if ((!current || changed.imagecollection) && a_href_value !== (a_href_value = ctx.imagecollection[0].hires)) {
     				a.href = a_href_value;
     			}
 
@@ -2720,13 +2732,13 @@ var app = (function () {
     			a0.className = "links svelte-3xeheq";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$4, 212, 2, 4711);
+    			add_location(a0, file$4, 212, 2, 5817);
     			attr(path, "d", "M28.664,22.376 C30.152,22.376 31.784,23.72 31.784,25.28 C31.784,27.464 28.424,31.616 26.768,31.616 C26.144,31.616 25.064,30.68 25.064,30.152 C25.064,29.6 25.88,28.88 26.624,28.16 C27.32,27.464 27.656,26.792 27.896,26.792 C28.136,26.792 28.904,27.632 28.904,27.632 C29.576,27.056 30.44,26.024 30.44,25.064 C30.44,24.728 30.032,24.296 29.648,24.296 C26.648,24.296 21.224,28.376 21.224,31.112 C21.224,33.512 27.44,34.304 27.44,37.616 C27.44,41.576 22.64,45.464 18.368,45.464 C15.44,45.464 12.8,42.344 12.8,41.792 C12.8,41.48 13.04,41.144 13.328,41.144 C13.544,41.144 15.104,42.968 17.648,42.968 C20.864,42.968 24.2,40.136 24.2,37.472 C24.2,34.448 18.488,34.016 18.488,30.08 C18.488,26.36 24.632,22.376 28.664,22.376 Z M32.624,41.312 C31.04,41.312 28.904,39.992 28.904,38.096 C28.904,36.536 30.032,33.896 31.184,31.568 C30.56,31.304 30.176,30.728 30.176,30.488 C30.176,30.344 30.344,30.152 30.488,30.152 C30.656,30.152 30.92,30.416 31.736,30.488 C32.72,28.568 33.584,27.032 33.584,26.816 C33.584,26.624 33.632,26.456 33.848,26.456 C34.472,26.456 35.504,27.344 35.504,28.28 C35.504,28.904 35.288,29.12 34.544,30.44 C35.576,30.392 36.512,30.32 36.728,30.32 C37.112,30.32 37.208,30.392 37.208,30.632 C37.208,30.872 36.512,32.048 35.624,32.048 C35.216,32.048 34.496,32 33.776,31.928 L32.96,33.656 C31.472,36.896 31.352,38.024 31.352,38.528 C31.352,39.296 31.664,39.92 32.48,39.92 C33.488,39.92 35.168,37.856 36.152,36.488 C36.56,35.912 36.68,35.72 36.8,35.72 C36.992,35.72 37.376,36.296 37.376,36.656 C37.376,37.016 37.28,37.304 36.776,37.952 C35.864,39.152 34.232,41.312 32.624,41.312 Z M44.384,41.192 C43.328,41.192 42.392,40.616 41.984,39.944 C41.84,39.68 41.816,39.224 41.816,38.912 L41.816,38.6 C41.816,38.6 40.016,41.336 38.504,41.336 C37.016,41.336 35.624,39.728 35.624,38.36 C35.624,35.816 39.344,30.848 41.768,30.848 C42.872,30.848 44.096,31.904 44.096,32.696 C44.096,32.696 44.456,32.456 44.648,32.456 C45.152,32.456 46.352,33.248 46.352,33.584 C46.352,33.92 44.888,35.696 44.312,37.472 C44,38.432 43.928,38.96 43.928,39.2 C43.928,39.584 44.288,39.8 44.6,39.8 C45.104,39.8 46.736,37.856 47.72,36.488 C48.128,35.912 48.248,35.72 48.368,35.72 C48.56,35.72 48.944,36.296 48.944,36.656 C48.944,37.016 48.848,37.304 48.344,37.952 C47.432,39.152 45.896,41.192 44.384,41.192 Z M42.272,32.888 C41.144,32.888 37.904,37.4 37.904,39.392 C37.904,39.752 38.216,39.944 38.552,39.944 C39.104,39.944 41.168,37.712 42.056,36.152 C41.984,36.032 41.912,35.96 41.912,35.792 C41.912,35.384 42.872,34.592 42.872,33.464 C42.872,33.104 42.584,32.888 42.272,32.888 Z M51.992,41.336 C49.88,41.336 47.576,39.896 47.576,37.232 C47.576,34.64 50.792,30.944 52.976,30.944 C54.392,30.944 55.52,32.024 55.52,32.96 C55.52,34.04 54.656,36.008 54.056,36.008 C53.456,36.008 52.904,35.408 52.904,35.24 C52.904,35.168 52.976,35.072 53.12,34.928 C53.552,34.496 54.248,33.584 54.248,32.912 C54.248,32.696 54.104,32.6 53.936,32.6 C52.544,32.6 50.24,35.84 50.24,37.88 C50.24,39.104 51.08,39.992 52.112,39.992 C53.528,39.992 55.232,37.856 56.216,36.488 C56.624,35.912 56.744,35.72 56.864,35.72 C57.056,35.72 57.44,36.296 57.44,36.656 C57.44,37.016 57.344,37.304 56.84,37.952 C55.928,39.152 54.2,41.336 51.992,41.336 Z M62.816,32.264 C61.976,32.264 59.264,36.032 58.904,37.04 C60.728,37.04 63.128,34.304 63.128,32.672 C63.128,32.408 63.056,32.264 62.816,32.264 Z M62.384,41.528 C59.864,41.528 59.12,38.624 58.208,38.552 C58.208,38.552 57.248,40.568 57.2,41.024 C57.176,41.288 56.936,41.408 56.72,41.408 C56.504,41.408 55.208,41.096 55.208,40.16 C55.208,39.224 55.448,38.192 57.2,33.608 C58.952,29.024 59.96,27.08 59.96,26.696 C59.96,26.528 60.104,26.48 60.344,26.48 C60.584,26.48 62.048,27.104 62.048,27.584 C62.048,28.064 60.632,30.92 59.312,34.52 C59.84,33.968 61.568,31.112 63.008,31.112 C64.448,31.112 65.144,32.072 65.144,33.776 C65.144,36.104 62.768,37.688 60.872,38.072 C62,38.576 62.288,39.512 62.984,39.512 C64.016,39.512 65.336,37.856 66.32,36.488 C66.728,35.912 66.848,35.72 66.968,35.72 C67.16,35.72 67.544,36.296 67.544,36.656 C67.544,37.016 67.448,37.304 66.944,37.952 C66.032,39.152 63.992,41.528 62.384,41.528 Z M64.664,38.792 C64.664,38.168 65.192,37.448 65.744,37.28 C66.872,35.672 68.36,33.824 69.296,32.216 C69.752,30.464 70.592,28.76 71.168,28.76 C72.104,28.76 73.112,29.504 73.112,30.272 C73.112,30.848 72.08,32.072 71.264,33.128 C71.264,35.048 72.704,35.336 72.704,38.072 C72.704,38.456 72.536,38.936 72.536,38.936 C73.664,38.24 74.576,37.28 75.152,36.488 C75.56,35.912 75.68,35.72 75.8,35.72 C75.992,35.72 76.376,36.296 76.376,36.656 C76.376,37.016 76.256,37.256 75.752,37.952 C74.336,39.896 71.864,41.384 69.224,41.384 C66.656,41.384 64.664,39.992 64.664,38.792 Z M66.776,38.216 C66.776,38.744 67.64,39.848 68.456,39.848 C69.344,39.848 69.968,38.696 69.968,37.232 C69.968,35.744 69.8,33.776 69.8,33.776 C68.96,35.096 67.952,36.608 66.776,38.216 Z");
     			attr(path, "id", "Stacks");
-    			add_location(path, file$4, 216, 6, 5184);
+    			add_location(path, file$4, 216, 6, 6290);
     			attr(g, "transform", "translate(-12.000000, -22.000000)");
     			attr(g, "fill-rule", "nonzero");
-    			add_location(g, file$4, 215, 5, 5108);
+    			add_location(g, file$4, 215, 5, 6214);
     			attr(svg, "width", "65px");
     			attr(svg, "height", "24px");
     			attr(svg, "viewBox", "0 0 65 24");
@@ -2734,17 +2746,17 @@ var app = (function () {
     			attr(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
     			attr(svg, "class", "svelte-3xeheq");
-    			add_location(svg, file$4, 214, 3, 4958);
+    			add_location(svg, file$4, 214, 3, 6064);
     			div0.className = "stacks-logo svelte-3xeheq";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$4, 213, 2, 4816);
+    			add_location(div0, file$4, 213, 2, 5922);
     			a1.target = "_blank";
     			a1.className = "links svelte-3xeheq";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$4, 220, 2, 10074);
+    			add_location(a1, file$4, 220, 2, 11180);
     			div1.className = "menu svelte-3xeheq";
-    			add_location(div1, file$4, 211, 1, 4630);
+    			add_location(div1, file$4, 211, 1, 5736);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
@@ -2808,30 +2820,32 @@ var app = (function () {
 
     // (235:0) {#if about }
     function create_if_block$3(ctx) {
-    	var div, p0, t_1, p1, div_intro, div_outro, current, dispose;
+    	var div, p, t0, br0, br1, t1, div_intro, div_outro, current, dispose;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			p0 = element("p");
-    			p0.textContent = "This started out as a small code challenge to learn Svelte v3 & to see if I could build a procreate-like gallery.";
-    			t_1 = space();
-    			p1 = element("p");
-    			p1.textContent = "I'm hopefully going to move it into Sapper and see if I can transition between";
-    			p0.className = "svelte-3xeheq";
-    			add_location(p0, file$4, 236, 0, 11519);
-    			p1.className = "svelte-3xeheq";
-    			add_location(p1, file$4, 237, 0, 11640);
+    			p = element("p");
+    			t0 = text("This started out as a small code challenge to start getting to grips with Svelte v3 & to see if I could build a procreate-inspired UI for a gallery of images.");
+    			br0 = element("br");
+    			br1 = element("br");
+    			t1 = text("\nI'm hopefully going to move it into Sapper and see if I can have a proper url structure and transition between routes.");
+    			add_location(br0, file$4, 236, 161, 12786);
+    			add_location(br1, file$4, 236, 166, 12791);
+    			p.className = "svelte-3xeheq";
+    			add_location(p, file$4, 236, 0, 12625);
     			div.className = "about svelte-3xeheq";
-    			add_location(div, file$4, 235, 0, 11403);
+    			add_location(div, file$4, 235, 0, 12509);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div, anchor);
-    			append(div, p0);
-    			append(div, t_1);
-    			append(div, p1);
+    			append(div, p);
+    			append(p, t0);
+    			append(p, br0);
+    			append(p, br1);
+    			append(p, t1);
     			current = true;
     		},
 
@@ -2978,9 +2992,9 @@ var app = (function () {
     			set_style(div0, "height", "50px");
     			set_style(div0, "margin-bottom", "20px");
     			set_style(div0, "margin-top", "25px");
-    			add_location(div0, file$4, 209, 0, 4518);
+    			add_location(div0, file$4, 209, 0, 5624);
     			div1.className = "container svelte-3xeheq";
-    			add_location(div1, file$4, 225, 0, 10235);
+    			add_location(div1, file$4, 225, 0, 11341);
     		},
 
     		l: function claim(nodes) {
@@ -3173,39 +3187,39 @@ var app = (function () {
     	
 
     	let collection1 = [
-    		{ src: 'Noa.JPG', name: 'Noa' },
-    		{ src: 'dog.JPG', name: 'Dog' },
-    		{ src: 'glass.JPG', name: 'Glass' }
+    		{ lowres: 'images/Noa.jpg', hires: 'images/originals/Noa.jpg', name: 'Noa' },
+    		{ lowres: 'images/dog.jpg', hires: 'images/originals/dog.jpg', name: 'Dog' },
+    		{ lowres: 'images/glass.jpg', hires: 'images/originals/glass.jpg', name: 'Glass' }
     	];
     	let collection2 = [
-    		{ src: 'cash.JPG', name: 'Cash suitcase' },
-    		{ src: 'robo.JPG', name: 'Robot' },
-    		{ src: 'tako.JPG', name: 'Octopus' }
+    		{ lowres: 'images/cash.jpg', hires: 'images/originals/cash.jpg', name: 'Cash suitcase' },
+    		{ lowres: 'images/robo.jpg', hires: 'images/originals/robo.jpg', name: 'Robot' },
+    		{ lowres: 'images/tako.jpg', hires: 'images/originals/tako.jpg', name: 'Octopus' }
     	];
     	let collection3 = [
-    		{ src: 'citizens.JPG', name: 'Citizens of science' },
-    		{ src: 'screwit.JPG', name: 'Screw It' },
-    		{ src: 'boltit.JPG', name: 'Boltman' },
-    		{ src: 'kumo.JPG', name: 'Spiderdeath' }
+    		{ lowres: 'images/citizens.jpg', hires: 'images/originals/citizens.jpg', name: 'Citizens of science' },
+    		{ lowres: 'images/screwit.jpg', hires: 'images/originals/screwit.jpg', name: 'Screw It' },
+    		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
+    		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
     	];
     	let collection4 = [
-    		{ src: 'atami.JPG', name: 'Atami at night' },
-    		{ src: 'kenodo.JPG', name: 'Konodo Highway' },
-    		{ src: 'kenodo2.JPG', name: 'Tunnels' }
+    		{ lowres: 'images/atami.jpg', hires: 'images/originals/atami.jpg', name: 'Atami at night' },
+    		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
+    		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
     	];
     	let collection6 = [
-    		{ src: 'boring.JPG', name: 'Everything is boring' },
-    		{ src: 'hownotto.JPG', name: 'How not to draw' },
-    		{ src: 'isometric.JPG', name: 'Isometric' },
-    		{ src: 'notes.JPG', name: 'Notes' },
-    		{ src: 'glass-b+w.JPG', name: 'Glass' }
+    		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
+    		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
+    		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
+    		{ lowres: 'images/notes.jpg', hires: 'images/originals/Noa.jpg', name: 'Notes' },
+    		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' }
     	];
     	let collection5 = [
-    		{ src: 'angrykid2.JPG', name: 'Angry 1' },
-    		{ src: 'angrykid1.JPG', name: 'Angry 2' },
-    		{ src: 'angrykid3.JPG', name: 'Angry 3' },
-    		{ src: 'angrykid4.JPG', name: 'Angry 4' },
-    		{ src: 'angrykid5.JPG', name: 'Angry 5' }
+    		{ lowres: 'images/angrykid2.jpg', hires: 'images/originals/angrykid2.jpg', name: 'Angry 1' },
+    		{ lowres: 'images/angrykid1.jpg', hires: 'images/originals/angrykid1.jpg', name: 'Angry 2' },
+    		{ lowres: 'images/angrykid3.jpg', hires: 'images/originals/angrykid3.jpg', name: 'Angry 3' },
+    		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 4' },
+    		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 5' }
     	];
 
 

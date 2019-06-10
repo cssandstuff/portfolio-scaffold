@@ -99,9 +99,9 @@
     }
   }
 </style>
-
+{#if visible}
 <img src="{image}" alt="" class="{visible ? '' : 'opacity--0'}">
-{#if !visible}
+{:else}
   <div class="loader">
     <div class="inner"></div>
   </div>

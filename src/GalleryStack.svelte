@@ -195,6 +195,10 @@
     pointer-events: none;
   }
 
+  .collection :global(.loader){
+    border-radius: 4px;
+  }
+
   .dummyimage{
     border: 1px solid #d6d6d6;
     background: rgba(255,255,255,0.8);
@@ -303,7 +307,7 @@
   </div>
 {/if}
 
-<a href="{hiresdir}/{imagecollection[0].src}" class:active="{id === $activeCollection && $loadingSecondary == true}" 
+<a href="{imagecollection[0].hires}" class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
      data-id={id} 
@@ -319,7 +323,7 @@
   <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}
-      <Image image="{lowresdir}/{image.src}" />
+      <Image image="{image.lowres}" />
     {:else}
       <div class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></div>
     {/if}
@@ -334,6 +338,6 @@
 {#if attemptingtoLoad}
   <!-- {@debug imagecollection} -->
    <div class="loading--{$loadingSecondary}">
-    <GalleryExpanded bind:this={galleryExpanded} lowresdir={lowresdir} hiresdir={hiresdir} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
+    <GalleryExpanded bind:this={galleryExpanded} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}

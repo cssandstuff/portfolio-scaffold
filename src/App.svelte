@@ -17,39 +17,39 @@
 	
 
 	let collection1 = [
-		{ src: 'Noa.JPG', name: 'Noa' },
-		{ src: 'dog.JPG', name: 'Dog' },
-		{ src: 'glass.JPG', name: 'Glass' }
+		{ lowres: 'images/Noa.jpg', hires: 'images/originals/Noa.jpg', name: 'Noa' },
+		{ lowres: 'images/dog.jpg', hires: 'images/originals/dog.jpg', name: 'Dog' },
+		{ lowres: 'images/glass.jpg', hires: 'images/originals/glass.jpg', name: 'Glass' }
 	];
 	let collection2 = [
-		{ src: 'cash.JPG', name: 'Cash suitcase' },
-		{ src: 'robo.JPG', name: 'Robot' },
-		{ src: 'tako.JPG', name: 'Octopus' }
+		{ lowres: 'images/cash.jpg', hires: 'images/originals/cash.jpg', name: 'Cash suitcase' },
+		{ lowres: 'images/robo.jpg', hires: 'images/originals/robo.jpg', name: 'Robot' },
+		{ lowres: 'images/tako.jpg', hires: 'images/originals/tako.jpg', name: 'Octopus' }
 	];
 	let collection3 = [
-		{ src: 'citizens.JPG', name: 'Citizens of science' },
-		{ src: 'screwit.JPG', name: 'Screw It' },
-		{ src: 'boltit.JPG', name: 'Boltman' },
-		{ src: 'kumo.JPG', name: 'Spiderdeath' }
+		{ lowres: 'images/citizens.jpg', hires: 'images/originals/citizens.jpg', name: 'Citizens of science' },
+		{ lowres: 'images/screwit.jpg', hires: 'images/originals/screwit.jpg', name: 'Screw It' },
+		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
+		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
 	];
 	let collection4 = [
-		{ src: 'atami.JPG', name: 'Atami at night' },
-		{ src: 'kenodo.JPG', name: 'Konodo Highway' },
-		{ src: 'kenodo2.JPG', name: 'Tunnels' }
+		{ lowres: 'images/atami.jpg', hires: 'images/originals/atami.jpg', name: 'Atami at night' },
+		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
+		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
 	];
 	let collection6 = [
-		{ src: 'boring.JPG', name: 'Everything is boring' },
-		{ src: 'hownotto.JPG', name: 'How not to draw' },
-		{ src: 'isometric.JPG', name: 'Isometric' },
-		{ src: 'notes.JPG', name: 'Notes' },
-		{ src: 'glass-b+w.JPG', name: 'Glass' }
+		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
+		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
+		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
+		{ lowres: 'images/notes.jpg', hires: 'images/originals/Noa.jpg', name: 'Notes' },
+		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' }
 	];
 	let collection5 = [
-		{ src: 'angrykid2.JPG', name: 'Angry 1' },
-		{ src: 'angrykid1.JPG', name: 'Angry 2' },
-		{ src: 'angrykid3.JPG', name: 'Angry 3' },
-		{ src: 'angrykid4.JPG', name: 'Angry 4' },
-		{ src: 'angrykid5.JPG', name: 'Angry 5' }
+		{ lowres: 'images/angrykid2.jpg', hires: 'images/originals/angrykid2.jpg', name: 'Angry 1' },
+		{ lowres: 'images/angrykid1.jpg', hires: 'images/originals/angrykid1.jpg', name: 'Angry 2' },
+		{ lowres: 'images/angrykid3.jpg', hires: 'images/originals/angrykid3.jpg', name: 'Angry 3' },
+		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 4' },
+		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 5' }
 	];
 
 
@@ -234,7 +234,7 @@
 </div>
 {#if about }
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
-<p>This started out as a small code challenge to learn Svelte v3 & to see if I could build a procreate-like gallery.</p>
-<p>I'm hopefully going to move it into Sapper and see if I can transition between</p>
+<p>This started out as a small code challenge to start getting to grips with Svelte v3 & to see if I could build a procreate-inspired UI for a gallery of images.<br/><br/>
+I'm hopefully going to move it into Sapper and see if I can have a proper url structure and transition between routes.</p>
 </div>
 {/if}
