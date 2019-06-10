@@ -240,6 +240,6 @@
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">
 <p>This started out as a small code challenge to start getting to grips with <a href="http://svelte.dev">Svelte</a> v3 & to see if I could build a procreate-inspired UI for a gallery of images.<br/><br/>
 I'm hopefully going to move it into <a href="http://svelte.dev/sapper">Sapper</a> soon and see if I can have a proper url structure and transition between routes.<br/><br/>
-The current bundle size of stacks is arount 10kb (gzipped), but I'm hoping to get that down a little more.</p>
+The current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.</p>
 </div>
 {/if}
