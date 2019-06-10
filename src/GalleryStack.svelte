@@ -33,6 +33,7 @@
   let galleryExpanded;
   let fakeImages;
   let firstImage;
+  let hoverTimeOut
 
   // reference to orginal colour
   let originalbgcolor;
@@ -59,13 +60,20 @@
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
-    firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-1deg)';
+    firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+    document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
 
-    // grayscale other images
-    elements.forEach(element => {
-			if (element !== collection) element.firstElementChild.style.filter = "sepia(0.45) grayscale(0.9)";
-		});
-    
+    hoverTimeOut = setTimeout(()=>{
+       // grayscale other images
+      elements.forEach(element => {
+        if (element !== collection) {
+          element.style.transition = "0.8s all ease-out";
+          element.style.filter = "opacity(0.8)";
+          element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.9)";
+        }
+      });
+    }, 150);  
   }
 
   // Un-Rotate image stack on hover out
@@ -73,11 +81,15 @@
     //collection.style.transform = 'rotate(0deg)';
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
-    })
+    });
     firstImage.style.transform = 'scale(1) rotate(0deg)';
-    
+    document.documentElement.style.removeProperty('--bgcolor');
+
+    clearTimeout(hoverTimeOut);
     // un-grayscale all images
     elements.forEach(element => {
+      element.style.removeProperty("transition");
+      element.style.filter = "opacity(1)";
 			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
 		});
   }
@@ -87,27 +99,34 @@
     attemptingtoLoad = true;
     event.preventDefault();
 
-    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
-    originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
-    if(bgcolor){
-      
-      let hslcolor = bgcolor.split(",");
+    elements.forEach(element => {
+      element.classList.add('neardeath');
+      element.classList.add('no-pointer-events');
+    });
+    
 
-      // Can I do this automatically to find the primary color of the image?
-      document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-      document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
-      document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
-    }
-    if(textcolor){
+    (async () => {
+      await sleep(200);
+      originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+      originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
       
-      let hslcolor = textcolor.split(",");
+      if(bgcolor){
+        
+        let hslcolor = bgcolor.split(",");
+        
+        // Can I do this automatically to find the primary color of the image?
+        document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+        document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.75)`);
+        //document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 15}%)`);
+      }
 
-      document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-      console.log(`hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-      console.log(getComputedStyle(document.documentElement).getPropertyValue('--textcolor'))
-      
-    }
+      if(textcolor){
+        let hslcolor = textcolor.split(",");
+        document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+      }
 
+    })();
+    
     // this sets the loading to true.
     loadingSecondary.update(n => true);
     
@@ -124,9 +143,8 @@
     
     elements.forEach(element => {
       var rect = element.getBoundingClientRect();
-      element.classList.add('neardeath');
       let myId = parseInt(element.dataset.id);
-      element.classList.add('no-pointer-events');
+      
       if(myId!==$activeCollection){
         element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`
       }
@@ -161,7 +179,7 @@
     (async () => {
       await sleep(600);
       elements.forEach(element => {
-        element.classList.remove('no-pointer-events');
+      element.classList.remove('no-pointer-events');
       });
     })();
   }
@@ -184,7 +202,6 @@
       console.log("Loading complete");
       loadingSecondary.update(n => false);
       count = 0;
-      
     }
   }
 </script>
@@ -255,20 +272,28 @@
   .collection :global(img) {
     position: absolute;
     top: 0; left: 0;
+    /* width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    min-width: calc(100% - 2px);
+    min-height: calc(100% - 2px);
+        border: 1px solid #fff;
+         */
     box-shadow: 0 0 2px #ccc;
     /* transition: 0.15s all ease-out; */
     border-radius: 4px;
+
   } 
 
   .collection:hover :global(img){
     transition: 0.3s all ease-out;
+    /* border: 1px solid rgba(90,90,90,0.7); */
   }
 
   .collection :global(img:first-child){
-    box-shadow: 0px 1px 3px rgba(90,90,90, 0.3)
+    box-shadow: 0px 1px 3px rgba(90,90,90, 0.2)
   }
   .collection:hover :global(img:first-child){
-    box-shadow: 0px -5px 30px rgba(90,90,90, 0.3)
+    box-shadow: 0px -5px 20px rgba(90,90,90, 0.2)
   }
 
   .breadcrumb{

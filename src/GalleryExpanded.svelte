@@ -350,10 +350,10 @@
 <style>
   /* TODO: Clean+optimise these a little, get rid of any globals. */
   h2{
-    position: absolute; bottom: -50px; left: -10px;
+    position: absolute; bottom: -40px; left: -10px;
     font-weight: 200;
-    padding: 0.5em 0;
-    margin-left: 0.8em;
+    padding: 1.8em 0 10px 0px;
+    margin: 0 0 0 11px;
     font-size: 0.85em;
     color: var(--textcolor);
     opacity: 0;
@@ -392,7 +392,16 @@
     box-shadow: 0 0 2px #ccc;
     border-radius: 4px;
     background: #ccc;
+    
+    /* width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    min-width: calc(100% - 2px);
+    min-height: calc(100% - 2px); 
+    border: 1px solid #fff;*/
   }
+  /* .stack a:hover :global(img) {
+    border: 1px solid rgba(90,90,90,0.7);
+  } */
   .transitioning :global(img) {
     transition: 0s all;
   }
@@ -404,7 +413,7 @@
     transition: all 0.5s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;
   }
   .stack :global(.quicktransition) {
-    transition: transform 0.2s cubic-bezier(0,0,.13,1.2), opacity 0.3s ease-out !important;
+    transition: transform 0.2s cubic-bezier(0,0,.13,1), opacity 0.3s ease-out !important;
     opacity: 0.5;
   }
   .stack :global(.hitransition) {
@@ -548,12 +557,15 @@
     top: 20px;
   }
   .magnify{
+    /* width: calc(100% - 2px);
+    height: calc(100% - 2px); */
     width: 100%;
-    background-color: var(--bgcolortint);
     height: 100%;
-    position: absolute; bottom: 0; right: 0;
+    background-color: var(--bgcolortint);
+    position: absolute; top: 0px; left: 0px;
     opacity: 0;
     transition: 0.3s opacity;
+    border-radius: 4px;
   }
   .magnify.out{
     transition: 0s opacity;
@@ -565,7 +577,7 @@
     bottom: calc(50% - 16px);
     width: 14px;
     height: 4px;
-    background: #fff;
+    background: var(--light);
     transform: rotate(45deg);
   }
   .magnify:after{
@@ -573,7 +585,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 4px solid #fff;
+    border: 4px solid var(--light);
     position: absolute; left: calc(50% - 19px); top: calc(50% - 22px);
     z-index: 9;
   }

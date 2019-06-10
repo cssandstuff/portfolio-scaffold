@@ -921,7 +921,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (585:4) {#each stack as image, index}
+    // (597:4) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
 
@@ -944,17 +944,17 @@ var app = (function () {
     			t1 = space();
     			h2 = element("h2");
     			t2 = text(t2_value);
-    			span.className = "magnify svelte-113r2zk";
+    			span.className = "magnify svelte-ogg5rk";
     			toggle_class(span, "out", ctx.showTitles === false);
-    			add_location(span, file$3, 587, 8, 16856);
-    			h2.className = "svelte-113r2zk";
+    			add_location(span, file$3, 599, 8, 17217);
+    			h2.className = "svelte-ogg5rk";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 588, 8, 16929);
-    			a.className = "galleryitem svelte-113r2zk";
+    			add_location(h2, file$3, 600, 8, 17290);
+    			a.className = "galleryitem svelte-ogg5rk";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 585, 6, 16653);
+    			add_location(a, file$3, 597, 6, 17014);
     			dispose = listen(a, "click", click_handler);
     		},
 
@@ -1024,7 +1024,7 @@ var app = (function () {
     	};
     }
 
-    // (596:0) {#if ready}
+    // (608:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
 
@@ -1068,15 +1068,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-113r2zk";
-    			add_location(span0, file$3, 605, 4, 17557);
-    			span1.className = "next svelte-113r2zk";
-    			add_location(span1, file$3, 606, 4, 17616);
-    			span2.className = "close svelte-113r2zk";
-    			add_location(span2, file$3, 607, 4, 17667);
-    			div.className = "hires svelte-113r2zk";
+    			span0.className = "previous svelte-ogg5rk";
+    			add_location(span0, file$3, 617, 4, 17918);
+    			span1.className = "next svelte-ogg5rk";
+    			add_location(span1, file$3, 618, 4, 17977);
+    			span2.className = "close svelte-ogg5rk";
+    			add_location(span2, file$3, 619, 4, 18028);
+    			div.className = "hires svelte-ogg5rk";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 599, 2, 17233);
+    			add_location(div, file$3, 611, 2, 17594);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1207,7 +1207,7 @@ var app = (function () {
     	};
     }
 
-    // (597:2) {#if !hiresLoaded}
+    // (609:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1241,7 +1241,7 @@ var app = (function () {
     	};
     }
 
-    // (601:4) {#each stack as image, index}
+    // (613:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1255,9 +1255,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-113r2zk";
+    			div.className = "hi-image svelte-ogg5rk";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 601, 6, 17382);
+    			add_location(div, file$3, 613, 6, 17743);
     		},
 
     		m: function mount(target, anchor) {
@@ -1337,8 +1337,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-113r2zk";
-    			add_location(div, file$3, 583, 2, 16555);
+    			div.className = "stack gallery svelte-ogg5rk";
+    			add_location(div, file$3, 595, 2, 16916);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1890,7 +1890,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (333:0) {#if $activeCollection == id}
+    // (358:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1899,11 +1899,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			t = text(ctx.name);
-    			p.className = "svelte-4geoe0";
-    			add_location(p, file$4, 334, 4, 9534);
+    			p.className = "svelte-sz4ypl";
+    			add_location(p, file$4, 359, 4, 10291);
     			div.id = "breadcrumb";
-    			div.className = "breadcrumb svelte-4geoe0";
-    			add_location(div, file$4, 333, 2, 9390);
+    			div.className = "breadcrumb svelte-sz4ypl";
+    			add_location(div, file$4, 358, 2, 10147);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1952,7 +1952,7 @@ var app = (function () {
     	};
     }
 
-    // (349:2) {#if $activeCollection == id}
+    // (374:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -1986,18 +1986,18 @@ var app = (function () {
     	};
     }
 
-    // (356:4) {:else}
+    // (381:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			div.className = "dummyimage svelte-4geoe0";
+    			div.className = "dummyimage svelte-sz4ypl";
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 356, 6, 10226);
+    			add_location(div, file$4, 381, 6, 10983);
     		},
 
     		m: function mount(target, anchor) {
@@ -2021,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (354:4) {#if index==0}
+    // (379:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2065,7 +2065,7 @@ var app = (function () {
     	};
     }
 
-    // (353:2) {#each imagecollection as image, index}
+    // (378:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2141,7 +2141,7 @@ var app = (function () {
     	};
     }
 
-    // (367:0) {#if attemptingtoLoad}
+    // (392:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2161,8 +2161,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
-    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-4geoe0";
-    			add_location(div, file$4, 368, 3, 10606);
+    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-sz4ypl";
+    			add_location(div, file$4, 393, 3, 11363);
     		},
 
     		m: function mount(target, anchor) {
@@ -2177,7 +2177,7 @@ var app = (function () {
     			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
     			galleryexpanded.$set(galleryexpanded_changes);
 
-    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-4geoe0")) {
+    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-sz4ypl")) {
     				div.className = div_class_value;
     			}
     		},
@@ -2259,16 +2259,16 @@ var app = (function () {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
-    			span.className = "svelte-4geoe0";
-    			add_location(span, file$4, 361, 4, 10413);
-    			h2.className = "svelte-4geoe0";
-    			add_location(h2, file$4, 359, 2, 10393);
+    			span.className = "svelte-sz4ypl";
+    			add_location(span, file$4, 386, 4, 11170);
+    			h2.className = "svelte-sz4ypl";
+    			add_location(h2, file$4, 384, 2, 11150);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
-    			a.className = "collection svelte-4geoe0";
+    			a.className = "collection svelte-sz4ypl";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 338, 0, 9564);
+    			add_location(a, file$4, 363, 0, 10321);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2497,6 +2497,7 @@ var app = (function () {
       let galleryExpanded;
       let fakeImages;
       let firstImage;
+      let hoverTimeOut;
 
       // reference to orginal colour
       let originalbgcolor;
@@ -2523,12 +2524,19 @@ var app = (function () {
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
         });
-        firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-1deg)';
-        // grayscale other images
-        elements.forEach(element => {
-    			if (element !== collection) element.firstElementChild.style.filter = "sepia(0.45) grayscale(0.9)";
-    		});
-        
+        firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+        document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
+
+        hoverTimeOut = setTimeout(()=>{
+           // grayscale other images
+          elements.forEach(element => {
+            if (element !== collection) {
+              element.style.transition = "0.8s all ease-out";
+              element.style.filter = "opacity(0.8)";
+              element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.9)";
+            }
+          });
+        }, 150);  
       }
 
       // Un-Rotate image stack on hover out
@@ -2537,9 +2545,13 @@ var app = (function () {
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
         });
-        firstImage.style.transform = 'scale(1) rotate(0deg)';    
+        firstImage.style.transform = 'scale(1) rotate(0deg)';    document.documentElement.style.removeProperty('--bgcolor');
+
+        clearTimeout(hoverTimeOut);
         // un-grayscale all images
         elements.forEach(element => {
+          element.style.removeProperty("transition");
+          element.style.filter = "opacity(1)";
     			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
     		});
       }
@@ -2549,27 +2561,34 @@ var app = (function () {
         $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
         event.preventDefault();
 
-        originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
-        originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
-        if(bgcolor){
-          
-          let hslcolor = bgcolor.split(",");
+        elements.forEach(element => {
+          element.classList.add('neardeath');
+          element.classList.add('no-pointer-events');
+        });
+        
 
-          // Can I do this automatically to find the primary color of the image?
-          document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-          document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.6)`);
-          document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 10}%)`);
-        }
-        if(textcolor){
+        (async () => {
+          await sleep(200);
+          originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+          originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
           
-          let hslcolor = textcolor.split(",");
+          if(bgcolor){
+            
+            let hslcolor = bgcolor.split(",");
+            
+            // Can I do this automatically to find the primary color of the image?
+            document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+            document.documentElement.style.setProperty('--bgcolortint', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 0.75)`);
+            //document.documentElement.style.setProperty('--bgcolordarktint', `hsl(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]/hslcolor[1] * 15}%)`);
+          }
 
-          document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-          console.log(`hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-          console.log(getComputedStyle(document.documentElement).getPropertyValue('--textcolor'));
-          
-        }
+          if(textcolor){
+            let hslcolor = textcolor.split(",");
+            document.documentElement.style.setProperty('--textcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+          }
 
+        })();
+        
         // this sets the loading to true.
         loadingSecondary.update(n => true);
         
@@ -2586,9 +2605,8 @@ var app = (function () {
         
         elements.forEach(element => {
           var rect = element.getBoundingClientRect();
-          element.classList.add('neardeath');
           let myId = parseInt(element.dataset.id);
-          element.classList.add('no-pointer-events');
+          
           if(myId!==$activeCollection){
             element.style.transform = `translateX(${rect.left/3 - centerX/3}px) translateY(${rect.top/3 - centerY/3}px)`;
           }
@@ -2623,7 +2641,7 @@ var app = (function () {
         (async () => {
           await sleep(600);
           elements.forEach(element => {
-            element.classList.remove('no-pointer-events');
+          element.classList.remove('no-pointer-events');
           });
         })();
       }
@@ -2646,7 +2664,6 @@ var app = (function () {
           console.log("Loading complete");
           loadingSecondary.update(n => false);
           count = 0;
-          
         }
       }
 
