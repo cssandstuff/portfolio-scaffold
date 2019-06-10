@@ -1,4 +1,6 @@
 <script>
+	// TODO: Add video if available
+	// Add swipe interactions.
 	export let name;
 	import Logo from './Logo.svelte';
 	import GalleryStack from './GalleryStack.svelte';
@@ -27,9 +29,9 @@
 		{ lowres: 'images/tako.jpg', hires: 'images/originals/tako.jpg', name: 'Octopus' }
 	];
 	let collection3 = [
+		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
 		{ lowres: 'images/citizens.jpg', hires: 'images/originals/citizens.jpg', name: 'Citizens of science' },
 		{ lowres: 'images/screwit.jpg', hires: 'images/originals/screwit.jpg', name: 'Screw It' },
-		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
 		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
 	];
 	let collection4 = [
@@ -42,14 +44,14 @@
 		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
 		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
 		{ lowres: 'images/notes.jpg', hires: 'images/originals/Noa.jpg', name: 'Notes' },
-		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' }
+		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/Noa.jpg', name: 'Glass' },
+		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
+		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
 	];
 	let collection5 = [
 		{ lowres: 'images/angrykid2.jpg', hires: 'images/originals/angrykid2.jpg', name: 'Angry 1' },
-		{ lowres: 'images/angrykid1.jpg', hires: 'images/originals/angrykid1.jpg', name: 'Angry 2' },
-		{ lowres: 'images/angrykid3.jpg', hires: 'images/originals/angrykid3.jpg', name: 'Angry 3' },
-		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 4' },
-		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 5' }
+		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 3' },
+		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 4' }
 	];
 
 
@@ -202,9 +204,10 @@
 		font-weight: 200;
 		text-align: center;
 		width: 40%;
-		max-width: 800px;
+		max-width: 650px;
 		padding-top: 140px;
 		margin: auto;
+		text-align: left;
 	}
 	.about a{
 		color: rgba(255,255,255,0.8);
@@ -231,8 +234,10 @@
 <div class="container">
 	<GalleryStack width="" name="Painterly" bgcolor="261, 27, 71" imagecollection={collection1} id="{uid++}" />
 	<GalleryStack width="" name="Splashes" bgcolor="206, 69, 88" imagecollection={collection2} id="{uid++}" />
-	<GalleryStack width="" name="Citizens of science" bgcolor="182, 37, 73" imagecollection={collection3} id="{uid++}" />
-	<GalleryStack width="" name="Travelling" textcolor="0, 0, 100" bgcolor="209, 25, 24" imagecollection={collection4} id="{uid++}" />
+	<GalleryStack width="" name="Citizens of science" bgcolor="20, 62, 88" imagecollection={collection3} id="{uid++}" />
+	
+	
+	
 	<GalleryStack width="" name="Angry at kids" bgcolor="13, 92, 87" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  />
 </div>

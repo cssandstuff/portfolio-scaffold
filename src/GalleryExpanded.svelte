@@ -354,7 +354,7 @@
     font-weight: 200;
     padding: 0.5em 0;
     margin-left: 0.8em;
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: var(--textcolor);
     opacity: 0;
     width: 99%;

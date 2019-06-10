@@ -186,7 +186,7 @@
     font-weight: 200;
     padding: 0.5em 0 0.5em 0.5em;
     margin-left: 0.8em;
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: var(--textcolor);
     display: block;
     width: 99%;
@@ -203,7 +203,7 @@
   h2 span{
     display: block;
     color: #a9a9a9;
-    font-size: 0.8em
+    font-size: 0.75em;
   }
   .collection.active{
     z-index: 2 !important;
