@@ -1890,7 +1890,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (358:0) {#if $activeCollection == id}
+    // (360:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1900,10 +1900,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-sz4ypl";
-    			add_location(p, file$4, 359, 4, 10291);
+    			add_location(p, file$4, 361, 4, 10230);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-sz4ypl";
-    			add_location(div, file$4, 358, 2, 10147);
+    			add_location(div, file$4, 360, 2, 10086);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1952,7 +1952,7 @@ var app = (function () {
     	};
     }
 
-    // (374:2) {#if $activeCollection == id}
+    // (376:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -1986,7 +1986,7 @@ var app = (function () {
     	};
     }
 
-    // (381:4) {:else}
+    // (383:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -1997,7 +1997,7 @@ var app = (function () {
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 381, 6, 10983);
+    			add_location(div, file$4, 383, 6, 10922);
     		},
 
     		m: function mount(target, anchor) {
@@ -2021,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (379:4) {#if index==0}
+    // (381:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2065,7 +2065,7 @@ var app = (function () {
     	};
     }
 
-    // (378:2) {#each imagecollection as image, index}
+    // (380:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2141,7 +2141,7 @@ var app = (function () {
     	};
     }
 
-    // (392:0) {#if attemptingtoLoad}
+    // (394:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2162,7 +2162,7 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-sz4ypl";
-    			add_location(div, file$4, 393, 3, 11363);
+    			add_location(div, file$4, 395, 3, 11302);
     		},
 
     		m: function mount(target, anchor) {
@@ -2260,15 +2260,15 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-sz4ypl";
-    			add_location(span, file$4, 386, 4, 11170);
+    			add_location(span, file$4, 388, 4, 11109);
     			h2.className = "svelte-sz4ypl";
-    			add_location(h2, file$4, 384, 2, 11150);
+    			add_location(h2, file$4, 386, 2, 11089);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-sz4ypl";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 363, 0, 10321);
+    			add_location(a, file$4, 365, 0, 10260);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2475,6 +2475,7 @@ var app = (function () {
 
     // TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
     // add dark mode.
+
     // for wizardry to keep tabs on the collections
     const elements = new Set();
     //export let _resetStacks;
@@ -2520,10 +2521,11 @@ var app = (function () {
       
       // Rotate image stack on hover over
       function rotate() {
-        //collection.style.transform = 'rotate(-1.5deg)';
+
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
         });
+        
         firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
         document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
 
@@ -2568,7 +2570,7 @@ var app = (function () {
         
 
         (async () => {
-          await sleep(200);
+          await sleep(100);
           originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
           originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
           
@@ -2618,7 +2620,7 @@ var app = (function () {
       function resetStacks(){
         console.log('resetting...');
 
-        document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
+        document.documentElement.style.removeProperty('--bgcolor');
         document.documentElement.style.setProperty('--textcolor', originaltextcolor);
         
         // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
@@ -2798,21 +2800,22 @@ var app = (function () {
     			a0.className = "links svelte-1uqlejh";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$5, 227, 3, 6173);
+    			add_location(a0, file$5, 227, 3, 6196);
     			div0.className = "stacks-logo svelte-1uqlejh";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$5, 229, 3, 6283);
+    			add_location(div0, file$5, 229, 3, 6306);
     			a1.target = "_blank";
     			a1.className = "links svelte-1uqlejh";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$5, 233, 3, 6449);
+    			add_location(a1, file$5, 233, 3, 6472);
     			div1.className = "menu svelte-1uqlejh";
     			add_location(div1, file$5, 225, 2, 6087);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
     				listen(div1, "mouseenter", ctx.handleHover),
+    				listen(div1, "tap", ctx.handleHover),
     				listen(div1, "mouseleave", ctx.handleHover)
     			];
     		},
@@ -2899,18 +2902,18 @@ var app = (function () {
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
     			a0.className = "svelte-1uqlejh";
-    			add_location(a0, file$5, 252, 77, 7412);
-    			add_location(br0, file$5, 252, 193, 7528);
-    			add_location(br1, file$5, 252, 198, 7533);
+    			add_location(a0, file$5, 252, 77, 7435);
+    			add_location(br0, file$5, 252, 193, 7551);
+    			add_location(br1, file$5, 252, 198, 7556);
     			a1.href = "http://svelte.dev/sapper";
     			a1.className = "svelte-1uqlejh";
-    			add_location(a1, file$5, 253, 36, 7575);
-    			add_location(br2, file$5, 253, 162, 7701);
-    			add_location(br3, file$5, 253, 167, 7706);
+    			add_location(a1, file$5, 253, 36, 7598);
+    			add_location(br2, file$5, 253, 162, 7724);
+    			add_location(br3, file$5, 253, 167, 7729);
     			p.className = "svelte-1uqlejh";
-    			add_location(p, file$5, 252, 0, 7335);
+    			add_location(p, file$5, 252, 0, 7358);
     			div.className = "about svelte-1uqlejh";
-    			add_location(div, file$5, 251, 0, 7219);
+    			add_location(div, file$5, 251, 0, 7242);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
@@ -3051,7 +3054,7 @@ var app = (function () {
     			set_style(div0, "margin-top", "25px");
     			add_location(div0, file$5, 222, 0, 5972);
     			div1.className = "container svelte-1uqlejh";
-    			add_location(div1, file$5, 240, 0, 6614);
+    			add_location(div1, file$5, 240, 0, 6637);
     		},
 
     		l: function claim(nodes) {

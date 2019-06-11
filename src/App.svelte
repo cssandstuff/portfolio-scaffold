@@ -223,7 +223,7 @@
 <div class="container" style="height: 50px; margin-bottom: 20px; margin-top: 25px">
 
 	{#if $activeCollection==0}
-		<div class="menu" on:mouseenter="{handleHover}" on:mouseleave="{handleHover}">
+		<div class="menu" on:mouseenter="{handleHover}" on:tap="{handleHover}" on:mouseleave="{handleHover}">
 			
 			<a on:click="{handleAbout}" class:hovering="{menuHover === true}" class="links" href="about">About</a>
 			

@@ -1,6 +1,7 @@
 <script context="module">
   // TODO: refactor. also, keyboard navigation: make outline/hotspots consistent/prettier.
   // add dark mode.
+
   // for wizardry to keep tabs on the collections
   const elements = new Set();
   //export let _resetStacks;
@@ -56,10 +57,11 @@
   
   // Rotate image stack on hover over
   function rotate() {
-    //collection.style.transform = 'rotate(-1.5deg)';
+
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
+    
     firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
@@ -106,7 +108,7 @@
     
 
     (async () => {
-      await sleep(200);
+      await sleep(100);
       originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
       originaltextcolor = getComputedStyle(document.documentElement).getPropertyValue('--textcolor');
       
@@ -156,7 +158,7 @@
   function resetStacks(){
     console.log('resetting...');
 
-    document.documentElement.style.setProperty('--bgcolor', originalbgcolor);
+    document.documentElement.style.removeProperty('--bgcolor');
     document.documentElement.style.setProperty('--textcolor', originaltextcolor);
     
     // Tells the expanded gallery that we're about to destroy it, so we can then call the consolitateStuff() function.
