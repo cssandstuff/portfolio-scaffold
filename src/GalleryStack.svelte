@@ -61,7 +61,7 @@
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
-    
+
     firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
@@ -80,7 +80,7 @@
 
   // Un-Rotate image stack on hover out
   function unRotate() {
-    //collection.style.transform = 'rotate(0deg)';
+
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     });
@@ -99,13 +99,11 @@
   // Initiate the gallery and expand the stack
   function showContents(event){
     attemptingtoLoad = true;
-    event.preventDefault();
-
     elements.forEach(element => {
       element.classList.add('neardeath');
       element.classList.add('no-pointer-events');
     });
-    
+    event.preventDefault();
 
     (async () => {
       await sleep(100);
@@ -220,6 +218,7 @@
     display: block;
     width: 99%;
   }
+
   h2:after{
     position: relative;
     display: block;
@@ -229,15 +228,18 @@
     bottom: -8px;
     background: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
   }
+
   h2 span{
     display: block;
     color: #a9a9a9;
     font-size: 0.75em;
   }
+
   .collection.active{
     z-index: 2 !important;
     opacity: 0.6;
   }
+
   .collection.nonactive{
     opacity: 0;
     pointer-events: none;
@@ -353,8 +355,6 @@
     pointer-events: none;
   }
 
-  
-  
 </style>
 
 {#if $activeCollection == id}
@@ -376,6 +376,7 @@
   {#if $activeCollection == id}
     <Spinner />
   {/if}
+
   <!-- Initial Stacked Gallery, we only load the first image -->
   {#each imagecollection as image, index}
     {#if index==0}

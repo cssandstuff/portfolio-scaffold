@@ -1899,11 +1899,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			t = text(ctx.name);
-    			p.className = "svelte-sz4ypl";
-    			add_location(p, file$4, 361, 4, 10230);
+    			p.className = "svelte-bk5jxh";
+    			add_location(p, file$4, 361, 4, 10168);
     			div.id = "breadcrumb";
-    			div.className = "breadcrumb svelte-sz4ypl";
-    			add_location(div, file$4, 360, 2, 10086);
+    			div.className = "breadcrumb svelte-bk5jxh";
+    			add_location(div, file$4, 360, 2, 10024);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1986,18 +1986,18 @@ var app = (function () {
     	};
     }
 
-    // (383:4) {:else}
+    // (384:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			div.className = "dummyimage svelte-sz4ypl";
+    			div.className = "dummyimage svelte-bk5jxh";
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 383, 6, 10922);
+    			add_location(div, file$4, 384, 6, 10861);
     		},
 
     		m: function mount(target, anchor) {
@@ -2021,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (381:4) {#if index==0}
+    // (382:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2065,7 +2065,7 @@ var app = (function () {
     	};
     }
 
-    // (380:2) {#each imagecollection as image, index}
+    // (381:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2141,7 +2141,7 @@ var app = (function () {
     	};
     }
 
-    // (394:0) {#if attemptingtoLoad}
+    // (395:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2161,8 +2161,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
-    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-sz4ypl";
-    			add_location(div, file$4, 395, 3, 11302);
+    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-bk5jxh";
+    			add_location(div, file$4, 396, 3, 11241);
     		},
 
     		m: function mount(target, anchor) {
@@ -2177,7 +2177,7 @@ var app = (function () {
     			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
     			galleryexpanded.$set(galleryexpanded_changes);
 
-    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-sz4ypl")) {
+    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-bk5jxh")) {
     				div.className = div_class_value;
     			}
     		},
@@ -2259,16 +2259,16 @@ var app = (function () {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
-    			span.className = "svelte-sz4ypl";
-    			add_location(span, file$4, 388, 4, 11109);
-    			h2.className = "svelte-sz4ypl";
-    			add_location(h2, file$4, 386, 2, 11089);
+    			span.className = "svelte-bk5jxh";
+    			add_location(span, file$4, 389, 4, 11048);
+    			h2.className = "svelte-bk5jxh";
+    			add_location(h2, file$4, 387, 2, 11028);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
-    			a.className = "collection svelte-sz4ypl";
+    			a.className = "collection svelte-bk5jxh";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 365, 0, 10260);
+    			add_location(a, file$4, 365, 0, 10198);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2525,7 +2525,7 @@ var app = (function () {
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
         });
-        
+
         firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
         document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
 
@@ -2543,7 +2543,7 @@ var app = (function () {
 
       // Un-Rotate image stack on hover out
       function unRotate() {
-        //collection.style.transform = 'rotate(0deg)';
+
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
         });
@@ -2561,13 +2561,11 @@ var app = (function () {
       // Initiate the gallery and expand the stack
       function showContents(event){
         $$invalidate('attemptingtoLoad', attemptingtoLoad = true);
-        event.preventDefault();
-
         elements.forEach(element => {
           element.classList.add('neardeath');
           element.classList.add('no-pointer-events');
         });
-        
+        event.preventDefault();
 
         (async () => {
           await sleep(100);
