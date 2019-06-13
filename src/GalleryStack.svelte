@@ -76,7 +76,7 @@
 
         if (element !== collection) {
           element.style.transition = "0.8s all ease-out";
-          element.style.filter = "opacity(0.18)";
+          element.style.filter = "opacity(0.14)";
           element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
         }else{
           element.style.filter = "opacity(1)";
