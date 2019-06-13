@@ -34,7 +34,6 @@
   let galleryExpanded;
   let fakeImages;
   let firstImage;
-  let hoverTimeOut
 
   // reference to orginal colour
   let originalbgcolor;
@@ -64,18 +63,27 @@
 
     firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
-    document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
-
-    hoverTimeOut = setTimeout(()=>{
-       // grayscale other images
+    //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
+    if(bgcolor){
+        
+        let hslcolor = bgcolor.split(",");
+        //check hovering....
+        document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+    }
+      // grayscale other images
       elements.forEach(element => {
+        element.style.removeProperty("transition");
+
         if (element !== collection) {
           element.style.transition = "0.8s all ease-out";
-          element.style.filter = "opacity(0.8)";
-          element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.9)";
+          element.style.filter = "opacity(0.14)";
+          element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
+        }else{
+          element.style.filter = "opacity(1)";
+			    element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
         }
       });
-    }, 150);  
+ 
   }
 
   // Un-Rotate image stack on hover out
@@ -87,13 +95,14 @@
     firstImage.style.transform = 'scale(1) rotate(0deg)';
     document.documentElement.style.removeProperty('--bgcolor');
 
-    clearTimeout(hoverTimeOut);
-    // un-grayscale all images
-    elements.forEach(element => {
-      element.style.removeProperty("transition");
-      element.style.filter = "opacity(1)";
-			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
-		});
+      //un-grayscale all images
+      elements.forEach(element => {
+        element.style.transform.delay
+        element.style.removeProperty("transition");
+        element.style.filter = "opacity(1)";
+        element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+      });
+    
   }
 
   // Initiate the gallery and expand the stack
@@ -328,12 +337,6 @@
       background: currentColor;
       transform: rotate(45deg);
       transition: 0.3s all;
-    }
-    .breadcrumb p span{
-      text-transform: none;
-      font-weight: 300;
-      color: rgba(255,255,255,0.9);
-      font-size: 0.9em;
     }
     .breadcrumb p:hover:before{
       transform: translateX(-2px) rotate(45deg);

@@ -162,11 +162,11 @@
     
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
-      let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+      let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
       
       // If first image
       if(key == 0){
-        transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(-3px) rotate(-2deg)`;
+        transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
       }
       
       // stacks the zindex's of images so first is always on top.

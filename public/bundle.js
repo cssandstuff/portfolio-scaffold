@@ -946,15 +946,15 @@ var app = (function () {
     			t2 = text(t2_value);
     			span.className = "magnify svelte-ogg5rk";
     			toggle_class(span, "out", ctx.showTitles === false);
-    			add_location(span, file$3, 599, 8, 17217);
+    			add_location(span, file$3, 599, 8, 17201);
     			h2.className = "svelte-ogg5rk";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 600, 8, 17290);
+    			add_location(h2, file$3, 600, 8, 17274);
     			a.className = "galleryitem svelte-ogg5rk";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 597, 6, 17014);
+    			add_location(a, file$3, 597, 6, 16998);
     			dispose = listen(a, "click", click_handler);
     		},
 
@@ -1069,14 +1069,14 @@ var app = (function () {
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
     			span0.className = "previous svelte-ogg5rk";
-    			add_location(span0, file$3, 617, 4, 17918);
+    			add_location(span0, file$3, 617, 4, 17902);
     			span1.className = "next svelte-ogg5rk";
-    			add_location(span1, file$3, 618, 4, 17977);
+    			add_location(span1, file$3, 618, 4, 17961);
     			span2.className = "close svelte-ogg5rk";
-    			add_location(span2, file$3, 619, 4, 18028);
+    			add_location(span2, file$3, 619, 4, 18012);
     			div.className = "hires svelte-ogg5rk";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 611, 2, 17594);
+    			add_location(div, file$3, 611, 2, 17578);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1257,7 +1257,7 @@ var app = (function () {
     			image.$$.fragment.c();
     			div.className = "hi-image svelte-ogg5rk";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 613, 6, 17743);
+    			add_location(div, file$3, 613, 6, 17727);
     		},
 
     		m: function mount(target, anchor) {
@@ -1338,7 +1338,7 @@ var app = (function () {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			div.className = "stack gallery svelte-ogg5rk";
-    			add_location(div, file$3, 595, 2, 16916);
+    			add_location(div, file$3, 595, 2, 16900);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1615,11 +1615,11 @@ var app = (function () {
         
         Object.entries(images).forEach(([key, value]) => {
           let imageDivRect = value.getBoundingClientRect();
-          let transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 4) - imageDivRect.y}px) rotate(${key * 4}deg)`;
+          let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
           
           // If first image
           if(key == 0){
-            transformedStyle = `translateX(${(rect.x + 4) - imageDivRect.x}px) translateY(${(rect.y + 6) - imageDivRect.y}px) scale(1.08) translateY(-3px) rotate(-2deg)`;
+            transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
           }
           
           // stacks the zindex's of images so first is always on top.
@@ -1890,7 +1890,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (360:0) {#if $activeCollection == id}
+    // (363:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1899,11 +1899,11 @@ var app = (function () {
     			div = element("div");
     			p = element("p");
     			t = text(ctx.name);
-    			p.className = "svelte-bk5jxh";
-    			add_location(p, file$4, 361, 4, 10168);
+    			p.className = "svelte-1b51lhe";
+    			add_location(p, file$4, 364, 4, 10405);
     			div.id = "breadcrumb";
-    			div.className = "breadcrumb svelte-bk5jxh";
-    			add_location(div, file$4, 360, 2, 10024);
+    			div.className = "breadcrumb svelte-1b51lhe";
+    			add_location(div, file$4, 363, 2, 10261);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -1952,7 +1952,7 @@ var app = (function () {
     	};
     }
 
-    // (376:2) {#if $activeCollection == id}
+    // (379:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -1986,18 +1986,18 @@ var app = (function () {
     	};
     }
 
-    // (384:4) {:else}
+    // (387:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
     	return {
     		c: function create() {
     			div = element("div");
-    			div.className = "dummyimage svelte-bk5jxh";
+    			div.className = "dummyimage svelte-1b51lhe";
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 384, 6, 10861);
+    			add_location(div, file$4, 387, 6, 11098);
     		},
 
     		m: function mount(target, anchor) {
@@ -2021,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (382:4) {#if index==0}
+    // (385:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2065,7 +2065,7 @@ var app = (function () {
     	};
     }
 
-    // (381:2) {#each imagecollection as image, index}
+    // (384:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2141,7 +2141,7 @@ var app = (function () {
     	};
     }
 
-    // (395:0) {#if attemptingtoLoad}
+    // (398:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2161,8 +2161,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
-    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-bk5jxh";
-    			add_location(div, file$4, 396, 3, 11241);
+    			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe";
+    			add_location(div, file$4, 399, 3, 11478);
     		},
 
     		m: function mount(target, anchor) {
@@ -2177,7 +2177,7 @@ var app = (function () {
     			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
     			galleryexpanded.$set(galleryexpanded_changes);
 
-    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-bk5jxh")) {
+    			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe")) {
     				div.className = div_class_value;
     			}
     		},
@@ -2259,16 +2259,16 @@ var app = (function () {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
-    			span.className = "svelte-bk5jxh";
-    			add_location(span, file$4, 389, 4, 11048);
-    			h2.className = "svelte-bk5jxh";
-    			add_location(h2, file$4, 387, 2, 11028);
+    			span.className = "svelte-1b51lhe";
+    			add_location(span, file$4, 392, 4, 11285);
+    			h2.className = "svelte-1b51lhe";
+    			add_location(h2, file$4, 390, 2, 11265);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
-    			a.className = "collection svelte-bk5jxh";
+    			a.className = "collection svelte-1b51lhe";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 365, 0, 10198);
+    			add_location(a, file$4, 368, 0, 10435);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2498,7 +2498,6 @@ var app = (function () {
       let galleryExpanded;
       let fakeImages;
       let firstImage;
-      let hoverTimeOut;
 
       // reference to orginal colour
       let originalbgcolor;
@@ -2527,18 +2526,27 @@ var app = (function () {
         });
 
         firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
-        document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
-
-        hoverTimeOut = setTimeout(()=>{
-           // grayscale other images
+        //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
+        if(bgcolor){
+            
+            let hslcolor = bgcolor.split(",");
+            //check hovering....
+            document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+        }
+          // grayscale other images
           elements.forEach(element => {
+            element.style.removeProperty("transition");
+
             if (element !== collection) {
               element.style.transition = "0.8s all ease-out";
-              element.style.filter = "opacity(0.8)";
-              element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.9)";
+              element.style.filter = "opacity(0.14)";
+              element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
+            }else{
+              element.style.filter = "opacity(1)";
+    			    element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
             }
           });
-        }, 150);  
+     
       }
 
       // Un-Rotate image stack on hover out
@@ -2549,13 +2557,14 @@ var app = (function () {
         });
         firstImage.style.transform = 'scale(1) rotate(0deg)';    document.documentElement.style.removeProperty('--bgcolor');
 
-        clearTimeout(hoverTimeOut);
-        // un-grayscale all images
-        elements.forEach(element => {
-          element.style.removeProperty("transition");
-          element.style.filter = "opacity(1)";
-    			element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
-    		});
+          //un-grayscale all images
+          elements.forEach(element => {
+            element.style.transform.delay;
+            element.style.removeProperty("transition");
+            element.style.filter = "opacity(1)";
+            element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+          });
+        
       }
 
       // Initiate the gallery and expand the stack
