@@ -83,6 +83,46 @@
     destroyingExpandedGallery.update(n => false);
   });
 
+    // Rotate image stack on hover over
+  function rotate(event, index) {
+
+    // grayscale other images
+    Object.entries(images).forEach(([key, value]) => {
+      value.style.removeProperty("transition");
+      console.log(`current is ${index} Key is ${key}`)
+      console.log(parseInt(key) !== parseInt(index));
+      if (parseInt(key) !== parseInt(index)) {
+        value.style.transition = "0.8s all ease-out";
+        value.style.filter = "opacity(0.18)";
+        value.firstElementChild.style.filter = "sepia(0.25) grayscale(0.6)";
+      }else{
+        value.style.filter = "opacity(1)";
+        value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+        //value.firstElementChild.style.transition = '0.3s all ease-out';
+        value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+      }
+    });
+ 
+  }
+
+  // Un-Rotate image stack on hover out
+  function unRotate(event, index) {
+
+    //anchoredImage.style.transform = 'scale(1) rotate(0deg)';
+
+      //un-grayscale all images
+      Object.entries(images).forEach(([key, value]) => {
+        value.style.transform.delay
+        value.style.removeProperty("transition");
+        value.firstElementChild.style.removeProperty("transition");
+        value.firstElementChild.style.removeProperty("transform");
+        value.style.filter = "opacity(1)";
+        value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+        //value.firstElementChild.style.transform = 'scale(1) translateY(0) rotate(0deg)';
+      });
+    
+  }
+
   // could the following two function be consolidated into one?
   function handleLoadingComplete(event){
     count = count + event.detail.loadingComplete;
@@ -243,7 +283,7 @@
 
     (async () => {
       // Need to wait a bit after classes are removed.
-      await sleep(10);
+      await sleep(100);
       currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
       currentImage.addEventListener('transitionend', transitionHandler = () => {
         console.log('Transition ended');
@@ -438,9 +478,9 @@
     margin: 1em 1.5em 3em 1.5em;
   }
   
-  .gallery a:hover .magnify{
+  /* .gallery a:hover .magnify{
     opacity: 1;
-  }
+  } */
 
   .hires{
     position: fixed;
@@ -556,12 +596,9 @@
     transform: rotate(-45deg);
     top: 20px;
   }
-  .magnify{
-    /* width: calc(100% - 2px);
-    height: calc(100% - 2px); */
+  /* .magnify{
     width: 100%;
-    height: 100%;
-    background-color: var(--bgcolortint);
+    height: 100%;]
     position: absolute; top: 0px; left: 0px;
     opacity: 0;
     transition: 0.3s opacity;
@@ -577,7 +614,7 @@
     bottom: calc(50% - 16px);
     width: 14px;
     height: 4px;
-    background: var(--light);
+    background: var(--dark);
     transform: rotate(45deg);
   }
   .magnify:after{
@@ -585,19 +622,23 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 4px solid var(--light);
+    border: 4px solid var(--dark);
     position: absolute; left: calc(50% - 19px); top: calc(50% - 22px);
     z-index: 9;
-  }
-  
+  } */
+
 </style>
 
 <svelte:window bind:scrollY={y} on:keydown={handleKeydown}/>
   <div class="stack gallery" bind:this={activeCollection} >
     {#each stack as image, index}
-      <a class:transitioning="{transitioning === true}" class="galleryitem" href="{image.hires}" on:click={e => loadLargeImages(e, index)}> 
+      <a class:transitioning="{transitioning === true}" 
+        class="galleryitem" 
+        href="{image.hires}" 
+        on:mouseenter={e => rotate(e, index)}
+        on:mouseleave={e => unRotate(e, index)}
+        on:click={e => loadLargeImages(e, index)}> 
         <Image image="{image.lowres}" on:loadingComplete />
-        <span class:out="{showTitles === false}" class="magnify"></span>
         <h2 class:out="{$destroyingExpandedGallery === true || showTitles === false}" class:in="{$loadingSecondary === false && showTitles !== false && !$destroyingExpandedGallery}">
           {image.name}
         </h2>

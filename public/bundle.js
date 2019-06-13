@@ -921,15 +921,23 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (597:4) {#each stack as image, index}
+    // (634:4) {#each stack as image, index}
     function create_each_block_1(ctx) {
-    	var a, t0, span, t1, h2, t2_value = ctx.image.name, t2, a_href_value, current_1, dispose;
+    	var a, t0, h2, t1_value = ctx.image.name, t1, a_href_value, current_1, dispose;
 
     	var image = new Image_1({
     		props: { image: ctx.image.lowres },
     		$$inline: true
     	});
     	image.$on("loadingComplete", ctx.loadingComplete_handler);
+
+    	function mouseenter_handler(...args) {
+    		return ctx.mouseenter_handler(ctx, ...args);
+    	}
+
+    	function mouseleave_handler(...args) {
+    		return ctx.mouseleave_handler(ctx, ...args);
+    	}
 
     	function click_handler(...args) {
     		return ctx.click_handler(ctx, ...args);
@@ -940,32 +948,30 @@ var app = (function () {
     			a = element("a");
     			image.$$.fragment.c();
     			t0 = space();
-    			span = element("span");
-    			t1 = space();
     			h2 = element("h2");
-    			t2 = text(t2_value);
-    			span.className = "magnify svelte-ogg5rk";
-    			toggle_class(span, "out", ctx.showTitles === false);
-    			add_location(span, file$3, 599, 8, 17201);
-    			h2.className = "svelte-ogg5rk";
+    			t1 = text(t1_value);
+    			h2.className = "svelte-1lq1jmo";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 600, 8, 17274);
-    			a.className = "galleryitem svelte-ogg5rk";
+    			add_location(h2, file$3, 641, 8, 18767);
+    			a.className = "galleryitem svelte-1lq1jmo";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 597, 6, 16998);
-    			dispose = listen(a, "click", click_handler);
+    			add_location(a, file$3, 634, 6, 18443);
+
+    			dispose = [
+    				listen(a, "mouseenter", mouseenter_handler),
+    				listen(a, "mouseleave", mouseleave_handler),
+    				listen(a, "click", click_handler)
+    			];
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, a, anchor);
     			mount_component(image, a, null);
     			append(a, t0);
-    			append(a, span);
-    			append(a, t1);
     			append(a, h2);
-    			append(h2, t2);
+    			append(h2, t1);
     			current_1 = true;
     		},
 
@@ -975,12 +981,8 @@ var app = (function () {
     			if (changed.stack) image_changes.image = ctx.image.lowres;
     			image.$set(image_changes);
 
-    			if (changed.showTitles) {
-    				toggle_class(span, "out", ctx.showTitles === false);
-    			}
-
-    			if ((!current_1 || changed.stack) && t2_value !== (t2_value = ctx.image.name)) {
-    				set_data(t2, t2_value);
+    			if ((!current_1 || changed.stack) && t1_value !== (t1_value = ctx.image.name)) {
+    				set_data(t1, t1_value);
     			}
 
     			if ((changed.$destroyingExpandedGallery || changed.showTitles)) {
@@ -1019,12 +1021,12 @@ var app = (function () {
 
     			image.$destroy();
 
-    			dispose();
+    			run_all(dispose);
     		}
     	};
     }
 
-    // (608:0) {#if ready}
+    // (649:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
 
@@ -1068,15 +1070,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-ogg5rk";
-    			add_location(span0, file$3, 617, 4, 17902);
-    			span1.className = "next svelte-ogg5rk";
-    			add_location(span1, file$3, 618, 4, 17961);
-    			span2.className = "close svelte-ogg5rk";
-    			add_location(span2, file$3, 619, 4, 18012);
-    			div.className = "hires svelte-ogg5rk";
+    			span0.className = "previous svelte-1lq1jmo";
+    			add_location(span0, file$3, 658, 4, 19395);
+    			span1.className = "next svelte-1lq1jmo";
+    			add_location(span1, file$3, 659, 4, 19454);
+    			span2.className = "close svelte-1lq1jmo";
+    			add_location(span2, file$3, 660, 4, 19505);
+    			div.className = "hires svelte-1lq1jmo";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 611, 2, 17578);
+    			add_location(div, file$3, 652, 2, 19071);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1207,7 +1209,7 @@ var app = (function () {
     	};
     }
 
-    // (609:2) {#if !hiresLoaded}
+    // (650:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1241,7 +1243,7 @@ var app = (function () {
     	};
     }
 
-    // (613:4) {#each stack as image, index}
+    // (654:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1255,9 +1257,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-ogg5rk";
+    			div.className = "hi-image svelte-1lq1jmo";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 613, 6, 17727);
+    			add_location(div, file$3, 654, 6, 19220);
     		},
 
     		m: function mount(target, anchor) {
@@ -1337,8 +1339,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-ogg5rk";
-    			add_location(div, file$3, 595, 2, 16900);
+    			div.className = "stack gallery svelte-1lq1jmo";
+    			add_location(div, file$3, 632, 2, 18345);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1545,6 +1547,46 @@ var app = (function () {
         destroyingExpandedGallery.update(n => false);
       });
 
+        // Rotate image stack on hover over
+      function rotate(event, index) {
+
+        // grayscale other images
+        Object.entries(images).forEach(([key, value]) => {
+          value.style.removeProperty("transition");
+          console.log(`current is ${index} Key is ${key}`);
+          console.log(parseInt(key) !== parseInt(index));
+          if (parseInt(key) !== parseInt(index)) {
+            value.style.transition = "0.8s all ease-out";
+            value.style.filter = "opacity(0.18)";
+            value.firstElementChild.style.filter = "sepia(0.25) grayscale(0.6)";
+          }else{
+            value.style.filter = "opacity(1)";
+            value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+            //value.firstElementChild.style.transition = '0.3s all ease-out';
+            value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+          }
+        });
+     
+      }
+
+      // Un-Rotate image stack on hover out
+      function unRotate(event, index) {
+
+        //anchoredImage.style.transform = 'scale(1) rotate(0deg)';
+
+          //un-grayscale all images
+          Object.entries(images).forEach(([key, value]) => {
+            value.style.transform.delay;
+            value.style.removeProperty("transition");
+            value.firstElementChild.style.removeProperty("transition");
+            value.firstElementChild.style.removeProperty("transform");
+            value.style.filter = "opacity(1)";
+            value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+            //value.firstElementChild.style.transform = 'scale(1) translateY(0) rotate(0deg)';
+          });
+        
+      }
+
       function handleLoadingHiResComplete(event){
         count = count + event.detail.loadingComplete;
         if(count === stack.length){
@@ -1695,7 +1737,7 @@ var app = (function () {
 
         (async () => {
           // Need to wait a bit after classes are removed.
-          await sleep(10);
+          await sleep(100);
           currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
           currentImage.addEventListener('transitionend', transitionHandler = () => {
             console.log('Transition ended');
@@ -1800,6 +1842,14 @@ var app = (function () {
     		y = window.pageYOffset; $$invalidate('y', y);
     	}
 
+    	function mouseenter_handler({ index }, e) {
+    		return rotate(e, index);
+    	}
+
+    	function mouseleave_handler({ index }, e) {
+    		return unRotate(e, index);
+    	}
+
     	function click_handler({ index }, e) {
     		return loadLargeImages(e, index);
     	}
@@ -1831,6 +1881,8 @@ var app = (function () {
     		hiresLoaded,
     		ready,
     		transitioning,
+    		rotate,
+    		unRotate,
     		handleLoadingHiResComplete,
     		handleKeydown,
     		loadLargeImages,
@@ -1841,6 +1893,8 @@ var app = (function () {
     		$destroyingExpandedGallery,
     		loadingComplete_handler,
     		onwindowscroll,
+    		mouseenter_handler,
+    		mouseleave_handler,
     		click_handler,
     		div_binding,
     		div_binding_1
@@ -2539,7 +2593,7 @@ var app = (function () {
 
             if (element !== collection) {
               element.style.transition = "0.8s all ease-out";
-              element.style.filter = "opacity(0.14)";
+              element.style.filter = "opacity(0.18)";
               element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
             }else{
               element.style.filter = "opacity(1)";
