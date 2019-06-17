@@ -4,7 +4,7 @@
 
   // for wizardry to keep tabs on the collections
   const elements = new Set();
-  //export let _resetStacks;
+  export let _waitingforSmoothness;
 </script>
 
 <script>
@@ -18,7 +18,7 @@
   import GalleryExpanded from './GalleryExpanded.svelte';
   import { onMount, createEventDispatcher } from 'svelte';
   import { fly, fade } from 'svelte/transition';
-  import { activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
+  import { hoveringCollection, activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
   
   export let imagecollection;
   export let id = 0;
@@ -45,6 +45,7 @@
   // booleans
   let attemptingtoLoad = false;
 
+
   onMount(() => {
 		fakeImages = collection.getElementsByClassName('dummyimage');
     
@@ -54,8 +55,30 @@
   });
   
   
+  function extraHoverStuff(){
+    if(bgcolor){
+      let hslcolor = bgcolor.split(",");
+      //check hovering....
+      document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+    }
+    // grayscale other images
+    elements.forEach(element => {
+      element.style.removeProperty("transition");
+
+      if (element !== collection) {
+        element.style.transition = "0.8s all ease-out";
+        element.style.filter = "opacity(0.14)";
+        element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
+      }else{
+        element.style.filter = "opacity(1)";
+        element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+      }
+    });
+  }
+
   // Rotate image stack on hover over
   function rotate() {
+    clearTimeout(_waitingforSmoothness);
 
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
@@ -64,31 +87,17 @@
     firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
-    if(bgcolor){
-        
-        let hslcolor = bgcolor.split(",");
-        //check hovering....
-        document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-    }
-      // grayscale other images
-      elements.forEach(element => {
-        element.style.removeProperty("transition");
+    
 
-        if (element !== collection) {
-          element.style.transition = "0.8s all ease-out";
-          element.style.filter = "opacity(0.14)";
-          element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
-        }else{
-          element.style.filter = "opacity(1)";
-			    element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
-        }
-      });
- 
+    // set a timeout so things don't go batshit crazy if we hover a lot of elements
+    _waitingforSmoothness = setTimeout(extraHoverStuff, 500);
+    
+    
   }
 
   // Un-Rotate image stack on hover out
   function unRotate() {
-
+    clearTimeout(_waitingforSmoothness);
     Object.entries(fakeImages).forEach(([key, value]) => {
       value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
     });

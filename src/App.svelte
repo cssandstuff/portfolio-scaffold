@@ -242,9 +242,6 @@
 	<GalleryStack width="" name="Painterly" bgcolor="261, 27, 71" imagecollection={collection1} id="{uid++}" />
 	<GalleryStack width="" name="Splashes" bgcolor="206, 69, 88" imagecollection={collection2} id="{uid++}" />
 	<GalleryStack width="" name="Citizens of science" bgcolor="20, 62, 88" imagecollection={collection3} id="{uid++}" />
-	
-	
-	
 	<GalleryStack width="" name="Angry at kids" bgcolor="13, 92, 87" imagecollection={collection5} id="{uid++}" />
 	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  />
 </div>

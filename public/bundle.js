@@ -1944,7 +1944,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (363:0) {#if $activeCollection == id}
+    // (372:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1954,10 +1954,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-1b51lhe";
-    			add_location(p, file$4, 364, 4, 10405);
+    			add_location(p, file$4, 373, 4, 10673);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-1b51lhe";
-    			add_location(div, file$4, 363, 2, 10261);
+    			add_location(div, file$4, 372, 2, 10529);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -2006,7 +2006,7 @@ var app = (function () {
     	};
     }
 
-    // (379:2) {#if $activeCollection == id}
+    // (388:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2040,7 +2040,7 @@ var app = (function () {
     	};
     }
 
-    // (387:4) {:else}
+    // (396:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -2051,7 +2051,7 @@ var app = (function () {
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 387, 6, 11098);
+    			add_location(div, file$4, 396, 6, 11366);
     		},
 
     		m: function mount(target, anchor) {
@@ -2075,7 +2075,7 @@ var app = (function () {
     	};
     }
 
-    // (385:4) {#if index==0}
+    // (394:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2119,7 +2119,7 @@ var app = (function () {
     	};
     }
 
-    // (384:2) {#each imagecollection as image, index}
+    // (393:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2195,7 +2195,7 @@ var app = (function () {
     	};
     }
 
-    // (398:0) {#if attemptingtoLoad}
+    // (407:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2216,7 +2216,7 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe";
-    			add_location(div, file$4, 399, 3, 11478);
+    			add_location(div, file$4, 408, 3, 11746);
     		},
 
     		m: function mount(target, anchor) {
@@ -2314,15 +2314,15 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-1b51lhe";
-    			add_location(span, file$4, 392, 4, 11285);
+    			add_location(span, file$4, 401, 4, 11553);
     			h2.className = "svelte-1b51lhe";
-    			add_location(h2, file$4, 390, 2, 11265);
+    			add_location(h2, file$4, 399, 2, 11533);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-1b51lhe";
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 368, 0, 10435);
+    			add_location(a, file$4, 377, 0, 10703);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2532,7 +2532,7 @@ var app = (function () {
 
     // for wizardry to keep tabs on the collections
     const elements = new Set();
-    //export let _resetStacks;
+    let _waitingforSmoothness;
 
     function instance$2($$self, $$props, $$invalidate) {
     	let $activeCollection, $loadingSecondary;
@@ -2563,6 +2563,7 @@ var app = (function () {
       // booleans
       let attemptingtoLoad = false;
 
+
       onMount(() => {
     		fakeImages = collection.getElementsByClassName('dummyimage');
         
@@ -2572,8 +2573,30 @@ var app = (function () {
       });
       
       
+      function extraHoverStuff(){
+        if(bgcolor){
+          let hslcolor = bgcolor.split(",");
+          //check hovering....
+          document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
+        }
+        // grayscale other images
+        elements.forEach(element => {
+          element.style.removeProperty("transition");
+
+          if (element !== collection) {
+            element.style.transition = "0.8s all ease-out";
+            element.style.filter = "opacity(0.14)";
+            element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
+          }else{
+            element.style.filter = "opacity(1)";
+            element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+          }
+        });
+      }
+
       // Rotate image stack on hover over
       function rotate() {
+        clearTimeout(_waitingforSmoothness);
 
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
@@ -2581,31 +2604,17 @@ var app = (function () {
 
         firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
         //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
-        if(bgcolor){
-            
-            let hslcolor = bgcolor.split(",");
-            //check hovering....
-            document.documentElement.style.setProperty('--bgcolor', `hsla(${hslcolor[0]}, ${hslcolor[1]}%, ${hslcolor[2]}%, 1)`);
-        }
-          // grayscale other images
-          elements.forEach(element => {
-            element.style.removeProperty("transition");
+        
 
-            if (element !== collection) {
-              element.style.transition = "0.8s all ease-out";
-              element.style.filter = "opacity(0.14)";
-              element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
-            }else{
-              element.style.filter = "opacity(1)";
-    			    element.firstElementChild.style.filter = "sepia(0) grayscale(0)";
-            }
-          });
-     
+        // set a timeout so things don't go batshit crazy if we hover a lot of elements
+        _waitingforSmoothness = setTimeout(extraHoverStuff, 500);
+        
+        
       }
 
       // Un-Rotate image stack on hover out
       function unRotate() {
-
+        clearTimeout(_waitingforSmoothness);
         Object.entries(fakeImages).forEach(([key, value]) => {
           value.style.transform = 'rotate(' + (2 * (parseInt(key)+ 1))+ 'deg)';
         });
@@ -2940,7 +2949,7 @@ var app = (function () {
     	};
     }
 
-    // (251:0) {#if about }
+    // (248:0) {#if about }
     function create_if_block$3(ctx) {
     	var div, p, t0, a0, t2, br0, br1, t3, a1, t5, br2, br3, t6, div_intro, div_outro, current, dispose;
 
@@ -2963,18 +2972,18 @@ var app = (function () {
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
     			a0.className = "svelte-1uqlejh";
-    			add_location(a0, file$5, 252, 77, 7435);
-    			add_location(br0, file$5, 252, 193, 7551);
-    			add_location(br1, file$5, 252, 198, 7556);
+    			add_location(a0, file$5, 249, 77, 7429);
+    			add_location(br0, file$5, 249, 193, 7545);
+    			add_location(br1, file$5, 249, 198, 7550);
     			a1.href = "http://svelte.dev/sapper";
     			a1.className = "svelte-1uqlejh";
-    			add_location(a1, file$5, 253, 36, 7598);
-    			add_location(br2, file$5, 253, 162, 7724);
-    			add_location(br3, file$5, 253, 167, 7729);
+    			add_location(a1, file$5, 250, 36, 7592);
+    			add_location(br2, file$5, 250, 162, 7718);
+    			add_location(br3, file$5, 250, 167, 7723);
     			p.className = "svelte-1uqlejh";
-    			add_location(p, file$5, 252, 0, 7358);
+    			add_location(p, file$5, 249, 0, 7352);
     			div.className = "about svelte-1uqlejh";
-    			add_location(div, file$5, 251, 0, 7242);
+    			add_location(div, file$5, 248, 0, 7236);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
