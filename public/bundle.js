@@ -613,9 +613,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			div0.className = "inner svelte-vtevxo";
-    			add_location(div0, file$1, 105, 4, 2186);
+    			add_location(div0, file$1, 105, 4, 2230);
     			div1.className = "loader svelte-vtevxo";
-    			add_location(div1, file$1, 104, 2, 2161);
+    			add_location(div1, file$1, 104, 2, 2205);
     		},
 
     		m: function mount(target, anchor) {
@@ -643,6 +643,8 @@ var app = (function () {
     			img.src = ctx.image;
     			img.alt = "";
     			img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo";
+    			img.dataset.height = ctx.height;
+    			img.dataset.width = ctx.width;
     			add_location(img, file$1, 102, 0, 2086);
     		},
 
@@ -657,6 +659,14 @@ var app = (function () {
 
     			if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo")) {
     				img.className = img_class_value;
+    			}
+
+    			if (changed.height) {
+    				img.dataset.height = ctx.height;
+    			}
+
+    			if (changed.width) {
+    				img.dataset.width = ctx.width;
     			}
     		},
 
@@ -723,6 +733,9 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	
       let { image, visible = 0 } = $$props;
+
+      let height;
+      let width;
       const dispatch = createEventDispatcher();
 
       onMount(async () => {
@@ -733,6 +746,8 @@ var app = (function () {
            const loader = new Image();
            loader.onload = () => {
              $$invalidate('visible', visible = true);
+             $$invalidate('height', height = loader.height);
+             $$invalidate('width', width = loader.width);
              dispatch('loadingComplete', {
               loadingComplete: 1
              });
@@ -753,7 +768,7 @@ var app = (function () {
     		if ('visible' in $$props) $$invalidate('visible', visible = $$props.visible);
     	};
 
-    	return { image, visible };
+    	return { image, visible, height, width };
     }
 
     class Image_1 extends SvelteComponentDev {
@@ -950,14 +965,14 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			t1 = text(t1_value);
-    			h2.className = "svelte-1lq1jmo";
+    			h2.className = "svelte-1yockky";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 641, 8, 18767);
-    			a.className = "galleryitem svelte-1lq1jmo";
+    			add_location(h2, file$3, 641, 8, 18738);
+    			a.className = "galleryitem svelte-1yockky";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 634, 6, 18443);
+    			add_location(a, file$3, 634, 6, 18414);
 
     			dispose = [
     				listen(a, "mouseenter", mouseenter_handler),
@@ -1070,15 +1085,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-1lq1jmo";
-    			add_location(span0, file$3, 658, 4, 19395);
-    			span1.className = "next svelte-1lq1jmo";
-    			add_location(span1, file$3, 659, 4, 19454);
-    			span2.className = "close svelte-1lq1jmo";
-    			add_location(span2, file$3, 660, 4, 19505);
-    			div.className = "hires svelte-1lq1jmo";
+    			span0.className = "previous svelte-1yockky";
+    			add_location(span0, file$3, 658, 4, 19366);
+    			span1.className = "next svelte-1yockky";
+    			add_location(span1, file$3, 659, 4, 19425);
+    			span2.className = "close svelte-1yockky";
+    			add_location(span2, file$3, 660, 4, 19476);
+    			div.className = "hires svelte-1yockky";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 652, 2, 19071);
+    			add_location(div, file$3, 652, 2, 19042);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1257,9 +1272,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-1lq1jmo";
+    			div.className = "hi-image svelte-1yockky";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 654, 6, 19220);
+    			add_location(div, file$3, 654, 6, 19191);
     		},
 
     		m: function mount(target, anchor) {
@@ -1339,8 +1354,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-1lq1jmo";
-    			add_location(div, file$3, 632, 2, 18345);
+    			div.className = "stack gallery svelte-1yockky";
+    			add_location(div, file$3, 632, 2, 18316);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1557,13 +1572,13 @@ var app = (function () {
           console.log(parseInt(key) !== parseInt(index));
           if (parseInt(key) !== parseInt(index)) {
             value.style.transition = "0.8s all ease-out";
-            value.style.filter = "opacity(0.18)";
-            value.firstElementChild.style.filter = "sepia(0.25) grayscale(0.6)";
+            value.style.filter = "opacity(0.54)";
+            value.firstElementChild.style.filter = "grayscale(0.6)";
           }else{
             value.style.filter = "opacity(1)";
             value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
             //value.firstElementChild.style.transition = '0.3s all ease-out';
-            value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+            value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px)';
           }
         });
      
@@ -1944,7 +1959,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (372:0) {#if $activeCollection == id}
+    // (375:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1954,10 +1969,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-1b51lhe";
-    			add_location(p, file$4, 373, 4, 10673);
+    			add_location(p, file$4, 376, 4, 10749);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-1b51lhe";
-    			add_location(div, file$4, 372, 2, 10529);
+    			add_location(div, file$4, 375, 2, 10605);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -2006,7 +2021,7 @@ var app = (function () {
     	};
     }
 
-    // (388:2) {#if $activeCollection == id}
+    // (392:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2040,7 +2055,7 @@ var app = (function () {
     	};
     }
 
-    // (396:4) {:else}
+    // (400:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -2051,7 +2066,7 @@ var app = (function () {
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 396, 6, 11366);
+    			add_location(div, file$4, 400, 6, 11479);
     		},
 
     		m: function mount(target, anchor) {
@@ -2075,7 +2090,7 @@ var app = (function () {
     	};
     }
 
-    // (394:4) {#if index==0}
+    // (398:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2119,7 +2134,7 @@ var app = (function () {
     	};
     }
 
-    // (393:2) {#each imagecollection as image, index}
+    // (397:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2195,7 +2210,7 @@ var app = (function () {
     	};
     }
 
-    // (407:0) {#if attemptingtoLoad}
+    // (411:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2216,7 +2231,7 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe";
-    			add_location(div, file$4, 408, 3, 11746);
+    			add_location(div, file$4, 412, 3, 11859);
     		},
 
     		m: function mount(target, anchor) {
@@ -2314,15 +2329,16 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-1b51lhe";
-    			add_location(span, file$4, 401, 4, 11553);
+    			add_location(span, file$4, 405, 4, 11666);
     			h2.className = "svelte-1b51lhe";
-    			add_location(h2, file$4, 399, 2, 11533);
+    			add_location(h2, file$4, 403, 2, 11646);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-1b51lhe";
+    			set_style(a, "height", "" + ctx.stackHeight + "px");
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 377, 0, 10703);
+    			add_location(a, file$4, 380, 0, 10779);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2442,6 +2458,10 @@ var app = (function () {
     				a.href = a_href_value;
     			}
 
+    			if (!current || changed.stackHeight) {
+    				set_style(a, "height", "" + ctx.stackHeight + "px");
+    			}
+
     			if (!current || changed.id) {
     				a.dataset.id = ctx.id;
     			}
@@ -2552,6 +2572,7 @@ var app = (function () {
       let galleryExpanded;
       let fakeImages;
       let firstImage;
+      let stackHeight;
 
       // reference to orginal colour
       let originalbgcolor;
@@ -2584,8 +2605,8 @@ var app = (function () {
           element.style.removeProperty("transition");
 
           if (element !== collection) {
-            element.style.transition = "0.8s all ease-out";
-            element.style.filter = "opacity(0.14)";
+            element.style.transition = "0.9s all ease-out";
+            element.style.filter = "opacity(0.94)";
             element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
           }else{
             element.style.filter = "opacity(1)";
@@ -2602,7 +2623,7 @@ var app = (function () {
           value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
         });
 
-        firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
+        firstImage.style.transform = 'scale(1.03) translateY(-3px)';    originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
         //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
         
 
@@ -2726,6 +2747,8 @@ var app = (function () {
         (async () => {
           await sleep(50);
           firstImage = collection.getElementsByTagName('img')[0];
+          $$invalidate('stackHeight', stackHeight = firstImage.dataset.height/2);
+          console.log(firstImage.dataset.height);
         })();
       }
 
@@ -2770,6 +2793,7 @@ var app = (function () {
     		textcolor,
     		collection,
     		galleryExpanded,
+    		stackHeight,
     		attemptingtoLoad,
     		rotate,
     		unRotate,
@@ -2850,7 +2874,7 @@ var app = (function () {
 
     const file$5 = "src/App.svelte";
 
-    // (225:1) {#if $activeCollection==0}
+    // (232:1) {#if $activeCollection==0}
     function create_if_block_1$2(ctx) {
     	var div1, a0, t1, div0, div0_intro, div0_outro, t2, a1, current, dispose;
 
@@ -2867,20 +2891,20 @@ var app = (function () {
     			t2 = space();
     			a1 = element("a");
     			a1.textContent = "Github";
-    			a0.className = "links svelte-1uqlejh";
+    			a0.className = "links svelte-ubqac0";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$5, 227, 3, 6196);
-    			div0.className = "stacks-logo svelte-1uqlejh";
+    			add_location(a0, file$5, 234, 3, 9859);
+    			div0.className = "stacks-logo svelte-ubqac0";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$5, 229, 3, 6306);
+    			add_location(div0, file$5, 236, 3, 9969);
     			a1.target = "_blank";
-    			a1.className = "links svelte-1uqlejh";
+    			a1.className = "links svelte-ubqac0";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$5, 233, 3, 6472);
-    			div1.className = "menu svelte-1uqlejh";
-    			add_location(div1, file$5, 225, 2, 6087);
+    			add_location(a1, file$5, 240, 3, 10135);
+    			div1.className = "menu svelte-ubqac0";
+    			add_location(div1, file$5, 232, 2, 9750);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
@@ -2949,7 +2973,7 @@ var app = (function () {
     	};
     }
 
-    // (248:0) {#if about }
+    // (257:0) {#if about }
     function create_if_block$3(ctx) {
     	var div, p, t0, a0, t2, br0, br1, t3, a1, t5, br2, br3, t6, div_intro, div_outro, current, dispose;
 
@@ -2971,19 +2995,19 @@ var app = (function () {
     			br3 = element("br");
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
-    			a0.className = "svelte-1uqlejh";
-    			add_location(a0, file$5, 249, 77, 7429);
-    			add_location(br0, file$5, 249, 193, 7545);
-    			add_location(br1, file$5, 249, 198, 7550);
+    			a0.className = "svelte-ubqac0";
+    			add_location(a0, file$5, 258, 77, 11275);
+    			add_location(br0, file$5, 258, 193, 11391);
+    			add_location(br1, file$5, 258, 198, 11396);
     			a1.href = "http://svelte.dev/sapper";
-    			a1.className = "svelte-1uqlejh";
-    			add_location(a1, file$5, 250, 36, 7592);
-    			add_location(br2, file$5, 250, 162, 7718);
-    			add_location(br3, file$5, 250, 167, 7723);
-    			p.className = "svelte-1uqlejh";
-    			add_location(p, file$5, 249, 0, 7352);
-    			div.className = "about svelte-1uqlejh";
-    			add_location(div, file$5, 248, 0, 7236);
+    			a1.className = "svelte-ubqac0";
+    			add_location(a1, file$5, 259, 36, 11438);
+    			add_location(br2, file$5, 259, 162, 11564);
+    			add_location(br3, file$5, 259, 167, 11569);
+    			p.className = "svelte-ubqac0";
+    			add_location(p, file$5, 258, 0, 11198);
+    			div.className = "about svelte-ubqac0";
+    			add_location(div, file$5, 257, 0, 11082);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
@@ -3039,15 +3063,14 @@ var app = (function () {
     }
 
     function create_fragment$5(ctx) {
-    	var div0, t0, div1, t1, t2, t3, t4, t5, if_block1_anchor, current;
+    	var div0, t0, div1, t1, t2, t3, t4, if_block1_anchor, current;
 
     	var if_block0 = (ctx.$activeCollection==0) && create_if_block_1$2(ctx);
 
     	var gallerystack0 = new GalleryStack({
     		props: {
     		width: "",
-    		name: "Painterly",
-    		bgcolor: "261, 27, 71",
+    		name: "Above and Below",
     		imagecollection: ctx.collection1,
     		id: uid++
     	},
@@ -3057,8 +3080,7 @@ var app = (function () {
     	var gallerystack1 = new GalleryStack({
     		props: {
     		width: "",
-    		name: "Splashes",
-    		bgcolor: "206, 69, 88",
+    		name: "The River",
     		imagecollection: ctx.collection2,
     		id: uid++
     	},
@@ -3068,8 +3090,7 @@ var app = (function () {
     	var gallerystack2 = new GalleryStack({
     		props: {
     		width: "",
-    		name: "Citizens of science",
-    		bgcolor: "20, 62, 88",
+    		name: "10 Reasons to love a Bear",
     		imagecollection: ctx.collection3,
     		id: uid++
     	},
@@ -3079,20 +3100,8 @@ var app = (function () {
     	var gallerystack3 = new GalleryStack({
     		props: {
     		width: "",
-    		name: "Angry at kids",
-    		bgcolor: "13, 92, 87",
-    		imagecollection: ctx.collection5,
-    		id: uid++
-    	},
-    		$$inline: true
-    	});
-
-    	var gallerystack4 = new GalleryStack({
-    		props: {
-    		width: "",
-    		name: "Sketches",
-    		bgcolor: "109, 0, 76",
-    		imagecollection: ctx.collection6,
+    		name: "10 Reasons to love an Elephant",
+    		imagecollection: ctx.collection4,
     		id: uid++
     	},
     		$$inline: true
@@ -3114,17 +3123,15 @@ var app = (function () {
     			t3 = space();
     			gallerystack3.$$.fragment.c();
     			t4 = space();
-    			gallerystack4.$$.fragment.c();
-    			t5 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			div0.className = "container svelte-1uqlejh";
+    			div0.className = "container svelte-ubqac0";
     			set_style(div0, "height", "50px");
     			set_style(div0, "margin-bottom", "20px");
     			set_style(div0, "margin-top", "25px");
-    			add_location(div0, file$5, 222, 0, 5972);
-    			div1.className = "container svelte-1uqlejh";
-    			add_location(div1, file$5, 240, 0, 6637);
+    			add_location(div0, file$5, 229, 0, 9635);
+    			div1.className = "container svelte-ubqac0";
+    			add_location(div1, file$5, 247, 0, 10300);
     		},
 
     		l: function claim(nodes) {
@@ -3143,9 +3150,7 @@ var app = (function () {
     			mount_component(gallerystack2, div1, null);
     			append(div1, t3);
     			mount_component(gallerystack3, div1, null);
-    			append(div1, t4);
-    			mount_component(gallerystack4, div1, null);
-    			insert(target, t5, anchor);
+    			insert(target, t4, anchor);
     			if (if_block1) if_block1.m(target, anchor);
     			insert(target, if_block1_anchor, anchor);
     			current = true;
@@ -3189,14 +3194,9 @@ var app = (function () {
     			gallerystack2.$set(gallerystack2_changes);
 
     			var gallerystack3_changes = {};
-    			if (changed.collection5) gallerystack3_changes.imagecollection = ctx.collection5;
+    			if (changed.collection4) gallerystack3_changes.imagecollection = ctx.collection4;
     			if (changed.uid) gallerystack3_changes.id = uid++;
     			gallerystack3.$set(gallerystack3_changes);
-
-    			var gallerystack4_changes = {};
-    			if (changed.collection6) gallerystack4_changes.imagecollection = ctx.collection6;
-    			if (changed.uid) gallerystack4_changes.id = uid++;
-    			gallerystack4.$set(gallerystack4_changes);
 
     			if (ctx.about) {
     				if (if_block1) {
@@ -3232,8 +3232,6 @@ var app = (function () {
 
     			gallerystack3.$$.fragment.i(local);
 
-    			gallerystack4.$$.fragment.i(local);
-
     			if (if_block1) if_block1.i();
     			current = true;
     		},
@@ -3244,7 +3242,6 @@ var app = (function () {
     			gallerystack1.$$.fragment.o(local);
     			gallerystack2.$$.fragment.o(local);
     			gallerystack3.$$.fragment.o(local);
-    			gallerystack4.$$.fragment.o(local);
     			if (if_block1) if_block1.o();
     			current = false;
     		},
@@ -3269,10 +3266,8 @@ var app = (function () {
 
     			gallerystack3.$destroy();
 
-    			gallerystack4.$destroy();
-
     			if (detaching) {
-    				detach(t5);
+    				detach(t4);
     			}
 
     			if (if_block1) if_block1.d(detaching);
@@ -3307,36 +3302,48 @@ var app = (function () {
     	// ];
     	
     	let collection1 = [
-    		{ lowres: 'images/Noa.jpg', hires: 'images/originals/Noa.jpg', name: 'Noa' },
-    		{ lowres: 'images/dog.jpg', hires: 'images/originals/dog.jpg', name: 'Dog' },
-    		{ lowres: 'images/glass.jpg', hires: 'images/originals/glass.jpg', name: 'Glass' }
+    		{ lowres: 'images/portfolio/01_above and below/_above_below.jpg', hires: 'images/portfolio/01_above and below/Original Files/_above_below.jpg', name: 'Above and Below' },
+    		{ lowres: 'images/portfolio/01_above and below/bird_island_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/bird_island_final.jpg', name: 'Bird Island' },
+    		{ lowres: 'images/portfolio/01_above and below/cave_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/cave_final.jpg', name: 'Cave' },
+    		{ lowres: 'images/portfolio/01_above and below/forest_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/forest_final.jpg', name: 'Forest' },
+    		{ lowres: 'images/portfolio/01_above and below/northpole_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/northpole_final.jpg', name: 'North Pole' },
+    		{ lowres: 'images/portfolio/01_above and below/ocean_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/ocean_final.jpg', name: 'Ocean' },
+    		{ lowres: 'images/portfolio/01_above and below/rainforest-final.jpg', hires: 'images/portfolio/01_above and below/Original Files/rainforest-final.jpg', name: 'Rain Forest' },
+    		{ lowres: 'images/portfolio/01_above and below/river_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/river_final.jpg', name: 'River' },
+    		{ lowres: 'images/portfolio/01_above and below/savannah_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/savannah_final.jpg', name: 'Savannah' }
     	];
     	let collection2 = [
-    		{ lowres: 'images/cash.jpg', hires: 'images/originals/cash.jpg', name: 'Cash suitcase' },
-    		{ lowres: 'images/robo.jpg', hires: 'images/originals/robo.jpg', name: 'Robot' },
-    		{ lowres: 'images/tako.jpg', hires: 'images/originals/tako.jpg', name: 'Octopus' }
+    		{ lowres: 'images/portfolio/02_The River/The_river_Cover.jpg', hires: 'images/portfolio/02_The River/Original Files/The_river_Cover.jpg', name: 'The River' },
+    		{ lowres: 'images/portfolio/02_The River/spread1_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread1_final.jpg', name: 'Bird Island' },
+    		{ lowres: 'images/portfolio/02_The River/spread2_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread2_final.jpg', name: 'Cave' },
+    		{ lowres: 'images/portfolio/02_The River/spread3_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread3_final.jpg', name: 'Forest' },
+    		{ lowres: 'images/portfolio/02_The River/spread4_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread4_final.jpg', name: 'North Pole' },
+    		{ lowres: 'images/portfolio/02_The River/spread5_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread5_final.jpg', name: 'Ocean' },
+    		{ lowres: 'images/portfolio/02_The River/spread6_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread6_final.jpg', name: 'Rain Forest' },
+    		{ lowres: 'images/portfolio/02_The River/spread7_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread7_final.jpg', name: 'River' },
+    		{ lowres: 'images/portfolio/02_The River/spread8_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread8_final.jpg', name: 'Savannah' }
     	];
     	let collection3 = [
-    		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
-    		{ lowres: 'images/citizens.jpg', hires: 'images/originals/citizens.jpg', name: 'Citizens of science' },
-    		{ lowres: 'images/screwit.jpg', hires: 'images/originals/screwit.jpg', name: 'Screw It' },
-    		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/01_bear_cover_edited_half.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/01_bear_cover_edited_half.jpg', name: 'The River' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/02_bear_cover_edited.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/02_bear_cover_edited.jpg', name: 'Bird Island' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/intro_amended_.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/intro_amended_.jpg', name: 'Cave' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread_9.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread_9.jpg', name: 'Forest' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread1_hives.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread1_hives.jpg', name: 'North Pole' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread5.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread5.jpg', name: 'Ocean' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/Spread6.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/Spread6.jpg', name: 'Rain Forest' },
+    		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread8.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread8.jpg', name: 'River' }
     	];
-    	let collection6 = [
-    		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
-    		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
-    		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
-    		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-    		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
-    		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
-    		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
-    	];
-    	let collection5 = [
-    		{ lowres: 'images/angrykid2.jpg', hires: 'images/originals/angrykid2.jpg', name: 'Angry 1' },
-    		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 3' },
-    		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 4' }
+      let collection4 = [
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/01_elephant_cover_edited_half.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/01_elephant_cover_edited_half.jpg', name: 'The River' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/elephant_cover_edited.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/elephant_cover_edited.jpg', name: 'Bird Island' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread3.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread3.jpg', name: 'Cave' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread7.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread7.jpg', name: 'Forest' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread8.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread8.jpg', name: 'North Pole' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread9.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread9.jpg', name: 'Ocean' },
+    		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread10.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread10.jpg', name: 'Rain Forest' }
     	];
 
+     
 
     	function handleHover(){
     		if(menuHover){
@@ -3371,8 +3378,7 @@ var app = (function () {
     		collection1,
     		collection2,
     		collection3,
-    		collection6,
-    		collection5,
+    		collection4,
     		handleHover,
     		handleAbout,
     		$activeCollection

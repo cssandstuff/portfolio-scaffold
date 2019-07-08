@@ -20,41 +20,48 @@
 	// ];
 	
 	let collection1 = [
-		{ lowres: 'images/Noa.jpg', hires: 'images/originals/Noa.jpg', name: 'Noa' },
-		{ lowres: 'images/dog.jpg', hires: 'images/originals/dog.jpg', name: 'Dog' },
-		{ lowres: 'images/glass.jpg', hires: 'images/originals/glass.jpg', name: 'Glass' }
+		{ lowres: 'images/portfolio/01_above and below/_above_below.jpg', hires: 'images/portfolio/01_above and below/Original Files/_above_below.jpg', name: 'Above and Below' },
+		{ lowres: 'images/portfolio/01_above and below/bird_island_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/bird_island_final.jpg', name: 'Bird Island' },
+		{ lowres: 'images/portfolio/01_above and below/cave_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/cave_final.jpg', name: 'Cave' },
+		{ lowres: 'images/portfolio/01_above and below/forest_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/forest_final.jpg', name: 'Forest' },
+		{ lowres: 'images/portfolio/01_above and below/northpole_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/northpole_final.jpg', name: 'North Pole' },
+		{ lowres: 'images/portfolio/01_above and below/ocean_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/ocean_final.jpg', name: 'Ocean' },
+		{ lowres: 'images/portfolio/01_above and below/rainforest-final.jpg', hires: 'images/portfolio/01_above and below/Original Files/rainforest-final.jpg', name: 'Rain Forest' },
+		{ lowres: 'images/portfolio/01_above and below/river_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/river_final.jpg', name: 'River' },
+		{ lowres: 'images/portfolio/01_above and below/savannah_final.jpg', hires: 'images/portfolio/01_above and below/Original Files/savannah_final.jpg', name: 'Savannah' }
 	];
 	let collection2 = [
-		{ lowres: 'images/cash.jpg', hires: 'images/originals/cash.jpg', name: 'Cash suitcase' },
-		{ lowres: 'images/robo.jpg', hires: 'images/originals/robo.jpg', name: 'Robot' },
-		{ lowres: 'images/tako.jpg', hires: 'images/originals/tako.jpg', name: 'Octopus' }
+		{ lowres: 'images/portfolio/02_The River/The_river_Cover.jpg', hires: 'images/portfolio/02_The River/Original Files/The_river_Cover.jpg', name: 'The River' },
+		{ lowres: 'images/portfolio/02_The River/spread1_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread1_final.jpg', name: 'Bird Island' },
+		{ lowres: 'images/portfolio/02_The River/spread2_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread2_final.jpg', name: 'Cave' },
+		{ lowres: 'images/portfolio/02_The River/spread3_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread3_final.jpg', name: 'Forest' },
+		{ lowres: 'images/portfolio/02_The River/spread4_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread4_final.jpg', name: 'North Pole' },
+		{ lowres: 'images/portfolio/02_The River/spread5_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread5_final.jpg', name: 'Ocean' },
+		{ lowres: 'images/portfolio/02_The River/spread6_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread6_final.jpg', name: 'Rain Forest' },
+		{ lowres: 'images/portfolio/02_The River/spread7_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread7_final.jpg', name: 'River' },
+		{ lowres: 'images/portfolio/02_The River/spread8_final.jpg', hires: 'images/portfolio/02_The River/Original Files/spread8_final.jpg', name: 'Savannah' }
 	];
 	let collection3 = [
-		{ lowres: 'images/boltit.jpg', hires: 'images/originals/boltit.jpg', name: 'Boltman' },
-		{ lowres: 'images/citizens.jpg', hires: 'images/originals/citizens.jpg', name: 'Citizens of science' },
-		{ lowres: 'images/screwit.jpg', hires: 'images/originals/screwit.jpg', name: 'Screw It' },
-		{ lowres: 'images/kumo.jpg', hires: 'images/originals/kumo.jpg', name: 'Spiderdeath' }
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/01_bear_cover_edited_half.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/01_bear_cover_edited_half.jpg', name: 'The River' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/02_bear_cover_edited.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/02_bear_cover_edited.jpg', name: 'Bird Island' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/intro_amended_.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/intro_amended_.jpg', name: 'Cave' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread_9.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread_9.jpg', name: 'Forest' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread1_hives.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread1_hives.jpg', name: 'North Pole' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread5.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread5.jpg', name: 'Ocean' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/Spread6.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/Spread6.jpg', name: 'Rain Forest' },
+		{ lowres: 'images/portfolio/03_10 reasons to love a bear/spread8.jpg', hires: 'images/portfolio/03_10 reasons to love a bear/Original Files/spread8.jpg', name: 'River' }
 	];
-	let collection4 = [
-		{ lowres: 'images/atami.jpg', hires: 'images/originals/atami.jpg', name: 'Atami at night' },
-		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
-		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
-	];
-	let collection6 = [
-		{ lowres: 'images/notes.jpg', hires: 'images/originals/notes.jpg', name: 'Notes' },
-		{ lowres: 'images/boring.jpg', hires: 'images/originals/boring.jpg', name: 'Everything is boring' },
-		{ lowres: 'images/hownotto.jpg', hires: 'images/originals/hownotto.jpg', name: 'How not to draw' },
-		{ lowres: 'images/isometric.jpg', hires: 'images/originals/isometric.jpg', name: 'Isometric' },
-		{ lowres: 'images/glass-b+w.jpg', hires: 'images/originals/glass-b+w.jpg', name: 'Glass' },
-		{ lowres: 'images/kenodo.jpg', hires: 'images/originals/kenodo.jpg', name: 'Konodo Highway' },
-		{ lowres: 'images/kenodo2.jpg', hires: 'images/originals/kenodo2.jpg', name: 'Tunnels' }
-	];
-	let collection5 = [
-		{ lowres: 'images/angrykid2.jpg', hires: 'images/originals/angrykid2.jpg', name: 'Angry 1' },
-		{ lowres: 'images/angrykid4.jpg', hires: 'images/originals/angrykid4.jpg', name: 'Angry 3' },
-		{ lowres: 'images/angrykid5.jpg', hires: 'images/originals/angrykid5.jpg', name: 'Angry 4' }
+  let collection4 = [
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/01_elephant_cover_edited_half.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/01_elephant_cover_edited_half.jpg', name: 'The River' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/elephant_cover_edited.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/elephant_cover_edited.jpg', name: 'Bird Island' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread3.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread3.jpg', name: 'Cave' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread7.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread7.jpg', name: 'Forest' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread8.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread8.jpg', name: 'North Pole' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread9.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread9.jpg', name: 'Ocean' },
+		{ lowres: 'images/portfolio/04_10 reasons to love an elephant/spread10.jpg', hires: 'images/portfolio/04_10 reasons to love an elephant/Original Files/spread10.jpg', name: 'Rain Forest' }
 	];
 
+ 
 
 	function handleHover(){
 		if(menuHover){
@@ -77,14 +84,15 @@
 
 <style>
 	.container{
-		display: flex;
+		/* display: flex;
 		flex: 1 auto;
 		flex-basis: 15%;
 		flex-flow: row wrap;
 		align-content: flex-start;
 		justify-content: center;
-		vertical-align: middle;
-		
+		vertical-align: middle; */
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
 		width: auto;
 		margin: 40px 1em 1em;
 	}
@@ -137,7 +145,6 @@
 		width: calc(100% - 3em);
 		min-width: 16em;
 		margin: 0em 1.5em 6em 1.5em;
-		height: 15em;
 	}
 	/* .container :global(.collection){
 		filter: grayscale(33%);
@@ -239,11 +246,13 @@
 </div>
 
 <div class="container">
-	<GalleryStack width="" name="Painterly" bgcolor="261, 27, 71" imagecollection={collection1} id="{uid++}" />
-	<GalleryStack width="" name="Splashes" bgcolor="206, 69, 88" imagecollection={collection2} id="{uid++}" />
-	<GalleryStack width="" name="Citizens of science" bgcolor="20, 62, 88" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack width="" name="Above and Below" imagecollection={collection1} id="{uid++}" />
+	<GalleryStack width="" name="The River" imagecollection={collection2} id="{uid++}" />
+	<GalleryStack width="" name="10 Reasons to love a Bear" imagecollection={collection3} id="{uid++}" />
+	<GalleryStack width="" name="10 Reasons to love an Elephant" imagecollection={collection4} id="{uid++}" />
+	<!-- <GalleryStack width="" name="Citizens of science" bgcolor="20, 62, 88" imagecollection={collection3} id="{uid++}" />
 	<GalleryStack width="" name="Angry at kids" bgcolor="13, 92, 87" imagecollection={collection5} id="{uid++}" />
-	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  />
+	<GalleryStack width="" name="Sketches" bgcolor="109, 0, 76" imagecollection={collection6} id="{uid++}"  /> -->
 </div>
 {#if about }
 <div on:click={handleAbout} class="about" in:fly="{{ y: -20, duration: 400 }}" out:fly="{{ y: 0, duration: 400 }}">

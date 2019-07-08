@@ -100,7 +100,7 @@
   }
 </style>
 {#if visible}
-<img src="{image}" alt="" class="{visible ? '' : 'opacity--0'}">
+<img src="{image}" alt="" class="{visible ? '' : 'opacity--0'}" data-height="{height}" data-width="{width}">
 {:else}
   <div class="loader">
     <div class="inner"></div>

@@ -93,13 +93,13 @@
       console.log(parseInt(key) !== parseInt(index));
       if (parseInt(key) !== parseInt(index)) {
         value.style.transition = "0.8s all ease-out";
-        value.style.filter = "opacity(0.18)";
-        value.firstElementChild.style.filter = "sepia(0.25) grayscale(0.6)";
+        value.style.filter = "opacity(0.54)";
+        value.firstElementChild.style.filter = "grayscale(0.6)";
       }else{
         value.style.filter = "opacity(1)";
         value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
         //value.firstElementChild.style.transition = '0.3s all ease-out';
-        value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+        value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px)';
       }
     });
  
@@ -450,7 +450,7 @@
   }
   .stack :global(.slowtransition) {
     /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
-    transition: all 0.5s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;
+    transition: all 0.7s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;
   }
   .stack :global(.quicktransition) {
     transition: transform 0.2s cubic-bezier(0,0,.13,1), opacity 0.3s ease-out !important;

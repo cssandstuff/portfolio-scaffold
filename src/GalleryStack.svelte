@@ -18,7 +18,7 @@
   import GalleryExpanded from './GalleryExpanded.svelte';
   import { onMount, createEventDispatcher } from 'svelte';
   import { fly, fade } from 'svelte/transition';
-  import { hoveringCollection, activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
+  import { activeCollection, destroyingExpandedGallery, loadingSecondary } from './stores.js';
   
   export let imagecollection;
   export let id = 0;
@@ -34,6 +34,7 @@
   let galleryExpanded;
   let fakeImages;
   let firstImage;
+  let stackHeight;
 
   // reference to orginal colour
   let originalbgcolor;
@@ -66,8 +67,8 @@
       element.style.removeProperty("transition");
 
       if (element !== collection) {
-        element.style.transition = "0.8s all ease-out";
-        element.style.filter = "opacity(0.14)";
+        element.style.transition = "0.9s all ease-out";
+        element.style.filter = "opacity(0.94)";
         element.firstElementChild.style.filter = "sepia(0.25) grayscale(0.66)";
       }else{
         element.style.filter = "opacity(1)";
@@ -84,7 +85,7 @@
       value.style.transform = 'rotate(' + ((parseInt(key)* 4) + 5)+ 'deg)';
     })
 
-    firstImage.style.transform = 'scale(1.03) translateY(-3px) rotate(-0.75deg)';
+    firstImage.style.transform = 'scale(1.03) translateY(-3px)';
     originalbgcolor = getComputedStyle(document.documentElement).getPropertyValue('--bgcolor');
     //document.documentElement.style.setProperty('--bgcolor', `hsl(0, 0%, 90%)`);
     
@@ -210,6 +211,8 @@
     (async () => {
       await sleep(50);
       firstImage = collection.getElementsByTagName('img')[0];
+      stackHeight = firstImage.dataset.height/2;
+      console.log(firstImage.dataset.height)
     })();
   }
 
@@ -378,6 +381,7 @@
 <a href="{imagecollection[0].hires}" class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
+     style="height: {stackHeight}px"
      data-id={id} 
      bind:this={collection} 
      on:mouseenter={rotate} 
