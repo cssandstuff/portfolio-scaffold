@@ -936,7 +936,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (634:4) {#each stack as image, index}
+    // (652:4) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, h2, t1_value = ctx.image.name, t1, a_href_value, current_1, dispose;
 
@@ -965,14 +965,14 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			t1 = text(t1_value);
-    			h2.className = "svelte-1yockky";
+    			h2.className = "svelte-cyh44b";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 641, 8, 18738);
-    			a.className = "galleryitem svelte-1yockky";
+    			add_location(h2, file$3, 659, 8, 19357);
+    			a.className = "galleryitem svelte-cyh44b";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 634, 6, 18414);
+    			add_location(a, file$3, 652, 6, 19033);
 
     			dispose = [
     				listen(a, "mouseenter", mouseenter_handler),
@@ -1041,7 +1041,7 @@ var app = (function () {
     	};
     }
 
-    // (649:0) {#if ready}
+    // (667:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
 
@@ -1085,15 +1085,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-1yockky";
-    			add_location(span0, file$3, 658, 4, 19366);
-    			span1.className = "next svelte-1yockky";
-    			add_location(span1, file$3, 659, 4, 19425);
-    			span2.className = "close svelte-1yockky";
-    			add_location(span2, file$3, 660, 4, 19476);
-    			div.className = "hires svelte-1yockky";
+    			span0.className = "previous svelte-cyh44b";
+    			add_location(span0, file$3, 676, 4, 19985);
+    			span1.className = "next svelte-cyh44b";
+    			add_location(span1, file$3, 677, 4, 20044);
+    			span2.className = "close svelte-cyh44b";
+    			add_location(span2, file$3, 678, 4, 20095);
+    			div.className = "hires svelte-cyh44b";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 652, 2, 19042);
+    			add_location(div, file$3, 670, 2, 19661);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1224,7 +1224,7 @@ var app = (function () {
     	};
     }
 
-    // (650:2) {#if !hiresLoaded}
+    // (668:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1258,7 +1258,7 @@ var app = (function () {
     	};
     }
 
-    // (654:4) {#each stack as image, index}
+    // (672:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1272,9 +1272,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-1yockky";
+    			div.className = "hi-image svelte-cyh44b";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 654, 6, 19191);
+    			add_location(div, file$3, 672, 6, 19810);
     		},
 
     		m: function mount(target, anchor) {
@@ -1354,8 +1354,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-1yockky";
-    			add_location(div, file$3, 632, 2, 18316);
+    			div.className = "stack gallery svelte-cyh44b";
+    			add_location(div, file$3, 650, 2, 18935);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1539,6 +1539,9 @@ var app = (function () {
       // want a reference to each gallery items within the active Collection.
       onMount(() => {
         images = activeCollection.getElementsByClassName('galleryitem');  
+        // Object.entries(images).forEach(([key, value]) => {
+        //   value.style.opacity = 0;
+        // });
         // want the item in a stack on first mount
         attemptToConsolidate();
         
@@ -1548,7 +1551,12 @@ var app = (function () {
       // but for now it seems ok.
       afterUpdate(() => {
         if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
-          expandStuff();
+          //expandStuff();
+          (async () => {
+            await performConsolidation();
+            console.log("DONE!!!!!!");
+            expandStuff();
+          })();
           expandedOnce = true;
         }
         if($destroyingExpandedGallery && expandedOnce){
@@ -1602,6 +1610,18 @@ var app = (function () {
         
       }
 
+      // could the following two function be consolidated into one?
+      // function handleLoadingComplete(event){
+      //   count = count + event.detail.loadingComplete;
+      //   console.log('this is me');
+      //   console.log(event);
+
+      //   if(count === stack.length){
+      //     count = 0;
+      //     loadedSuccessfully = true;
+      //   }
+      // }
+
       function handleLoadingHiResComplete(event){
         count = count + event.detail.loadingComplete;
         if(count === stack.length){
@@ -1648,7 +1668,8 @@ var app = (function () {
         //sometimes the object is undefined I don't know why.
         if(images !== undefined){
           console.log("weren't me guv, everything normal...");
-          performConsolidation();
+          // Need to wait until items are rendered somehow.
+          //performConsolidation();
         
         // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
         }else{
@@ -1668,12 +1689,15 @@ var app = (function () {
       // sometimes the object is empty, so we want a function that only runs when the object is there.
       // This is only called by the attemptToConsolidate function.
       function performConsolidation(){
+        console.log("performing consolitation!");
         let rect = originaltarget.getBoundingClientRect();
         
         Object.entries(images).forEach(([key, value]) => {
           let imageDivRect = value.getBoundingClientRect();
           let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-          
+          console.log(`my transformed style is ${transformedStyle}`);
+          //recty inconsistent?`
+          //value.style.opacity = 1;
           // If first image
           if(key == 0){
             transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
@@ -1959,7 +1983,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (375:0) {#if $activeCollection == id}
+    // (384:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -1969,10 +1993,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-1b51lhe";
-    			add_location(p, file$4, 376, 4, 10749);
+    			add_location(p, file$4, 385, 4, 11258);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-1b51lhe";
-    			add_location(div, file$4, 375, 2, 10605);
+    			add_location(div, file$4, 384, 2, 11114);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -2021,7 +2045,7 @@ var app = (function () {
     	};
     }
 
-    // (392:2) {#if $activeCollection == id}
+    // (401:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2055,7 +2079,7 @@ var app = (function () {
     	};
     }
 
-    // (400:4) {:else}
+    // (409:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -2066,7 +2090,7 @@ var app = (function () {
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 400, 6, 11479);
+    			add_location(div, file$4, 409, 6, 11988);
     		},
 
     		m: function mount(target, anchor) {
@@ -2090,7 +2114,7 @@ var app = (function () {
     	};
     }
 
-    // (398:4) {#if index==0}
+    // (407:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2134,7 +2158,7 @@ var app = (function () {
     	};
     }
 
-    // (397:2) {#each imagecollection as image, index}
+    // (406:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2210,20 +2234,17 @@ var app = (function () {
     	};
     }
 
-    // (411:0) {#if attemptingtoLoad}
+    // (420:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
-    	let galleryexpanded_props = {
+    	var galleryexpanded = new GalleryExpanded({
+    		props: {
     		stack: ctx.imagecollection,
     		originaltarget: ctx.collection
-    	};
-    	var galleryexpanded = new GalleryExpanded({
-    		props: galleryexpanded_props,
+    	},
     		$$inline: true
     	});
-
-    	add_binding_callback(() => ctx.galleryexpanded_binding(galleryexpanded));
     	galleryexpanded.$on("loadingComplete", ctx.handleLoadingComplete);
 
     	return {
@@ -2231,12 +2252,13 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe";
-    			add_location(div, file$4, 412, 3, 11859);
+    			add_location(div, file$4, 421, 3, 12368);
     		},
 
     		m: function mount(target, anchor) {
     			insert(target, div, anchor);
     			mount_component(galleryexpanded, div, null);
+    			add_binding_callback(() => ctx.div_binding(div, null));
     			current = true;
     		},
 
@@ -2245,6 +2267,11 @@ var app = (function () {
     			if (changed.imagecollection) galleryexpanded_changes.stack = ctx.imagecollection;
     			if (changed.collection) galleryexpanded_changes.originaltarget = ctx.collection;
     			galleryexpanded.$set(galleryexpanded_changes);
+
+    			if (changed.items) {
+    				ctx.div_binding(null, div);
+    				ctx.div_binding(div, null);
+    			}
 
     			if ((!current || changed.$loadingSecondary) && div_class_value !== (div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1b51lhe")) {
     				div.className = div_class_value;
@@ -2268,9 +2295,9 @@ var app = (function () {
     				detach(div);
     			}
 
-    			ctx.galleryexpanded_binding(null);
-
     			galleryexpanded.$destroy();
+
+    			ctx.div_binding(null, div);
     		}
     	};
     }
@@ -2329,16 +2356,16 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-1b51lhe";
-    			add_location(span, file$4, 405, 4, 11666);
+    			add_location(span, file$4, 414, 4, 12175);
     			h2.className = "svelte-1b51lhe";
-    			add_location(h2, file$4, 403, 2, 11646);
+    			add_location(h2, file$4, 412, 2, 12155);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-1b51lhe";
     			set_style(a, "height", "" + ctx.stackHeight + "px");
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 380, 0, 10779);
+    			add_location(a, file$4, 389, 0, 11288);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2747,18 +2774,27 @@ var app = (function () {
         (async () => {
           await sleep(50);
           firstImage = collection.getElementsByTagName('img')[0];
-          $$invalidate('stackHeight', stackHeight = firstImage.dataset.height/2);
+          $$invalidate('stackHeight', stackHeight = firstImage.dataset.height/2.5);
           console.log(firstImage.dataset.height);
         })();
       }
 
       function handleLoadingComplete(event) {
         count = count + event.detail.loadingComplete;
+        // console.log(event);
         if(count === imagecollection.length){
-          
           console.log("Loading complete");
           loadingSecondary.update(n => false);
           count = 0;
+          console.log(galleryExpanded);
+          let galleryExpandedContainer = galleryExpanded.firstElementChild;
+          console.log(galleryExpandedContainer);
+          let loadedImages = galleryExpanded.getElementsByTagName('img');
+          let loadedItems = galleryExpanded.getElementsByClassName('galleryitem');
+          Object.entries(loadedItems).forEach(([key, value]) => {
+            let imgHeight = value.firstElementChild.dataset.height/2.5;
+            value.style.height = imgHeight+'px';
+          });
         }
       }
 
@@ -2772,8 +2808,8 @@ var app = (function () {
     		$$invalidate('collection', collection);
     	}
 
-    	function galleryexpanded_binding($$component) {
-    		galleryExpanded = $$component;
+    	function div_binding($$node, check) {
+    		galleryExpanded = $$node;
     		$$invalidate('galleryExpanded', galleryExpanded);
     	}
 
@@ -2804,7 +2840,7 @@ var app = (function () {
     		$activeCollection,
     		$loadingSecondary,
     		a_binding,
-    		galleryexpanded_binding
+    		div_binding
     	};
     }
 

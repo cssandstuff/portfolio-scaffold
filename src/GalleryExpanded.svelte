@@ -60,6 +60,9 @@
   // want a reference to each gallery items within the active Collection.
   onMount(() => {
     images = activeCollection.getElementsByClassName('galleryitem');  
+    // Object.entries(images).forEach(([key, value]) => {
+    //   value.style.opacity = 0;
+    // });
     // want the item in a stack on first mount
     attemptToConsolidate();
     
@@ -69,7 +72,12 @@
   // but for now it seems ok.
   afterUpdate(() => {
     if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
-      expandStuff();
+      //expandStuff();
+      (async () => {
+        await performConsolidation();
+        console.log("DONE!!!!!!")
+        expandStuff();
+      })();
       expandedOnce = true;
     }
     if($destroyingExpandedGallery && expandedOnce){
@@ -124,13 +132,16 @@
   }
 
   // could the following two function be consolidated into one?
-  function handleLoadingComplete(event){
-    count = count + event.detail.loadingComplete;
-    if(count === stack.length){
-      count = 0;
-      loadedSuccessfully = true;
-    }
-  }
+  // function handleLoadingComplete(event){
+  //   count = count + event.detail.loadingComplete;
+  //   console.log('this is me');
+  //   console.log(event);
+
+  //   if(count === stack.length){
+  //     count = 0;
+  //     loadedSuccessfully = true;
+  //   }
+  // }
 
   function handleLoadingHiResComplete(event){
     count = count + event.detail.loadingComplete;
@@ -178,7 +189,8 @@
     //sometimes the object is undefined I don't know why.
     if(images !== undefined){
       console.log("weren't me guv, everything normal...");
-      performConsolidation();
+      // Need to wait until items are rendered somehow.
+      //performConsolidation();
     
     // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
     }else{
@@ -198,12 +210,15 @@
   // sometimes the object is empty, so we want a function that only runs when the object is there.
   // This is only called by the attemptToConsolidate function.
   function performConsolidation(){
+    console.log("performing consolitation!");
     let rect = originaltarget.getBoundingClientRect();
     
     Object.entries(images).forEach(([key, value]) => {
       let imageDivRect = value.getBoundingClientRect();
       let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-      
+      console.log(`my transformed style is ${transformedStyle}`);
+      //recty inconsistent?`
+      //value.style.opacity = 1;
       // If first image
       if(key == 0){
         transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
@@ -448,6 +463,9 @@
   .transitioning .magnify {
     display: none;
   }
+  /* .stack .galleryitem{
+    animation: animateOpacity 0.4s forwards;
+  } */
   .stack :global(.slowtransition) {
     /* transition: all 3.6s cubic-bezier(0,0,.13,1.33) !important; */
     transition: all 0.7s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;

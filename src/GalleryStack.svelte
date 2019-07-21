@@ -211,18 +211,27 @@
     (async () => {
       await sleep(50);
       firstImage = collection.getElementsByTagName('img')[0];
-      stackHeight = firstImage.dataset.height/2;
+      stackHeight = firstImage.dataset.height/2.5;
       console.log(firstImage.dataset.height)
     })();
   }
 
   function handleLoadingComplete(event) {
     count = count + event.detail.loadingComplete;
+    // console.log(event);
     if(count === imagecollection.length){
-      
       console.log("Loading complete");
       loadingSecondary.update(n => false);
       count = 0;
+      console.log(galleryExpanded);
+      let galleryExpandedContainer = galleryExpanded.firstElementChild;
+      console.log(galleryExpandedContainer);
+      let loadedImages = galleryExpanded.getElementsByTagName('img');
+      let loadedItems = galleryExpanded.getElementsByClassName('galleryitem');
+      Object.entries(loadedItems).forEach(([key, value]) => {
+        let imgHeight = value.firstElementChild.dataset.height/2.5;
+        value.style.height = imgHeight+'px';
+      });
     }
   }
 </script>
@@ -410,7 +419,7 @@
 <!-- Real Gallery, we load all images and then it can be expanded -->
 {#if attemptingtoLoad}
   <!-- {@debug imagecollection} -->
-   <div class="loading--{$loadingSecondary}">
-    <GalleryExpanded bind:this={galleryExpanded} stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
+   <div class="loading--{$loadingSecondary}" bind:this={galleryExpanded}>
+    <GalleryExpanded stack={imagecollection} originaltarget={collection} on:loadingComplete="{handleLoadingComplete}"  />
   </div>
 {/if}
