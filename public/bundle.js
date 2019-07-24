@@ -936,7 +936,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (652:4) {#each stack as image, index}
+    // (662:4) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, h2, t1_value = ctx.image.name, t1, a_href_value, current_1, dispose;
 
@@ -965,14 +965,14 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			t1 = text(t1_value);
-    			h2.className = "svelte-cyh44b";
+    			h2.className = "svelte-9khjhy";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 659, 8, 19357);
-    			a.className = "galleryitem svelte-cyh44b";
+    			add_location(h2, file$3, 669, 8, 19505);
+    			a.className = "galleryitem svelte-9khjhy";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 652, 6, 19033);
+    			add_location(a, file$3, 662, 6, 19181);
 
     			dispose = [
     				listen(a, "mouseenter", mouseenter_handler),
@@ -1041,7 +1041,7 @@ var app = (function () {
     	};
     }
 
-    // (667:0) {#if ready}
+    // (677:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
 
@@ -1085,15 +1085,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-cyh44b";
-    			add_location(span0, file$3, 676, 4, 19985);
-    			span1.className = "next svelte-cyh44b";
-    			add_location(span1, file$3, 677, 4, 20044);
-    			span2.className = "close svelte-cyh44b";
-    			add_location(span2, file$3, 678, 4, 20095);
-    			div.className = "hires svelte-cyh44b";
+    			span0.className = "previous svelte-9khjhy";
+    			add_location(span0, file$3, 686, 4, 20133);
+    			span1.className = "next svelte-9khjhy";
+    			add_location(span1, file$3, 687, 4, 20192);
+    			span2.className = "close svelte-9khjhy";
+    			add_location(span2, file$3, 688, 4, 20243);
+    			div.className = "hires svelte-9khjhy";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 670, 2, 19661);
+    			add_location(div, file$3, 680, 2, 19809);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1224,7 +1224,7 @@ var app = (function () {
     	};
     }
 
-    // (668:2) {#if !hiresLoaded}
+    // (678:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1258,7 +1258,7 @@ var app = (function () {
     	};
     }
 
-    // (672:4) {#each stack as image, index}
+    // (682:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1272,9 +1272,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-cyh44b";
+    			div.className = "hi-image svelte-9khjhy";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 672, 6, 19810);
+    			add_location(div, file$3, 682, 6, 19958);
     		},
 
     		m: function mount(target, anchor) {
@@ -1354,8 +1354,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-cyh44b";
-    			add_location(div, file$3, 650, 2, 18935);
+    			div.className = "stack gallery svelte-9khjhy";
+    			add_location(div, file$3, 660, 2, 19083);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1554,7 +1554,6 @@ var app = (function () {
           //expandStuff();
           (async () => {
             await performConsolidation();
-            console.log("DONE!!!!!!");
             expandStuff();
           })();
           expandedOnce = true;
@@ -1668,8 +1667,12 @@ var app = (function () {
         //sometimes the object is undefined I don't know why.
         if(images !== undefined){
           console.log("weren't me guv, everything normal...");
-          // Need to wait until items are rendered somehow.
-          //performConsolidation();
+
+          // An extra check to only call this when destroying the gallery
+          if($destroyingExpandedGallery){
+            performConsolidation();
+          }
+         
         
         // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
         }else{
@@ -1697,7 +1700,9 @@ var app = (function () {
           let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
           console.log(`my transformed style is ${transformedStyle}`);
           //recty inconsistent?`
-          //value.style.opacity = 1;
+          if(key!=0){
+              value.style.opacity = 0;
+          }
           // If first image
           if(key == 0){
             transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
@@ -1717,6 +1722,8 @@ var app = (function () {
             value.classList.add('quicktransition');
             // Set tranformed style (different if destroying)
             value.style.transform = transformedStyle;
+            
+            
 
           }else{
             // Set tranformed style.
@@ -1742,6 +1749,9 @@ var app = (function () {
             $$invalidate('transitioning', transitioning = true);
             value.classList.add('slowtransition');
             value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
+            if(key!=0){
+              value.style.opacity = 1;
+            }
           });
         })();
 

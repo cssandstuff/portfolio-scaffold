@@ -75,7 +75,6 @@
       //expandStuff();
       (async () => {
         await performConsolidation();
-        console.log("DONE!!!!!!")
         expandStuff();
       })();
       expandedOnce = true;
@@ -189,8 +188,12 @@
     //sometimes the object is undefined I don't know why.
     if(images !== undefined){
       console.log("weren't me guv, everything normal...");
-      // Need to wait until items are rendered somehow.
-      //performConsolidation();
+
+      // An extra check to only call this when destroying the gallery
+      if($destroyingExpandedGallery){
+        performConsolidation();
+      }
+     
     
     // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
     }else{
@@ -218,7 +221,9 @@
       let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
       console.log(`my transformed style is ${transformedStyle}`);
       //recty inconsistent?`
-      //value.style.opacity = 1;
+      if(key!=0){
+          value.style.opacity = 0;
+      }
       // If first image
       if(key == 0){
         transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
@@ -238,6 +243,8 @@
         value.classList.add('quicktransition');
         // Set tranformed style (different if destroying)
         value.style.transform = transformedStyle;
+        
+        
 
       }else{
         // Set tranformed style.
@@ -263,6 +270,9 @@
         transitioning = true;
         value.classList.add('slowtransition');
         value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
+        if(key!=0){
+          value.style.opacity = 1;
+        }
       });
     })();
 
@@ -471,8 +481,8 @@
     transition: all 0.7s cubic-bezier(0.38, 0.56, 0.21, 1.15) !important;
   }
   .stack :global(.quicktransition) {
-    transition: transform 0.2s cubic-bezier(0,0,.13,1), opacity 0.3s ease-out !important;
-    opacity: 0.5;
+    transition: transform 0.2s cubic-bezier(0,0,.13,1), opacity 0.2s ease-out !important;
+    /*opacity: 0.5;*/
   }
   .stack :global(.hitransition) {
     transition: transform 0.33s cubic-bezier(0,0,.13,1.1);
