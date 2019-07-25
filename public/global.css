@@ -5,6 +5,7 @@ html, body {
 	
 }
 
+*{ box-sizing: content-box;}
 body {
 	color: #333;
 	margin: 0;

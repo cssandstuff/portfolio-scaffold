@@ -96,8 +96,8 @@
     // grayscale other images
     Object.entries(images).forEach(([key, value]) => {
       value.style.removeProperty("transition");
-      console.log(`current is ${index} Key is ${key}`)
-      console.log(parseInt(key) !== parseInt(index));
+      // console.log(`current is ${index} Key is ${key}`)
+      // console.log(parseInt(key) !== parseInt(index));
       if (parseInt(key) !== parseInt(index)) {
         value.style.transition = "0.8s all ease-out";
         value.style.filter = "opacity(0.54)";
@@ -494,16 +494,23 @@
   }
 
   .gallery{
-    display: flex;
+    /* display: flex;
     flex: 1 auto;
     flex-flow: row wrap;
     align-content: flex-start;
-    justify-content: center;
+    justify-content: center; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 0;
+    width: auto;
+    margin: 40px 1em 1em;
   }
 
   .gallery a{
     position: relative;
     margin: 1em 1.5em 3em 1.5em;
+    /* padding: 0.5em 0; */
+    /* width: calc(22vw - 3em); */
   }
   
   /* .gallery a:hover .magnify{

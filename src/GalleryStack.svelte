@@ -223,15 +223,21 @@
       console.log("Loading complete");
       loadingSecondary.update(n => false);
       count = 0;
-      console.log(galleryExpanded);
       let galleryExpandedContainer = galleryExpanded.firstElementChild;
-      console.log(galleryExpandedContainer);
       let loadedImages = galleryExpanded.getElementsByTagName('img');
       let loadedItems = galleryExpanded.getElementsByClassName('galleryitem');
-      Object.entries(loadedItems).forEach(([key, value]) => {
-        let imgHeight = value.firstElementChild.dataset.height/2.5;
-        value.style.height = imgHeight+'px';
-      });
+
+      // Sleeping fixes everything
+      (async () => {
+        await sleep(50);
+        Object.entries(loadedItems).forEach(([key, value]) => {
+          let imgHeight = value.firstElementChild.dataset.height/2.5;
+          value.style.height = imgHeight+'px';
+          console.log(value);
+          console.log(`height is ${imgHeight}`);
+        });
+      })();
+      
     }
   }
 </script>
@@ -304,8 +310,8 @@
   }
 
   .collection :global(img) {
-    position: absolute;
-    top: 0; left: 0;
+    /* position: absolute;
+    top: 0; left: 0; */
     /* width: calc(100% - 2px);
     height: calc(100% - 2px);
     min-width: calc(100% - 2px);

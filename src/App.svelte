@@ -203,7 +203,7 @@
 	}
 	@media(min-width: 420px){
 		.container :global(.collection, .galleryitem) {
-			width: calc(22vw - 3em);
+			/* width: calc(22vw - 3em); */
 		}
 	}
 
