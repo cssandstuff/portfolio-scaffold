@@ -1,44 +1,69 @@
-html, body {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	
-}
-
-*{ box-sizing: content-box;}
+html,
 body {
-	color: #333;
-	margin: 0;
-	padding: 8px;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-	overflow-x: hidden;
-	background-color: var(--bgcolor);
-	transition: 0.9s background-color;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.locked{
-	height: 100vh;
-	overflow: hidden;
+* {
+  box-sizing: content-box;
+}
+body {
+  color: #333;
+  margin: 0;
+  padding: 8px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+  background-color: var(--bgcolor);
+  transition: 0.9s background-color;
+}
+.container:before {
+  content: "";
+  height: 100vh;
+  width: 2px;
+  top: 0;
+  left: calc(50vw - 1px);
+  position: fixed;
+  background: red;
+  z-index: 99;
+  display: block;
+}
+.container:after {
+  content: "";
+  width: 100vw;
+  height: 2px;
+  top: calc(50vh - 1px);
+  left: 0;
+  position: fixed;
+  background: red;
+  z-index: 99;
+  display: block;
 }
 
-.no-pointer-events{
-	pointer-events: none !important;
+.locked {
+  height: 100vh;
+  overflow: hidden;
 }
 
-.neardeath{
-	opacity: 0;
-	transition: 0s !important;
-}
-.notransition{
-	transition: 0s !important;
+.no-pointer-events {
+  pointer-events: none !important;
 }
 
-:root{
-	--bgcolor: #fff;
-	--bgcolortint: #fff;
-	--bgcolordarktint: #fff;
-	--dark: #423838;
-	--light: #fff;
-	--textcolor: #333;
+.neardeath {
+  opacity: 0;
+  transition: 0s !important;
+}
+.notransition {
+  transition: 0s !important;
+}
+
+:root {
+  --bgcolor: #fff;
+  --bgcolortint: #fff;
+  --bgcolordarktint: #fff;
+  --dark: #423838;
+  --light: #fff;
+  --textcolor: #333;
 }

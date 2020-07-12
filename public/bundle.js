@@ -612,10 +612,10 @@ var app = (function () {
     		c: function create() {
     			div1 = element("div");
     			div0 = element("div");
-    			div0.className = "inner svelte-vtevxo";
-    			add_location(div0, file$1, 105, 4, 2230);
-    			div1.className = "loader svelte-vtevxo";
-    			add_location(div1, file$1, 104, 2, 2205);
+    			div0.className = "inner svelte-9bdli0";
+    			add_location(div0, file$1, 105, 4, 2242);
+    			div1.className = "loader svelte-9bdli0";
+    			add_location(div1, file$1, 104, 2, 2217);
     		},
 
     		m: function mount(target, anchor) {
@@ -642,10 +642,10 @@ var app = (function () {
     			img = element("img");
     			img.src = ctx.image;
     			img.alt = "";
-    			img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo";
+    			img.className = img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-9bdli0";
     			img.dataset.height = ctx.height;
     			img.dataset.width = ctx.width;
-    			add_location(img, file$1, 102, 0, 2086);
+    			add_location(img, file$1, 102, 0, 2098);
     		},
 
     		m: function mount(target, anchor) {
@@ -657,7 +657,7 @@ var app = (function () {
     				img.src = ctx.image;
     			}
 
-    			if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-vtevxo")) {
+    			if ((changed.visible) && img_class_value !== (img_class_value = "" + (ctx.visible ? '' : 'opacity--0') + " svelte-9bdli0")) {
     				img.className = img_class_value;
     			}
 
@@ -936,7 +936,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (669:4) {#each stack as image, index}
+    // (782:2) {#each stack as image, index}
     function create_each_block_1(ctx) {
     	var a, t0, h2, t1_value = ctx.image.name, t1, a_href_value, current_1, dispose;
 
@@ -965,14 +965,14 @@ var app = (function () {
     			t0 = space();
     			h2 = element("h2");
     			t1 = text(t1_value);
-    			h2.className = "svelte-xyvzi3";
+    			h2.className = "svelte-v4m005";
     			toggle_class(h2, "out", ctx.$destroyingExpandedGallery === true || ctx.showTitles === false);
     			toggle_class(h2, "in", ctx.$loadingSecondary === false && ctx.showTitles !== false && !ctx.$destroyingExpandedGallery);
-    			add_location(h2, file$3, 676, 8, 19703);
-    			a.className = "galleryitem svelte-xyvzi3";
+    			add_location(h2, file$3, 790, 6, 23035);
+    			a.className = "galleryitem svelte-v4m005";
     			a.href = a_href_value = ctx.image.hires;
     			toggle_class(a, "transitioning", ctx.transitioning === true);
-    			add_location(a, file$3, 669, 6, 19379);
+    			add_location(a, file$3, 782, 4, 22729);
 
     			dispose = [
     				listen(a, "mouseenter", mouseenter_handler),
@@ -1041,7 +1041,7 @@ var app = (function () {
     	};
     }
 
-    // (684:0) {#if ready}
+    // (800:0) {#if ready}
     function create_if_block$1(ctx) {
     	var t0, div, t1, span0, t2, span1, t3, span2, t4, div_outro, current_1, dispose;
 
@@ -1085,15 +1085,15 @@ var app = (function () {
     			t3 = space();
     			span2 = element("span");
     			t4 = text(ctx.currentTitle);
-    			span0.className = "previous svelte-xyvzi3";
-    			add_location(span0, file$3, 693, 4, 20331);
-    			span1.className = "next svelte-xyvzi3";
-    			add_location(span1, file$3, 694, 4, 20390);
-    			span2.className = "close svelte-xyvzi3";
-    			add_location(span2, file$3, 695, 4, 20441);
-    			div.className = "hires svelte-xyvzi3";
+    			span0.className = "previous svelte-v4m005";
+    			add_location(span0, file$3, 815, 4, 23695);
+    			span1.className = "next svelte-v4m005";
+    			add_location(span1, file$3, 816, 4, 23749);
+    			span2.className = "close svelte-v4m005";
+    			add_location(span2, file$3, 817, 4, 23795);
+    			div.className = "hires svelte-v4m005";
     			toggle_class(div, "ready", ctx.hiresLoaded === true);
-    			add_location(div, file$3, 687, 2, 20007);
+    			add_location(div, file$3, 803, 2, 23341);
 
     			dispose = [
     				listen(span0, "click", ctx.showPrevious),
@@ -1197,7 +1197,7 @@ var app = (function () {
     			for (let i = 0; i < each_blocks.length; i += 1) outro_block(i, 0);
 
     			if (local) {
-    				div_outro = create_out_transition(div, fade, {duration: 100});
+    				div_outro = create_out_transition(div, fade, { duration: 100 });
     			}
 
     			current_1 = false;
@@ -1224,7 +1224,7 @@ var app = (function () {
     	};
     }
 
-    // (685:2) {#if !hiresLoaded}
+    // (801:2) {#if !hiresLoaded}
     function create_if_block_1(ctx) {
     	var current_1;
 
@@ -1258,7 +1258,7 @@ var app = (function () {
     	};
     }
 
-    // (689:4) {#each stack as image, index}
+    // (809:4) {#each stack as image, index}
     function create_each_block(ctx) {
     	var div, current_1;
 
@@ -1272,9 +1272,9 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			image.$$.fragment.c();
-    			div.className = "hi-image svelte-xyvzi3";
+    			div.className = "hi-image svelte-v4m005";
     			toggle_class(div, "active", ctx.current === ctx.index);
-    			add_location(div, file$3, 689, 6, 20156);
+    			add_location(div, file$3, 809, 6, 23504);
     		},
 
     		m: function mount(target, anchor) {
@@ -1354,8 +1354,8 @@ var app = (function () {
     			t = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			div.className = "stack gallery svelte-xyvzi3";
-    			add_location(div, file$3, 667, 2, 19281);
+    			div.className = "stack gallery svelte-v4m005";
+    			add_location(div, file$3, 780, 0, 22636);
 
     			dispose = [
     				listen(window, "keydown", ctx.handleKeydown),
@@ -1516,41 +1516,40 @@ var app = (function () {
       let hiresScrollPos;
 
       // x + y for center of document
-      let centerX = document.documentElement.clientWidth/2;
-      let centerY = document.documentElement.clientHeight/2;
-      
+      let centerX = document.documentElement.clientWidth / 2;
+      let centerY = document.documentElement.clientHeight / 2;
+
       // Handles transition of single gallery image when it transitions to hi-res.
       let transitionHandler;
-      
+
       // count for loading
       let count = 0;
 
       // booleans, do I need so many?
-      let showTitles          = true;
-      let hiresLoaded         = false;
-      let ready               = false;
-      let expandedOnce        = false;
-      let transitioning       = false;
-      let closedGallery       = false;
-      
+      let showTitles = true;
+      let hiresLoaded = false;
+      let ready = false;
+      let expandedOnce = false;
+      let transitioning = false;
+      let closedGallery = false;
+
       // could probably remove the need for this?
       const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
       // want a reference to each gallery items within the active Collection.
       onMount(() => {
-        images = activeCollection.getElementsByClassName('galleryitem');  
+        images = activeCollection.getElementsByClassName("galleryitem");
         // Object.entries(images).forEach(([key, value]) => {
         //   value.style.opacity = 0;
         // });
         // want the item in a stack on first mount
         attemptToConsolidate();
-        
       });
 
-      // Might be able to refactor this to not use AfterUpdate, 
+      // Might be able to refactor this to not use AfterUpdate,
       // but for now it seems ok.
       afterUpdate(() => {
-        if(!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce){
+        if (!$loadingSecondary && !$destroyingExpandedGallery && !expandedOnce) {
           //expandStuff();
           (async () => {
             await performConsolidation();
@@ -1558,20 +1557,19 @@ var app = (function () {
           })();
           expandedOnce = true;
         }
-        if($destroyingExpandedGallery && expandedOnce){
+        if ($destroyingExpandedGallery && expandedOnce) {
           attemptToConsolidate();
           expandedOnce = false;
         }
       });
 
       onDestroy(() => {
-        console.log('being destroyed... laters');
+        console.log("being destroyed... laters");
         destroyingExpandedGallery.update(n => false);
       });
 
-        // Rotate image stack on hover over
+      // Rotate image stack on hover over
       function rotate(event, index) {
-
         // grayscale other images
         Object.entries(images).forEach(([key, value]) => {
           value.style.removeProperty("transition");
@@ -1581,32 +1579,30 @@ var app = (function () {
             value.style.transition = "0.8s all ease-out";
             value.style.filter = "opacity(0.54)";
             value.firstElementChild.style.filter = "grayscale(0.6)";
-          }else{
+          } else {
             value.style.filter = "opacity(1)";
             value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
             //value.firstElementChild.style.transition = '0.3s all ease-out';
-            value.firstElementChild.style.transform = 'scale(1.03) translateY(-3px)';
+            value.firstElementChild.style.transform =
+              "scale(1.03) translateY(-3px)";
           }
         });
-     
       }
 
       // Un-Rotate image stack on hover out
       function unRotate(event, index) {
-
         //anchoredImage.style.transform = 'scale(1) rotate(0deg)';
 
-          //un-grayscale all images
-          Object.entries(images).forEach(([key, value]) => {
-            value.style.transform.delay;
-            value.style.removeProperty("transition");
-            value.firstElementChild.style.removeProperty("transition");
-            value.firstElementChild.style.removeProperty("transform");
-            value.style.filter = "opacity(1)";
-            value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
-            //value.firstElementChild.style.transform = 'scale(1) translateY(0) rotate(0deg)';
-          });
-        
+        //un-grayscale all images
+        Object.entries(images).forEach(([key, value]) => {
+          value.style.transform.delay;
+          value.style.removeProperty("transition");
+          value.firstElementChild.style.removeProperty("transition");
+          value.firstElementChild.style.removeProperty("transform");
+          value.style.filter = "opacity(1)";
+          value.firstElementChild.style.filter = "sepia(0) grayscale(0)";
+          //value.firstElementChild.style.transform = 'scale(1) translateY(0) rotate(0deg)';
+        });
       }
 
       // could the following two function be consolidated into one?
@@ -1621,34 +1617,34 @@ var app = (function () {
       //   }
       // }
 
-      function handleLoadingHiResComplete(event){
+      function handleLoadingHiResComplete(event) {
         count = count + event.detail.loadingComplete;
-        if(count === stack.length){
+        if (count === stack.length) {
           count = 0;
           $$invalidate('hiresLoaded', hiresLoaded = true);
         }
-        hiresImages = thirdLevel.getElementsByClassName('hi-image');
+        hiresImages = thirdLevel.getElementsByClassName("hi-image");
       }
 
       // Keyboard functionality.
-      function handleKeydown(event){
-        if(event.code == "ArrowRight"){
+      function handleKeydown(event) {
+        if (event.code == "ArrowRight") {
           showNext();
         }
-        if(event.code == "ArrowLeft"){
+        if (event.code == "ArrowLeft") {
           showPrevious();
         }
-        if(event.code == "Escape"){
-          if(!closedGallery){
+        if (event.code == "Escape") {
+          if (!closedGallery) {
             closeGallery();
-          }else{
+          } else {
             document.getElementById("breadcrumb").click();
           }
         }
       }
 
       // This is called on click of gallery item, to init the lightbox.
-      function loadLargeImages(event, index){
+      function loadLargeImages(event, index) {
         $$invalidate('current', current = index);
         event.preventDefault();
 
@@ -1658,31 +1654,30 @@ var app = (function () {
         // Gets the hi-res images into the DOM and loading
         $$invalidate('ready', ready = true);
       }
-      
+
       // Function for bringing everything together. called onMount
       // and when gallery is being destroyed.
-      function attemptToConsolidate(){
-        activeCollection.classList.add('no-pointer-events');
+      function attemptToConsolidate() {
+        activeCollection.classList.add("no-pointer-events");
 
         //sometimes the object is undefined I don't know why.
-        if(images !== undefined){
+        if (images !== undefined) {
           console.log("weren't me guv, everything normal...");
 
           // An extra check to only call this when destroying the gallery
-          if($destroyingExpandedGallery){
+          if ($destroyingExpandedGallery) {
             performConsolidation();
           }
-         
-        
-        // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
-        }else{
-          console.log('object was undefined, hard luck son.');
-          
+
+          // not sure I'm even experiencing this bug anymore, but can't hurt to be sure?
+        } else {
+          console.log("object was undefined, hard luck son.");
+
           // Try again?
           (async () => {
             await sleep(180);
             Object.entries(images).forEach(([key, value]) => {
-              console.log('trying again...');
+              console.log("trying again...");
               performConsolidation();
             });
           })();
@@ -1691,65 +1686,65 @@ var app = (function () {
 
       // sometimes the object is empty, so we want a function that only runs when the object is there.
       // This is only called by the attemptToConsolidate function.
-      function performConsolidation(){
+      function performConsolidation() {
         console.log("performing consolitation!");
         let rect = originaltarget.getBoundingClientRect();
-        
+
         Object.entries(images).forEach(([key, value]) => {
           let imageDivRect = value.getBoundingClientRect();
-          let transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) rotate(${key * 4}deg)`;
-          console.log(`my transformed style is ${transformedStyle}`);
+          let transformedStyle = `translateX(${rect.x -
+        imageDivRect.x}px) translateY(${rect.y -
+        imageDivRect.y}px) rotate(${key * 4}deg)`;
+          //console.log(`my transformed style is ${transformedStyle}`);
           //recty inconsistent?`
-          if(key!=0){
-              value.style.opacity = 0;
+          if (key != 0) {
+            value.style.opacity = 0;
           }
           // If first image
-          if(key == 0){
-            transformedStyle = `translateX(${(rect.x) - imageDivRect.x}px) translateY(${(rect.y) - imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
+          if (key == 0) {
+            transformedStyle = `translateX(${rect.x -
+          imageDivRect.x}px) translateY(${rect.y -
+          imageDivRect.y}px) scale(1.03) translateY(-3px) rotate(-2deg)`;
           }
-          
+
           // stacks the zindex's of images so first is always on top.
           value.style.zIndex = images.length - key;
 
           // if gallery is being closed/destroyed we want a quicker transition.
-          if($destroyingExpandedGallery){
-
+          if ($destroyingExpandedGallery) {
             // Scroll to position we were at when item was first clicked.
             window.scrollTo(0, originalScrollPos);
             activeCollection.style.transform = `translateY(0px)`; $$invalidate('activeCollection', activeCollection);
-            transformedStyle = `translateX(${rect.x - imageDivRect.x}px) translateY(${rect.y - imageDivRect.y}px) rotate(${key * 2}deg)`;
+            transformedStyle = `translateX(${rect.x -
+          imageDivRect.x}px) translateY(${rect.y -
+          imageDivRect.y}px) rotate(${key * 2}deg)`;
             // Quick transition please.
-            value.classList.add('quicktransition');
+            value.classList.add("quicktransition");
             // Set tranformed style (different if destroying)
             value.style.transform = transformedStyle;
-            
-            
-
-          }else{
+          } else {
             // Set tranformed style.
             value.style.transform = transformedStyle;
           }
-          
         });
       }
 
-      // Function for Expanding things into place.  
-      function expandStuff(){
-        
+      // Function for Expanding things into place.
+      function expandStuff() {
         // Want items that are expanded to always be at the top of the viewport
         originalScrollPos = scrollY;
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         activeCollection.style.transform = `translateY(-${originalScrollPos}px)`; $$invalidate('activeCollection', activeCollection);
-      
+
         (async () => {
           // Need to wait a little bit after scrollTo.
           await sleep(80);
           Object.entries(images).forEach(([key, value]) => {
             var imageDivRect = value.getBoundingClientRect();
             $$invalidate('transitioning', transitioning = true);
-            value.classList.add('slowtransition');
+            value.classList.add("slowtransition");
             value.style.transform = `translateX(0px) translateY(${originalScrollPos}px)`; //translateY(${originalScrollPos}px)`;
-            if(key!=0){
+            if (key != 0) {
               value.style.opacity = 1;
             }
           });
@@ -1758,72 +1753,155 @@ var app = (function () {
         (async () => {
           // sleep to wait for transition to end, maybe better to use transitionend ?
           await sleep(500);
-          activeCollection.classList.remove('no-pointer-events');
+          activeCollection.classList.remove("no-pointer-events");
           $$invalidate('transitioning', transitioning = false);
         })();
       }
 
       // animate clicked image to the center.
-      function animateClicked(current){
+      function animateClicked(current) {
         // This could probably be done more accurately, but it works ok for now.
-        let currentImage = images[current].getElementsByTagName('img')[0];
-        let rect = images[current].getBoundingClientRect();
-        let centerArea = centerX + centerY * 2;
-        let imageArea = rect.width + rect.height;
+        let currentImage = images[current].getElementsByTagName("img")[0];
+        let parentRect = activeCollection.getBoundingClientRect();
+        let parentCenterX = parentRect.width / 2;
+        let rect = currentImage.getBoundingClientRect();
+        let scaleDifference = 2;
+        let area1 = rect.height;
+        let area2 = centerY * 2;
+        let leftOffset = rect.left;
+        let leftDifference = centerX - leftOffset - rect.width / 2;
+
+        let topOffset = rect.top;
+        let topDifference = centerY - topOffset - rect.height / 2;
+
+        // let scaledtopDifference =
+        //   topDifference * scaleDifference * 2 - topDifference / 2;
+
+        // want it to always be positive
+        // if (leftDifference < 0) {
+        //   leftDifference = Math.abs(leftDifference);
+        // }
+        console.log(rect);
+        console.log(`area 1 is ${area1}`);
+        console.log(`area 2 is ${area2}`);
+
+        scaleDifference = area2 / area1;
+        console.log(`scaleDifference is ${scaleDifference}`);
+
+        console.log(`rect.width is ${rect.width}`);
+        console.log(`left offset is ${leftOffset}`);
+        console.log(`rect.height is ${rect.height}`);
+        console.log(`top offset is ${topOffset}`);
+        console.log(`centerX is ${centerX}`);
+        console.log(`centerY is ${centerY}`);
+        console.log(`left difference is ${leftDifference}`);
+        console.log(`top difference is ${topDifference}`);
+        console.log(
+          `scaled left difference is ${leftDifference * scaleDifference}`
+        );
+        console.log(`scaled top difference is ${topDifference * scaleDifference}`);
+        console.log(`parent width is ${parentRect.width}`);
+        console.log(`browser width is ${centerX * 2}`);
+        console.log(`parent height is ${parentRect.height}`);
+        console.log(`browser height is ${centerY * 2}`);
+
+        // if (leftCenter < centerX) {
+        //   leftOffset = centerX - leftCenter; // * scaleDifference;
+        // } else {
+        //   leftOffset = leftCenter - centerX; //* scaleDifference * -1;
+        // }
+        // if (topCenter < centerY) {
+        //   topOffset = centerY - topCenter + scrollY;
+        // } else {
+        //   topOffset = (topCenter - centerY + scrollY) * -1;
+        // }
 
         // Hide thumbnail titles, else they jump in front of transitioned image.
         $$invalidate('showTitles', showTitles = false);
 
         // Set active breadcrumb title
-        $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+        $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName("h2")[0].innerText);
         Object.entries(images).forEach(([key, value]) => {
-          value.style.zIndex = '1';
+          value.style.zIndex = "1";
         });
 
-        currentImage.classList.remove('notransition');
-        currentImage.classList.remove('quicktransition');
-        images[current].style.zIndex = '99';    hiresScrollPos = scrollY;
+        currentImage.classList.remove("notransition");
+        currentImage.classList.remove("quicktransition");
+        images[current].style.zIndex = "99";    hiresScrollPos = scrollY;
 
         (async () => {
           // Need to wait a bit after classes are removed.
           await sleep(100);
-          currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
-          currentImage.addEventListener('transitionend', transitionHandler = () => {
-            console.log('Transition ended');
-            document.getElementsByTagName("body")[0].classList.add('locked');
-          });    })();
+          //currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
+
+          // HOW DO I DO THIS?
+          // activeCollection.style.transform = `translateX(${leftDifference *
+          //   scaleDifference}px) translateY(${topDifference *
+          //   scaleDifference}px) scale(${scaleDifference})`;
+          // currentImage.addEventListener(
+          //   "transitionend",
+          //   (transitionHandler = () => {
+          //     console.log("Transition ended");
+          //     document.getElementsByTagName("body")[0].classList.add("locked");
+          //   })
+          // );
+
+          // WITHOUT SCALE DIFFERENCE
+          // activeCollection.style.transform = `translateX(${leftDifference}px) translateY(${topDifference}px)`;
+          // currentImage.addEventListener(
+          //   "transitionend",
+          //   (transitionHandler = () => {
+          //     console.log("Transition ended");
+          //     document.getElementsByTagName("body")[0].classList.add("locked");
+          //   })
+          // );
+          activeCollection.style.transformOrigin = `${leftOffset +
+        rect.width / 2}px ${topOffset - (rect.height / 6) * -1}px`; $$invalidate('activeCollection', activeCollection);
+          activeCollection.style.transform = `translateX(${leftDifference}px) translateY(${topDifference}px) scale(${scaleDifference *
+        0.88})`; $$invalidate('activeCollection', activeCollection);
+          currentImage.addEventListener(
+            "transitionend",
+            (transitionHandler = () => {
+              console.log("Transition ended");
+              document.getElementsByTagName("body")[0].classList.add("locked");
+            })
+          );    })();
         closedGallery = false;
       }
 
-      function showPrevious(){
-        if(current <= 0) {
-          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+      function showPrevious() {
+        if (current <= 0) {
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[
+            stack.length - 1
+          ].style.transform = `translateX(-${offset}px)`;      (async () => {
             // sleep while animation happens
             await sleep(200);
             $$invalidate('current', current = stack.length - 1);
             setImagePos(current);
-            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName("h2")[0].innerText);
           })();
-        }else{
+        } else {
           hiresImages[current].style.transform = `translateX(${offset}px)`;      hiresImages[current - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
             // sleep while animation happens
             await sleep(200);
             current--; $$invalidate('current', current);
             setImagePos(current);
-            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+            $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName("h2")[0].innerText);
           })();
         }
       }
-      
-      function showNext(){
-        if(current >= (stack.length - 1)) {
-          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[stack.length - 1].style.transform = `translateX(-${offset}px)`;      (async () => {
+
+      function showNext() {
+        if (current >= stack.length - 1) {
+          hiresImages[0].style.transform = `translateX(${offset}px)`;      hiresImages[
+            stack.length - 1
+          ].style.transform = `translateX(-${offset}px)`;      (async () => {
             // sleep while animation happens
             await sleep(200);
             $$invalidate('current', current = 0);
             setImagePos(current);
           })();
-        }else{
+        } else {
           hiresImages[current].style.transform = `translateX(-${offset}px)`;      hiresImages[current + 1].style.transform = `translateX(${offset}px)`;      (async () => {
             // sleep while animation happens
             await sleep(200);
@@ -1831,51 +1909,55 @@ var app = (function () {
             setImagePos(current);
           })();
         }
-        
       }
 
       // Sets non-active gallery items to a position where they can shrink from when the hi-res gallery is closed.
-      function setImagePos(current){
+      function setImagePos(current) {
         let rect = images[current].getBoundingClientRect();
-        
+
         let centerArea = centerX + centerY * 2;
         let imageArea = rect.width + rect.height;
-        let currentImage = images[current].getElementsByTagName('img')[0];
+        let currentImage = images[current].getElementsByTagName("img")[0];
 
-        
         Object.entries(images).forEach(([key, value]) => {
-          value.style.zIndex = '1';
-          value.firstChild.classList.add('notransition');
-          value.firstChild.classList.remove('hitransition');
+          value.style.zIndex = "1";
+          value.firstChild.classList.add("notransition");
+          value.firstChild.classList.remove("hitransition");
           value.firstChild.style.transform = `translateX(0) translateY(0px) scale(1)`;
         });
 
-        images[current].style.zIndex = '99';    currentImage.style.transform = `translateX(${centerX - rect.left - (rect.width/2)}px) translateY(${centerY - rect.top - (rect.height/2)}px) scale(${centerArea/imageArea})`;
-        $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName('h2')[0].innerText);
+        images[current].style.zIndex = "99";    currentImage.style.transform = `translateX(${centerX -
+      rect.left -
+      rect.width / 2}px) translateY(${centerY -
+      rect.top -
+      rect.height / 2}px) scale(${centerArea / imageArea})`;
+        $$invalidate('currentTitle', currentTitle = images[current].getElementsByTagName("h2")[0].innerText);
       }
 
-      function closeGallery(){
-          let currentImage = images[current].getElementsByTagName('img')[0];
-          let currentTransformPos = currentImage.style;
-          currentImage.removeEventListener('transitionend', transitionHandler ,false);
+      function closeGallery() {
+        console.log("HEY HEY");
 
-          // this is tricky because we might need two offset values
-          window.scrollTo(0, hiresScrollPos);
-          document.getElementsByTagName("body")[0].classList.remove('locked');
+        let currentImage = images[current].getElementsByTagName("img")[0];
+        let currentTransformPos = currentImage.style;
+        currentImage.removeEventListener("transitionend", transitionHandler, false);
 
-          currentImage.classList.remove('notransition');
-          currentImage.classList.add('hitransition');
+        // this is tricky because we might need two offset values
+        window.scrollTo(0, hiresScrollPos);
+        document.getElementsByTagName("body")[0].classList.remove("locked");
 
-          (async () => {
-            // wait for animation to end.
-            await sleep(200);
-            currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
-            $$invalidate('ready', ready = false);
-            $$invalidate('hiresLoaded', hiresLoaded = false);
-            $$invalidate('showTitles', showTitles = true);
-          })();
-          
-          closedGallery = true;
+        currentImage.classList.remove("notransition");
+        currentImage.classList.add("hitransition");
+
+        (async () => {
+          // wait for animation to end.
+          await sleep(200);
+          currentImage.style.transform = `translateX(0) translateY(0) scale(1)`;
+          $$invalidate('ready', ready = false);
+          $$invalidate('hiresLoaded', hiresLoaded = false);
+          $$invalidate('showTitles', showTitles = true);
+        })();
+
+        closedGallery = true;
       }
 
     	const writable_props = ['stack', 'originaltarget'];
@@ -1993,7 +2075,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (390:0) {#if $activeCollection == id}
+    // (393:0) {#if $activeCollection == id}
     function create_if_block_3(ctx) {
     	var div, p, t, div_intro, div_outro, current, dispose;
 
@@ -2003,10 +2085,10 @@ var app = (function () {
     			p = element("p");
     			t = text(ctx.name);
     			p.className = "svelte-1kyex5q";
-    			add_location(p, file$4, 391, 4, 11371);
+    			add_location(p, file$4, 394, 4, 11485);
     			div.id = "breadcrumb";
     			div.className = "breadcrumb svelte-1kyex5q";
-    			add_location(div, file$4, 390, 2, 11227);
+    			add_location(div, file$4, 393, 2, 11341);
     			dispose = listen(div, "click", ctx.resetStacks);
     		},
 
@@ -2055,7 +2137,7 @@ var app = (function () {
     	};
     }
 
-    // (407:2) {#if $activeCollection == id}
+    // (410:2) {#if $activeCollection == id}
     function create_if_block_2(ctx) {
     	var current;
 
@@ -2089,7 +2171,7 @@ var app = (function () {
     	};
     }
 
-    // (415:4) {:else}
+    // (418:4) {:else}
     function create_else_block$1(ctx) {
     	var div;
 
@@ -2097,10 +2179,11 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.className = "dummyimage svelte-1kyex5q";
+    			set_style(div, "height", "" + ctx.stackHeight + "px");
     			set_style(div, "transform", "rotate(" + ctx.index * 2 + "deg)");
     			set_style(div, "z-index", "-" + ctx.index);
     			set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
-    			add_location(div, file$4, 415, 6, 12101);
+    			add_location(div, file$4, 418, 6, 12247);
     		},
 
     		m: function mount(target, anchor) {
@@ -2108,6 +2191,10 @@ var app = (function () {
     		},
 
     		p: function update(changed, ctx) {
+    			if (changed.stackHeight) {
+    				set_style(div, "height", "" + ctx.stackHeight + "px");
+    			}
+
     			if (changed.imagecollection) {
     				set_style(div, "opacity", (1 - 1/ctx.imagecollection.length * ctx.index/1.2));
     			}
@@ -2124,7 +2211,7 @@ var app = (function () {
     	};
     }
 
-    // (413:4) {#if index==0}
+    // (416:4) {#if index==0}
     function create_if_block_1$1(ctx) {
     	var current;
 
@@ -2168,7 +2255,7 @@ var app = (function () {
     	};
     }
 
-    // (412:2) {#each imagecollection as image, index}
+    // (415:2) {#each imagecollection as image, index}
     function create_each_block$1(ctx) {
     	var current_block_type_index, if_block, if_block_anchor, current;
 
@@ -2244,7 +2331,7 @@ var app = (function () {
     	};
     }
 
-    // (426:0) {#if attemptingtoLoad}
+    // (429:0) {#if attemptingtoLoad}
     function create_if_block$2(ctx) {
     	var div, div_class_value, current;
 
@@ -2262,7 +2349,7 @@ var app = (function () {
     			div = element("div");
     			galleryexpanded.$$.fragment.c();
     			div.className = div_class_value = "loading--" + ctx.$loadingSecondary + " svelte-1kyex5q";
-    			add_location(div, file$4, 427, 3, 12481);
+    			add_location(div, file$4, 430, 3, 12652);
     		},
 
     		m: function mount(target, anchor) {
@@ -2366,16 +2453,15 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			if_block2_anchor = empty();
     			span.className = "svelte-1kyex5q";
-    			add_location(span, file$4, 420, 4, 12288);
+    			add_location(span, file$4, 423, 4, 12459);
     			h2.className = "svelte-1kyex5q";
-    			add_location(h2, file$4, 418, 2, 12268);
+    			add_location(h2, file$4, 421, 2, 12439);
     			a.href = a_href_value = ctx.imagecollection[0].hires;
     			a.className = "collection svelte-1kyex5q";
-    			set_style(a, "height", "" + ctx.stackHeight + "px");
     			a.dataset.id = ctx.id;
     			toggle_class(a, "active", ctx.id === ctx.$activeCollection && ctx.$loadingSecondary == true);
     			toggle_class(a, "nonactive", ctx.$activeCollection!== 0 && ctx.id !== ctx.$activeCollection);
-    			add_location(a, file$4, 395, 0, 11401);
+    			add_location(a, file$4, 398, 0, 11578);
 
     			dispose = [
     				listen(a, "mouseenter", ctx.rotate),
@@ -2456,7 +2542,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (changed.imagecollection || changed.handleFirst) {
+    			if (changed.imagecollection || changed.handleFirst || changed.stackHeight) {
     				each_value = ctx.imagecollection;
 
     				for (var i = 0; i < each_value.length; i += 1) {
@@ -2493,10 +2579,6 @@ var app = (function () {
 
     			if ((!current || changed.imagecollection) && a_href_value !== (a_href_value = ctx.imagecollection[0].hires)) {
     				a.href = a_href_value;
-    			}
-
-    			if (!current || changed.stackHeight) {
-    				set_style(a, "height", "" + ctx.stackHeight + "px");
     			}
 
     			if (!current || changed.id) {
@@ -2610,6 +2692,7 @@ var app = (function () {
       let fakeImages;
       let firstImage;
       let stackHeight;
+      let stackWidth;
 
       // reference to orginal colour
       let originalbgcolor;
@@ -2782,9 +2865,11 @@ var app = (function () {
         // Maybe I could put this in afterupdate instead?
         // Perhaps my lazyloading just sucks?
         (async () => {
-          await sleep(50);
+          await sleep(150);
           firstImage = collection.getElementsByTagName('img')[0];
-          $$invalidate('stackHeight', stackHeight = firstImage.dataset.height/2.5);
+          //stackHeight = firstImage.dataset.height/2;
+          $$invalidate('stackHeight', stackHeight = firstImage.height - 10);
+          stackWidth = firstImage.dataset.width/2;
           console.log(firstImage.dataset.height);
         })();
       }
@@ -2804,10 +2889,10 @@ var app = (function () {
           (async () => {
             await sleep(50);
             Object.entries(loadedItems).forEach(([key, value]) => {
-              let imgHeight = value.firstElementChild.dataset.height/2.5;
+              let imgHeight = value.firstElementChild.dataset.height/2;
               value.style.height = imgHeight+'px';
-              console.log(value);
-              console.log(`height is ${imgHeight}`);
+              // console.log(value);
+              // console.log(`height is ${imgHeight}`);
             });
           })();
           
@@ -2926,7 +3011,7 @@ var app = (function () {
 
     const file$5 = "src/App.svelte";
 
-    // (232:1) {#if $activeCollection==0}
+    // (231:1) {#if $activeCollection==0}
     function create_if_block_1$2(ctx) {
     	var div1, a0, t1, div0, div0_intro, div0_outro, t2, a1, current, dispose;
 
@@ -2943,20 +3028,20 @@ var app = (function () {
     			t2 = space();
     			a1 = element("a");
     			a1.textContent = "Github";
-    			a0.className = "links svelte-7ze736";
+    			a0.className = "links svelte-d8np5z";
     			a0.href = "about";
     			toggle_class(a0, "hovering", ctx.menuHover === true);
-    			add_location(a0, file$5, 234, 3, 9865);
-    			div0.className = "stacks-logo svelte-7ze736";
+    			add_location(a0, file$5, 233, 3, 9846);
+    			div0.className = "stacks-logo svelte-d8np5z";
     			toggle_class(div0, "hovering", ctx.menuHover === true);
-    			add_location(div0, file$5, 236, 3, 9975);
+    			add_location(div0, file$5, 235, 3, 9956);
     			a1.target = "_blank";
-    			a1.className = "links svelte-7ze736";
+    			a1.className = "links svelte-d8np5z";
     			a1.href = "https://github.com/cssandstuff/portfolio-scaffold";
     			toggle_class(a1, "hovering", ctx.menuHover === true);
-    			add_location(a1, file$5, 240, 3, 10141);
-    			div1.className = "menu svelte-7ze736";
-    			add_location(div1, file$5, 232, 2, 9756);
+    			add_location(a1, file$5, 239, 3, 10122);
+    			div1.className = "menu svelte-d8np5z";
+    			add_location(div1, file$5, 231, 2, 9737);
 
     			dispose = [
     				listen(a0, "click", ctx.handleAbout),
@@ -3025,7 +3110,7 @@ var app = (function () {
     	};
     }
 
-    // (257:0) {#if about }
+    // (256:0) {#if about }
     function create_if_block$3(ctx) {
     	var div, p, t0, a0, t2, br0, br1, t3, a1, t5, br2, br3, t6, div_intro, div_outro, current, dispose;
 
@@ -3047,19 +3132,19 @@ var app = (function () {
     			br3 = element("br");
     			t6 = text("\nThe current bundle size of stacks is arount 10kb (gzipped), and I'm sure there's room for improvement.");
     			a0.href = "http://svelte.dev";
-    			a0.className = "svelte-7ze736";
-    			add_location(a0, file$5, 258, 77, 11281);
-    			add_location(br0, file$5, 258, 193, 11397);
-    			add_location(br1, file$5, 258, 198, 11402);
+    			a0.className = "svelte-d8np5z";
+    			add_location(a0, file$5, 257, 77, 11262);
+    			add_location(br0, file$5, 257, 193, 11378);
+    			add_location(br1, file$5, 257, 198, 11383);
     			a1.href = "http://svelte.dev/sapper";
-    			a1.className = "svelte-7ze736";
-    			add_location(a1, file$5, 259, 36, 11444);
-    			add_location(br2, file$5, 259, 162, 11570);
-    			add_location(br3, file$5, 259, 167, 11575);
-    			p.className = "svelte-7ze736";
-    			add_location(p, file$5, 258, 0, 11204);
-    			div.className = "about svelte-7ze736";
-    			add_location(div, file$5, 257, 0, 11088);
+    			a1.className = "svelte-d8np5z";
+    			add_location(a1, file$5, 258, 36, 11425);
+    			add_location(br2, file$5, 258, 162, 11551);
+    			add_location(br3, file$5, 258, 167, 11556);
+    			p.className = "svelte-d8np5z";
+    			add_location(p, file$5, 257, 0, 11185);
+    			div.className = "about svelte-d8np5z";
+    			add_location(div, file$5, 256, 0, 11069);
     			dispose = listen(div, "click", ctx.handleAbout);
     		},
 
@@ -3177,13 +3262,13 @@ var app = (function () {
     			t4 = space();
     			if (if_block1) if_block1.c();
     			if_block1_anchor = empty();
-    			div0.className = "container svelte-7ze736";
+    			div0.className = "container svelte-d8np5z";
     			set_style(div0, "height", "50px");
     			set_style(div0, "margin-bottom", "20px");
     			set_style(div0, "margin-top", "25px");
-    			add_location(div0, file$5, 229, 0, 9641);
-    			div1.className = "container svelte-7ze736";
-    			add_location(div1, file$5, 247, 0, 10306);
+    			add_location(div0, file$5, 228, 0, 9622);
+    			div1.className = "container svelte-d8np5z";
+    			add_location(div1, file$5, 246, 0, 10287);
     		},
 
     		l: function claim(nodes) {

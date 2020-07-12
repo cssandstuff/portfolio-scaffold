@@ -143,7 +143,6 @@
 	*/
 	.container :global(.collection, .galleryitem) {
 		width: calc(100% - 3em);
-		min-width: 16em;
 		margin: 0em 1.5em 6em 1.5em;
 	}
 	/* .container :global(.collection){

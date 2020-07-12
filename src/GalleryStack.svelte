@@ -35,6 +35,7 @@
   let fakeImages;
   let firstImage;
   let stackHeight;
+  let stackWidth;
 
   // reference to orginal colour
   let originalbgcolor;
@@ -209,9 +210,11 @@
     // Maybe I could put this in afterupdate instead?
     // Perhaps my lazyloading just sucks?
     (async () => {
-      await sleep(50);
+      await sleep(150);
       firstImage = collection.getElementsByTagName('img')[0];
-      stackHeight = firstImage.dataset.height/2.5;
+      //stackHeight = firstImage.dataset.height/2;
+      stackHeight = firstImage.height - 10;
+      stackWidth = firstImage.dataset.width/2;
       console.log(firstImage.dataset.height)
     })();
   }
@@ -231,10 +234,10 @@
       (async () => {
         await sleep(50);
         Object.entries(loadedItems).forEach(([key, value]) => {
-          let imgHeight = value.firstElementChild.dataset.height/2.5;
+          let imgHeight = value.firstElementChild.dataset.height/2;
           value.style.height = imgHeight+'px';
-          console.log(value);
-          console.log(`height is ${imgHeight}`);
+          // console.log(value);
+          // console.log(`height is ${imgHeight}`);
         });
       })();
       
@@ -392,11 +395,11 @@
     <p>{name}</p>
   </div>
 {/if}
-
+<!-- style="height: {stackHeight}px; width: {stackWidth}px" -->
 <a href="{imagecollection[0].hires}" class:active="{id === $activeCollection && $loadingSecondary == true}" 
      class:nonactive="{$activeCollection!== 0 && id !== $activeCollection}" 
      class="collection" 
-     style="height: {stackHeight}px"
+     
      data-id={id} 
      bind:this={collection} 
      on:mouseenter={rotate} 
@@ -413,7 +416,7 @@
     {#if index==0}
       <Image image="{image.lowres}" on:loadingComplete="{handleFirst}" />
     {:else}
-      <div class="dummyimage" style="transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></div>
+      <div class="dummyimage" style="height: {stackHeight}px; transform: rotate({index * 2}deg); z-index: -{index}; opacity: {1 - 1/imagecollection.length * index/1.2}"></div>
     {/if}
   {/each}
   <h2>

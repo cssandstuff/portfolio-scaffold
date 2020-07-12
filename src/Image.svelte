@@ -63,10 +63,10 @@
     transition: 0.4s all ease-out;
     justify-self: center;
     align-self: center;
-    min-width: 100%;
-    min-height: 100%;
+    /* min-width: 100%;
+    min-height: 100%; */
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
   }
   @keyframes shimmer {
     0%{
